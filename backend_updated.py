@@ -9,7 +9,7 @@ from flask_cors import CORS
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # Permitir que el frontend haga solicitudes al backend sin restricciones de CORS
+CORS(app, resources={r"/*": {"origins": "*"}})  # Permitir todas las solicitudes CORS
 
 # Obtener la clave de OpenAI desde el archivo .env
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
