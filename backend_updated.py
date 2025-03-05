@@ -9,13 +9,24 @@ from flask_cors import CORS
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})  # Permitir todas las solicitudes CORS
+CORS(app)  # Permitir CORS globalmente
 
 # Obtener la clave de OpenAI desde el archivo .env
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-@app.route('/optimize_prompt', methods=['POST'])
+@app.after_request
+def add_cors_headers(response):
+    """ Añadir encabezados CORS manualmente """
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    return response
+
+@app.route('/optimize_prompt', methods=['POST', 'OPTIONS'])
 def optimize_prompt():
+    if request.method == "OPTIONS":
+        return add_cors_headers(jsonify({"message": "CORS preflight OK"}))
+
     data = request.json
     prompt = data.get("prompt", "")
 
@@ -33,10 +44,10 @@ def optimize_prompt():
         )
 
         optimized_prompt = response["choices"][0]["message"]["content"].strip()
-        return jsonify({"optimized_prompt": optimized_prompt})
+        return add_cors_headers(jsonify({"optimized_prompt": optimized_prompt}))
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return add_cors_headers(jsonify({"error": str(e)})), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
