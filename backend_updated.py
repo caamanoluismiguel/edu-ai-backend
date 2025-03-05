@@ -9,29 +9,31 @@ from flask_cors import CORS
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # Permitir CORS globalmente
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)  # Habilitar CORS completamente
 
 # Obtener la clave de OpenAI desde el archivo .env
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 @app.after_request
 def add_cors_headers(response):
-    """ Añadir encabezados CORS manualmente """
+    """ Forzar encabezados CORS """
     response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
     return response
 
 @app.route('/optimize_prompt', methods=['POST', 'OPTIONS'])
 def optimize_prompt():
     if request.method == "OPTIONS":
-        return add_cors_headers(jsonify({"message": "CORS preflight OK"}))
+        response = jsonify({"message": "CORS preflight OK"})
+        return add_cors_headers(response)
 
     data = request.json
     prompt = data.get("prompt", "")
 
     if not OPENAI_API_KEY:
-        return jsonify({"error": "API Key no configurada"}), 500
+        return add_cors_headers(jsonify({"error": "API Key no configurada"})), 500
 
     try:
         openai.api_key = OPENAI_API_KEY
