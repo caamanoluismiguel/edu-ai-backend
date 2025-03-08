@@ -1,58 +1,56 @@
-
 import os
-from flask import Flask, request, jsonify
 import openai
-from dotenv import load_dotenv
+from flask import Flask, request, jsonify
 from flask_cors import CORS
+from dotenv import load_dotenv
 
-# Cargar variables de entorno desde el archivo .env
+# Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)  # Habilitar CORS completamente
+CORS(app)
 
-# Obtener la clave de OpenAI desde el archivo .env
+# Get OpenAI API Key from Railway environment variables
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-@app.after_request
-def add_cors_headers(response):
-    """ Forzar encabezados CORS """
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-    response.headers["Access-Control-Allow-Credentials"] = "true"
-    return response
+if not OPENAI_API_KEY:
+    raise ValueError("Missing OpenAI API Key. Ensure it's set in Railway's environment variables.")
 
-@app.route('/optimize_prompt', methods=['POST', 'OPTIONS'])
-def optimize_prompt():
-    if request.method == "OPTIONS":
-        response = jsonify({"message": "CORS preflight OK"})
-        return add_cors_headers(response)
+openai.api_key = OPENAI_API_KEY
 
-    data = request.json
-    prompt = data.get("prompt", "")
-
-    if not OPENAI_API_KEY:
-        return add_cors_headers(jsonify({"error": "API Key no configurada"})), 500
-
+@app.route('/tutor_assistant', methods=['POST'])
+def tutor_assistant():
     try:
-        openai.api_key = OPENAI_API_KEY
+        data = request.get_json()
+        question = data.get("question", "")
+
+        if not question:
+            return jsonify({"error": "Please provide a question for the AI Tutor."}), 400
+
+        # AI prompt with default educational personality
+        prompt = f'''
+        You are an experienced education coach helping teachers improve their lessons, student engagement, and teaching strategies.
+        Your role is to provide clear, structured, and detailed guidance to teachers.
+        
+        Teacher's Question: "{question}"
+        
+        Provide a well-structured response with actionable advice.
+        '''
+
         response = openai.ChatCompletion.create(
             model="gpt-4",
-            messages=[
-                {"role": "system", "content": "Tu tarea es mejorar prompts siguiendo la metodología IDEA (Identifica el rol, Define la tarea, Expande el contenido, Aporta ajustes o mejoras de contexto). No devuelvas el acrónimo 'IDEA' en la optimización. Asegúrate de que el prompt final sea más claro, específico y útil."},
-                {"role": "user", "content": f"Mejora este prompt para que sea más claro y efectivo: {prompt}"}
-            ],
-            max_tokens=200,
+            messages=[{"role": "system", "content": "You are a helpful education expert AI."},
+                      {"role": "user", "content": prompt}],
             temperature=0.7
         )
 
-        optimized_prompt = response["choices"][0]["message"]["content"].strip()
+        ai_response = response["choices"][0]["message"]["content"]
 
-        return add_cors_headers(jsonify({"optimized_prompt": optimized_prompt}))
+        return jsonify({"response": ai_response})
 
     except Exception as e:
-        return add_cors_headers(jsonify({"error": str(e)})), 500
+        return jsonify({"error": str(e)}), 500
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)
