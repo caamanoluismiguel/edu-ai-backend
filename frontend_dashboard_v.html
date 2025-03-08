@@ -220,6 +220,32 @@
 
             let data = await response.json();
             responseBox.innerHTML = data.teaching_materials || "❌ Error generating materials.";
+    async function sendTutorRequest() {
+    let input = document.getElementById("tutorInput").value.trim();
+    let responseBox = document.getElementById("tutorResponse");
+
+    if (!input) {
+        responseBox.innerHTML = "❌ Please enter a question before asking the tutor.";
+        return;
+    }
+
+    responseBox.innerHTML = "🔄 Generating response...";
+
+    try {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/tutor_assistant", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "question": input })
+        });
+
+        let data = await response.json();
+        responseBox.innerHTML = data.response || "❌ Error generating response.";
+    } catch (error) {
+        console.error("Tutor Error:", error);
+        responseBox.innerHTML = `❌ Failed to get a response: ${error.message}`;
+    }
+}
+
         }
     </script>
 
