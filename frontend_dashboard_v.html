@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDU.ai - AI-Powered Teaching Assistant</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #F8F9FA;
+            color: #212529;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background-color: #1E88E5;
+            color: white;
+            height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            position: fixed;
+        }
+
+        .sidebar h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            padding: 10px 15px;
+            display: block;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            background-color: #1565C0;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 270px;
+            padding: 40px;
+            flex-grow: 1;
+        }
+
+        .tool-header {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .tool-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .submit-btn {
+            background-color: #F4C20D;
+            color: #212529;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #d9a80c;
+        }
+
+        .response-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f1f1f1;
+            border-radius: 5px;
+            min-height: 100px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <h2>EDU.ai</h2>
+        <a href="#" class="nav-link" id="tutorLink">AI Tutor Chat</a>
+        <a href="#" class="nav-link" id="lessonPlanLink">Lesson Plan Generator</a>
+        <a href="#" class="nav-link" id="quizLink">Quiz Creator</a>
+        <a href="#" class="nav-link" id="materialsLink">Teaching Materials</a>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <h1 class="tool-header">Welcome to EDU.ai</h1>
+        <div class="tool-container">
+            <p>Select a tool from the left menu to start.</p>
+        </div>
+    </div>
+
+    <script>
+        const backendURL = "https://edu-ai-backend-production.up.railway.app";
+
+        window.onload = function() {
+            document.getElementById("tutorLink").addEventListener("click", function() { loadTool('tutor'); });
+            document.getElementById("lessonPlanLink").addEventListener("click", function() { loadTool('lesson_plan'); });
+            document.getElementById("quizLink").addEventListener("click", function() { loadTool('quiz'); });
+            document.getElementById("materialsLink").addEventListener("click", function() { loadTool('materials'); });
+        };
+
+        function loadTool(tool) {
+            const content = document.querySelector('.tool-container');
+            const header = document.querySelector('.tool-header');
+
+            if (tool === 'tutor') {
+                header.innerHTML = "AI Tutor Chat";
+                content.innerHTML = `
+                    <textarea class="input-box" id="tutorInput" rows="4" placeholder="Ask the AI tutor a question..."></textarea>
+                    <button class="submit-btn" onclick="sendTutorRequest()">Get Answer</button>
+                    <div class="response-box" id="tutorResponse">AI Response will appear here...</div>
+                `;
+            } else if (tool === 'lesson_plan') {
+                header.innerHTML = "Lesson Plan Generator";
+                content.innerHTML = `
+                    <input type="text" class="input-box" id="subject" placeholder="Enter Subject">
+                    <input type="text" class="input-box" id="gradeLevel" placeholder="Enter Grade Level">
+                    <textarea class="input-box" id="learningGoals" rows="3" placeholder="Enter Learning Goals"></textarea>
+                    <button class="submit-btn" onclick="generateLessonPlan()">Generate Lesson Plan</button>
+                    <div class="response-box" id="lessonPlanResponse">Lesson plan will appear here...</div>
+                `;
+            } else if (tool === 'quiz') {
+                header.innerHTML = "Quiz Creator";
+                content.innerHTML = `
+                    <input type="text" class="input-box" id="quizTopic" placeholder="Enter Quiz Topic">
+                    <button class="submit-btn" onclick="generateQuiz()">Generate Quiz</button>
+                    <div class="response-box" id="quizResponse">Quiz will appear here...</div>
+                `;
+            } else if (tool === 'materials') {
+                header.innerHTML = "Teaching Materials Generator";
+                content.innerHTML = `
+                    <input type="text" class="input-box" id="materialTopic" placeholder="Enter Topic">
+                    <select class="input-box" id="materialType">
+                        <option value="study_guide">Study Guide</option>
+                        <option value="worksheet">Worksheet</option>
+                        <option value="slides">PowerPoint Slides</option>
+                    </select>
+                    <button class="submit-btn" onclick="generateMaterials()">Generate Materials</button>
+                    <div class="response-box" id="materialsResponse">Teaching materials will appear here...</div>
+                `;
+            }
+        }
+
+        async function generateLessonPlan() {
+            let responseBox = document.getElementById("lessonPlanResponse");
+            responseBox.innerHTML = "🔄 Generating lesson plan...";
+            
+            let response = await fetch(backendURL + "/lesson_plan", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    subject: document.getElementById("subject").value,
+                    grade_level: document.getElementById("gradeLevel").value,
+                    learning_goals: document.getElementById("learningGoals").value
+                })
+            });
+
+            let data = await response.json();
+            responseBox.innerHTML = data.lesson_plan || "❌ Error generating lesson plan.";
+        }
+
+        async function generateQuiz() {
+            let responseBox = document.getElementById("quizResponse");
+            responseBox.innerHTML = "🔄 Generating quiz...";
+            
+            let response = await fetch(backendURL + "/quiz_creator", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ topic: document.getElementById("quizTopic").value })
+            });
+
+            let data = await response.json();
+            responseBox.innerHTML = data.quiz || "❌ Error generating quiz.";
+        }
+
+        async function generateMaterials() {
+            let responseBox = document.getElementById("materialsResponse");
+            responseBox.innerHTML = "🔄 Generating materials...";
+            
+            let response = await fetch(backendURL + "/teaching_materials", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    topic: document.getElementById("materialTopic").value,
+                    material_type: document.getElementById("materialType").value
+                })
+            });
+
+            let data = await response.json();
+            responseBox.innerHTML = data.teaching_materials || "❌ Error generating materials.";
+        }
+    </script>
+
+</body>
+</html>
