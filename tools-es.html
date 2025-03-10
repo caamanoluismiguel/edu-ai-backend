@@ -10,9 +10,35 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
 
   <style>
+    /* Global Colors */
+    :root {
+      --edvanta-blue: #1565C0;
+      --edvanta-yellow: #F4C20D;
+      --text-color: #212529;
+      --bg-color: #F8F9FA;
+    }
+
+    /* Reset & Box-Sizing */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body */
+    body {
+      font-family: 'Lato', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      padding-top: 70px;  
+      padding-bottom: 50px;
+    }
+
     /* Global Header */
     .global-header {
-      background-color: #1565C0;
+      background-color: var(--edvanta-blue);
       color: white;
       padding: 15px 20px;
       display: flex;
@@ -28,19 +54,8 @@
       margin: 0;
       font-size: 24px;
     }
-    /* Language Switcher */
-    .lang-switch {
-      font-size: 16px;
-    }
-    .lang-switch a {
-      color: white;
-      text-decoration: none;
-      margin-left: 10px;
-      transition: color 0.3s;
-    }
-    .lang-switch a:hover {
-      color: #F4C20D;
-    }
+
+    /* Desktop Nav */
     .global-nav {
       display: flex;
       gap: 15px;
@@ -52,14 +67,31 @@
       transition: color 0.3s, text-shadow 0.3s;
     }
     .nav-link-global:hover {
-      color: #F4C20D;
+      color: var(--edvanta-yellow);
       text-shadow: 0 0 3px rgba(244, 194, 13, 0.5);
     }
-    
+
+    /* Hamburger (mobile) */
+    .hamburger {
+      display: none;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    .hamburger span {
+      display: block;
+      height: 3px;
+      background: white;
+      border-radius: 3px;
+      transition: 0.3s ease;
+    }
+
     /* Global Footer */
     .global-footer {
-      background-color: #F8F9FA;
-      color: #212529;
+      background-color: var(--bg-color);
+      color: var(--text-color);
       padding: 15px 20px;
       text-align: center;
       border-top: 1px solid #ccc;
@@ -75,36 +107,25 @@
       gap: 20px;
     }
     .footer-link {
-      color: #212529;
+      color: var(--text-color);
       text-decoration: none;
       font-size: 14px;
       transition: color 0.3s;
     }
     .footer-link:hover {
-      color: #1565C0;
+      color: var(--edvanta-blue);
     }
-    
-    /* Body */
-    body {
-      font-family: 'Lato', sans-serif;
-      background-color: #F8F9FA;
-      color: #212529;
-      margin: 0;
-      padding: 0;
-      padding-top: 70px;
-      padding-bottom: 50px;
-    }
-    
+
     /* Main Wrapper */
     .main-wrapper {
       display: flex;
       min-height: calc(100vh - 120px);
     }
-    
-    /* Sidebar Navigation */
+
+    /* Sidebar Navigation (Desktop) */
     .sidebar {
       width: 250px;
-      background-color: #1565C0;
+      background-color: var(--edvanta-blue);
       color: white;
       height: calc(100vh - 70px - 50px);
       padding: 20px;
@@ -132,16 +153,18 @@
       cursor: pointer;
     }
     .nav-link:hover {
-      background-color: #F4C20D;
+      background-color: var(--edvanta-yellow);
+      color: var(--text-color);
     }
     .nav-link.active {
-      background-color: #F4C20D;
+      background-color: var(--edvanta-yellow);
+      color: var(--text-color);
       font-weight: bold;
     }
-    
+
     /* Main Content */
     .main-content {
-      margin-left: 270px;
+      margin-left: 270px; 
       padding: 40px;
       flex-grow: 1;
     }
@@ -155,6 +178,8 @@
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
+
+    /* Input & Button Styles */
     .input-box {
       width: 100%;
       padding: 10px;
@@ -164,8 +189,8 @@
       margin-bottom: 15px;
     }
     .submit-btn {
-      background-color: #F4C20D;
-      color: #212529;
+      background-color: var(--edvanta-yellow);
+      color: var(--text-color);
       padding: 12px 20px;
       font-size: 16px;
       border: none;
@@ -177,6 +202,7 @@
       background-color: #d9a80c;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
+
     /* Response Container */
     .response-container {
       margin-top: 20px;
@@ -212,10 +238,12 @@
     .response-content p {
       margin-bottom: 10px;
     }
+
+    /* Copy Button */
     .copy-btn {
-      background-color: #F4C20D;
+      background-color: var(--edvanta-yellow);
       border: none;
-      color: #212529;
+      color: var(--text-color);
       padding: 6px 12px;
       border-radius: 4px;
       cursor: pointer;
@@ -226,59 +254,114 @@
       background-color: #d9a80c;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
-    
-    /* Mobile Responsiveness */
+
+    /* Mobile Menu Overlay */
+    .mobile-menu-overlay {
+      display: none;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      right: 0;
+      bottom: 50px;
+      background-color: var(--edvanta-blue);
+      z-index: 999;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .mobile-menu-overlay.open {
+      display: block;
+    }
+    .mobile-menu-overlay h2 {
+      color: white;
+      margin-bottom: 20px;
+    }
+    .mobile-nav-link {
+      display: block;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      transition: background 0.3s;
+    }
+    .mobile-nav-link:hover {
+      background-color: var(--edvanta-yellow);
+      color: var(--text-color);
+    }
+
+    /* MEDIA QUERIES */
     @media (max-width: 768px) {
       .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        top: 0;
-        bottom: 0;
-        flex-direction: row;
-        overflow-x: auto;
-      }
-      .sidebar h2 {
         display: none;
       }
       .main-content {
         margin-left: 0;
-        padding: 20px;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .global-nav {
+        display: none; 
       }
     }
   </style>
 </head>
 <body>
-  <!-- Global Header with Language Switcher -->
+  <!-- Global Header -->
   <header class="global-header" role="banner">
     <div class="header-content">
       <h1>Edvanta</h1>
     </div>
-    <nav class="global-nav" role="navigation" aria-label="Main Navigation">
+    <!-- Desktop Nav -->
+    <nav class="global-nav" role="navigation" aria-label="Navegación Principal">
       <a href="index-es.html" class="nav-link-global">Inicio</a>
       <a href="#" class="nav-link-global">Acerca de</a>
       <a href="#" class="nav-link-global">Contacto</a>
       <a href="#" class="nav-link-global">Ayuda</a>
-      <span class="lang-switch"><a href="tools.html">EN</a></span>
+      <!-- Language Switch -->
+      <a href="tools.html" class="nav-link-global">EN</a>
     </nav>
+    <!-- Hamburger (mobile) -->
+    <div class="hamburger" onclick="toggleMobileMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </header>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobileMenu">
+    <h2>Navegación</h2>
+    <!-- Global Nav (Mobile) -->
+    <a href="index-es.html" class="mobile-nav-link">Inicio</a>
+    <a href="#" class="mobile-nav-link">Acerca de</a>
+    <a href="#" class="mobile-nav-link">Contacto</a>
+    <a href="#" class="mobile-nav-link">Ayuda</a>
+    <a href="tools.html" class="mobile-nav-link">EN</a>
+    <hr style="border:none; border-top:1px solid rgba(255,255,255,0.2); margin:15px 0;">
+    <h2>Herramientas</h2>
+    <!-- Tools Nav (Mobile) -->
+    <a href="#" class="mobile-nav-link" onclick="event.preventDefault(); setActiveLink('tutorLink'); loadTool('tutor'); toggleMobileMenu();">💬 Chat Tutor AI</a>
+    <a href="#" class="mobile-nav-link" onclick="event.preventDefault(); setActiveLink('lessonPlanLink'); loadTool('lesson_plan'); toggleMobileMenu();">📚 Generador de Planes de Clase</a>
+    <a href="#" class="mobile-nav-link" onclick="event.preventDefault(); setActiveLink('quizLink'); loadTool('quiz'); toggleMobileMenu();">❓ Creador de Quiz</a>
+    <a href="#" class="mobile-nav-link" onclick="event.preventDefault(); setActiveLink('materialsLink'); loadTool('materials'); toggleMobileMenu();">📝 Generador de Materiales</a>
+  </div>
+
+  <!-- Sidebar (Desktop) -->
+  <aside class="sidebar" role="navigation" aria-label="Navegación de Herramientas">
+    <h2>Herramientas Edvanta</h2>
+    <a href="#" class="nav-link" id="tutorLink">💬 Chat Tutor AI</a>
+    <a href="#" class="nav-link" id="lessonPlanLink">📚 Generador de Planes de Clase</a>
+    <a href="#" class="nav-link" id="quizLink">❓ Creador de Quiz</a>
+    <a href="#" class="nav-link" id="materialsLink">📝 Generador de Materiales</a>
+  </aside>
 
   <!-- Main Wrapper -->
   <div class="main-wrapper">
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar" role="navigation" aria-label="Navegación de Herramientas">
-      <h2>Herramientas Edvanta</h2>
-      <a href="#" class="nav-link" id="tutorLink">💬 Chat Tutor AI</a>
-      <a href="#" class="nav-link" id="lessonPlanLink">📚 Generador de Planes de Clase</a>
-      <a href="#" class="nav-link" id="quizLink">❓ Creador de Quiz</a>
-      <a href="#" class="nav-link" id="materialsLink">📝 Generador de Materiales Didácticos</a>
-    </aside>
-
-    <!-- Main Content Area -->
     <main class="main-content" role="main">
       <h1 class="tool-header">Herramientas Edvanta</h1>
       <section class="tool-container">
-        <p>Bienvenido a las Herramientas Edvanta, donde soluciones innovadoras impulsadas por IA potencian a los educadores para transformar la enseñanza y el aprendizaje. Selecciona una herramienta del menú de la izquierda para comenzar.</p>
+        <p>Bienvenido a las Herramientas Edvanta, donde soluciones innovadoras impulsadas por IA potencian a los educadores para transformar la enseñanza y el aprendizaje. Selecciona una herramienta del menú para comenzar.</p>
       </section>
     </main>
   </div>
@@ -295,10 +378,16 @@
     </div>
   </footer>
 
-  <script defer>
+  <script>
     const backendURL = "https://edu-ai-backend-production.up.railway.app";
+    const mobileMenu = document.getElementById("mobileMenu");
 
-    // Función para marcar el enlace activo en la barra lateral
+    // Toggle the mobile menu overlay
+    function toggleMobileMenu() {
+      mobileMenu.classList.toggle("open");
+    }
+
+    // Mark active sidebar link (desktop)
     function setActiveLink(activeId) {
       const links = document.querySelectorAll('.sidebar .nav-link');
       links.forEach(link => {
@@ -307,28 +396,30 @@
     }
 
     window.onload = function() {
-      document.getElementById("tutorLink").addEventListener("click", function(e) { 
+      // Desktop sidebar clicks
+      document.getElementById("tutorLink").addEventListener("click", function(e) {
         e.preventDefault();
-        setActiveLink("tutorLink"); 
-        loadTool('tutor'); 
+        setActiveLink("tutorLink");
+        loadTool('tutor');
       });
-      document.getElementById("lessonPlanLink").addEventListener("click", function(e) { 
+      document.getElementById("lessonPlanLink").addEventListener("click", function(e) {
         e.preventDefault();
-        setActiveLink("lessonPlanLink"); 
-        loadTool('lesson_plan'); 
+        setActiveLink("lessonPlanLink");
+        loadTool('lesson_plan');
       });
-      document.getElementById("quizLink").addEventListener("click", function(e) { 
+      document.getElementById("quizLink").addEventListener("click", function(e) {
         e.preventDefault();
-        setActiveLink("quizLink"); 
-        loadTool('quiz'); 
+        setActiveLink("quizLink");
+        loadTool('quiz');
       });
-      document.getElementById("materialsLink").addEventListener("click", function(e) { 
+      document.getElementById("materialsLink").addEventListener("click", function(e) {
         e.preventDefault();
-        setActiveLink("materialsLink"); 
-        loadTool('materials'); 
+        setActiveLink("materialsLink");
+        loadTool('materials');
       });
     };
 
+    // Load tool content
     function loadTool(tool) {
       const content = document.querySelector('.tool-container');
       const header = document.querySelector('.tool-header');
@@ -336,7 +427,7 @@
       if (tool === 'tutor') {
         header.innerHTML = "Chat Tutor AI";
         content.innerHTML = `
-          <p><strong>Cómo usar:</strong> Haz preguntas y recibe orientación personalizada de nuestro tutor impulsado por IA. Escribe tu pregunta abajo y haz clic en "Obtener respuesta" para empezar.</p>
+          <p><strong>Cómo usar:</strong> Haz preguntas y recibe orientación personalizada de nuestro tutor impulsado por IA. Escribe tu pregunta abajo y haz clic en "Obtener respuesta".</p>
           <textarea class="input-box" id="tutorInput" rows="4" placeholder="Escribe tu pregunta aquí..."></textarea>
           <button class="submit-btn" onclick="sendTutorRequest()">Obtener respuesta</button>
           <div class="response-container">
@@ -349,7 +440,7 @@
       } else if (tool === 'lesson_plan') {
         header.innerHTML = "Generador de Planes de Clase";
         content.innerHTML = `
-          <p><strong>Cómo usar:</strong> Genera planes de clase detallados rápidamente. Ingresa la asignatura, el nivel y los objetivos de aprendizaje, y haz clic en "Generar plan" para recibir un plan personalizado.</p>
+          <p><strong>Cómo usar:</strong> Genera planes de clase detallados rápidamente. Ingresa la asignatura, el nivel y los objetivos de aprendizaje, y haz clic en "Generar plan".</p>
           <input type="text" class="input-box" id="subject" placeholder="Ingresa la asignatura">
           <input type="text" class="input-box" id="gradeLevel" placeholder="Ingresa el nivel">
           <textarea class="input-box" id="learningGoals" rows="3" placeholder="Ingresa los objetivos de aprendizaje"></textarea>
@@ -375,9 +466,9 @@
           </div>
         `;
       } else if (tool === 'materials') {
-        header.innerHTML = "Generador de Materiales Didácticos";
+        header.innerHTML = "Generador de Materiales";
         content.innerHTML = `
-          <p><strong>Cómo usar:</strong> Crea materiales didácticos de calidad rápidamente. Selecciona el tipo de material, ingresa un tema, y haz clic en "Generar materiales" para obtener recursos personalizados para tu clase.</p>
+          <p><strong>Cómo usar:</strong> Crea materiales didácticos de calidad rápidamente. Selecciona el tipo de material, ingresa un tema, y haz clic en "Generar materiales".</p>
           <input type="text" class="input-box" id="materialTopic" placeholder="Ingresa el tema">
           <select class="input-box" id="materialType">
             <option value="study_guide">Guía de estudio</option>
@@ -398,7 +489,7 @@
     async function generateLessonPlan() {
       let responseBox = document.getElementById("lessonPlanResponse");
       responseBox.innerHTML = "🔄 Generando plan de clase...";
-      
+
       let response = await fetch(backendURL + "/lesson_plan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -415,7 +506,7 @@
     async function generateQuiz() {
       let responseBox = document.getElementById("quizResponse");
       responseBox.innerHTML = "🔄 Generando quiz...";
-      
+
       let response = await fetch(backendURL + "/quiz_creator", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -428,7 +519,7 @@
     async function generateMaterials() {
       let responseBox = document.getElementById("materialsResponse");
       responseBox.innerHTML = "🔄 Generando materiales...";
-      
+
       let response = await fetch(backendURL + "/teaching_materials", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -476,9 +567,11 @@
           console.error("Error al copiar:", err);
         });
     }
-    
-    // Integración de Analytics Placeholder
-    // Insertar script de seguimiento (ej. Google Analytics) aquí.
+
+    // Toggle Mobile Menu
+    function toggleMobileMenu() {
+      mobileMenu.classList.toggle("open");
+    }
   </script>
 </body>
 </html>
