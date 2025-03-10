@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Edvanta empowers educators with innovative AI-powered tools that transform teaching and learning. Discover cutting-edge solutions to advance education worldwide."/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edvanta - Advancing Education with AI</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+
+  <style>
+    /* Basic Reset & Box-Sizing */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    /* Body Styles */
+    body {
+      font-family: 'Lato', sans-serif;
+      color: #212529;
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    /* Header as Banner */
+    header {
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 36px;
+      color: #1565C0; /* Modern Blue from the brand palette */
+      margin: 0;
+    }
+    /* Hero Section */
+    .hero {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px 20px;
+      background: url("hero-bg.png") center center/cover no-repeat;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      max-width: 700px;
+    }
+    .hero-content h2 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+    .hero-content p {
+      font-size: 20px;
+      line-height: 1.5;
+      margin-bottom: 40px;
+    }
+    /* CTA Button */
+    .cta-button {
+      display: inline-block;
+      padding: 15px 30px;
+      font-size: 18px;
+      color: #fff;
+      background-color: #1565C0;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    .cta-button:hover {
+      background-color: #F4C20D;
+    }
+    /* Footer as Contentinfo */
+    footer {
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      background: #F8F9FA;
+      border-top: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <!-- Minimalist Header with Landmark Role -->
+  <header role="banner">
+    <h1>Edvanta</h1>
+  </header>
+
+  <!-- Hero Section with Background & Overlay -->
+  <main class="hero" role="main">
+    <div class="hero-content">
+      <h2>Advancing Education with AI</h2>
+      <p>
+        Edvanta is a groundbreaking platform designed to empower educators with innovative, AI-powered tools that transform teaching and learning. Join us in revolutionizing education worldwide.
+      </p>
+      <a href="tools.html" class="cta-button">Explore Our Tools</a>
+    </div>
+  </main>
+
+  <!-- Minimalist Footer -->
+  <footer role="contentinfo">
+    &copy; 2025 Edvanta. All Rights Reserved.
+  </footer>
+
+  <!-- Deferred Script for Future Enhancements & Analytics Placeholder -->
+  <script defer>
+    // Future performance enhancements or analytics scripts can be added here.
+  </script>
+</body>
+</html>

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Edvanta Tools offers innovative AI-powered solutions for educators. Use our AI Tutor Chat, Lesson Plan Generator, Quiz Creator, and Teaching Materials Generator to enhance your teaching experience."/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edvanta Tools - Advancing Education with AI</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+
+  <style>
+    /* Global Header */
+    .global-header {
+      background-color: #1565C0;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+    .global-header .header-content h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .global-nav {
+      display: flex;
+      gap: 15px;
+    }
+    .nav-link-global {
+      text-decoration: none;
+      color: white;
+      font-size: 16px;
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+    .nav-link-global:hover {
+      color: #F4C20D;
+      text-shadow: 0 0 3px rgba(244, 194, 13, 0.5);
+    }
+    
+    /* Global Footer */
+    .global-footer {
+      background-color: #F8F9FA;
+      color: #212529;
+      padding: 15px 20px;
+      text-align: center;
+      border-top: 1px solid #ccc;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    .footer-nav {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    .footer-link {
+      color: #212529;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+    .footer-link:hover {
+      color: #1565C0;
+    }
+    
+    /* Adjust body for header and footer */
+    body {
+      font-family: 'Lato', sans-serif;
+      background-color: #F8F9FA;
+      color: #212529;
+      margin: 0;
+      padding: 0;
+      padding-top: 70px; /* Space for header */
+      padding-bottom: 50px; /* Space for footer */
+    }
+    
+    /* Main Wrapper */
+    .main-wrapper {
+      display: flex;
+      min-height: calc(100vh - 120px);
+    }
+    
+    /* Sidebar Navigation */
+    .sidebar {
+      width: 250px;
+      background-color: #1565C0;
+      color: white;
+      height: calc(100vh - 70px - 50px);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      position: fixed;
+      top: 70px;
+      bottom: 50px;
+      transition: all 0.3s ease;
+    }
+    .sidebar h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    .nav-link {
+      text-decoration: none;
+      color: white;
+      font-size: 16px;
+      padding: 10px 15px;
+      display: block;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+    .nav-link:hover {
+      background-color: #F4C20D;
+    }
+    .nav-link.active {
+      background-color: #F4C20D;
+      font-weight: bold;
+    }
+    
+    /* Main Content */
+    .main-content {
+      margin-left: 270px;
+      padding: 40px;
+      flex-grow: 1;
+    }
+    .tool-header {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .tool-container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .input-box {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+    .submit-btn {
+      background-color: #F4C20D;
+      color: #212529;
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .submit-btn:hover {
+      background-color: #d9a80c;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    /* Response Container */
+    .response-container {
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .response-header {
+      background: #f1f1f1;
+      padding: 8px 12px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .response-content {
+      padding: 20px;
+      background: #f9f9f9;
+      font-size: 16px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    /* Accessibility: Announce dynamic updates */
+    .response-content[aria-live="polite"] {
+      outline: none;
+    }
+    /* Rich Formatting */
+    .response-content h1, .response-content h2, .response-content h3 {
+      font-weight: bold;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .response-content p {
+      margin-bottom: 10px;
+    }
+    /* Copy Button */
+    .copy-btn {
+      background-color: #F4C20D;
+      border: none;
+      color: #212529;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .copy-btn:hover {
+      background-color: #d9a80c;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: 0;
+        bottom: 0;
+        flex-direction: row;
+        overflow-x: auto;
+      }
+      .sidebar h2 {
+        display: none;
+      }
+      .main-content {
+        margin-left: 0;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Global Header with Landmark -->
+  <header class="global-header" role="banner">
+    <div class="header-content">
+      <h1>Edvanta</h1>
+    </div>
+    <nav class="global-nav" role="navigation" aria-label="Main Navigation">
+      <a href="index.html" class="nav-link-global">Home</a>
+      <a href="#" class="nav-link-global">About</a>
+      <a href="#" class="nav-link-global">Contact</a>
+      <a href="#" class="nav-link-global">Help</a>
+    </nav>
+  </header>
+
+  <!-- Main Wrapper: Sidebar + Main Content -->
+  <div class="main-wrapper">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" role="navigation" aria-label="Tool Navigation">
+      <h2>Edvanta Tools</h2>
+      <a href="#" class="nav-link" id="tutorLink">💬 AI Tutor Chat</a>
+      <a href="#" class="nav-link" id="lessonPlanLink">📚 Lesson Plan Generator</a>
+      <a href="#" class="nav-link" id="quizLink">❓ Quiz Creator</a>
+      <a href="#" class="nav-link" id="materialsLink">📝 Teaching Materials</a>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content" role="main">
+      <h1 class="tool-header">Edvanta Tools</h1>
+      <section class="tool-container">
+        <p>Welcome to Edvanta Tools, where innovative AI-powered solutions empower educators to transform teaching and learning. Select a tool from the left menu to begin.</p>
+      </section>
+    </main>
+  </div>
+
+  <!-- Global Footer -->
+  <footer class="global-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; 2025 Edvanta. All Rights Reserved.</p>
+      <nav class="footer-nav">
+        <a href="#" class="footer-link">FAQ</a>
+        <a href="#" class="footer-link">Terms of Service</a>
+        <a href="#" class="footer-link">Privacy Policy</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Deferred Script with Analytics Placeholder -->
+  <script defer>
+    const backendURL = "https://edu-ai-backend-production.up.railway.app";
+
+    // Function to mark active sidebar link for accessibility feedback
+    function setActiveLink(activeId) {
+      const links = document.querySelectorAll('.sidebar .nav-link');
+      links.forEach(link => {
+        link.classList.toggle('active', link.id === activeId);
+      });
+    }
+
+    window.onload = function() {
+      document.getElementById("tutorLink").addEventListener("click", function(e) { 
+        e.preventDefault();
+        setActiveLink("tutorLink"); 
+        loadTool('tutor'); 
+      });
+      document.getElementById("lessonPlanLink").addEventListener("click", function(e) { 
+        e.preventDefault();
+        setActiveLink("lessonPlanLink"); 
+        loadTool('lesson_plan'); 
+      });
+      document.getElementById("quizLink").addEventListener("click", function(e) { 
+        e.preventDefault();
+        setActiveLink("quizLink"); 
+        loadTool('quiz'); 
+      });
+      document.getElementById("materialsLink").addEventListener("click", function(e) { 
+        e.preventDefault();
+        setActiveLink("materialsLink"); 
+        loadTool('materials'); 
+      });
+    };
+
+    function loadTool(tool) {
+      const content = document.querySelector('.tool-container');
+      const header = document.querySelector('.tool-header');
+
+      if (tool === 'tutor') {
+        header.innerHTML = "AI Tutor Chat";
+        content.innerHTML = `
+          <p><strong>How to Use:</strong> Ask questions and get personalized guidance from our AI-powered tutor. Simply type your question below and click "Get Answer" to start learning.</p>
+          <textarea class="input-box" id="tutorInput" rows="4" placeholder="Type your question here..."></textarea>
+          <button class="submit-btn" onclick="sendTutorRequest()">Get Answer</button>
+          <div class="response-container">
+            <div class="response-header">
+              <button class="copy-btn" onclick="copyResponse('tutorResponse')">Copy</button>
+            </div>
+            <div class="response-content" id="tutorResponse" aria-live="polite">AI Response will appear here...</div>
+          </div>
+        `;
+      } else if (tool === 'lesson_plan') {
+        header.innerHTML = "Lesson Plan Generator";
+        content.innerHTML = `
+          <p><strong>How to Use:</strong> Generate detailed lesson plans quickly. Enter your subject, grade level, and learning goals, then click "Generate Lesson Plan" to receive a customized plan.</p>
+          <input type="text" class="input-box" id="subject" placeholder="Enter Subject">
+          <input type="text" class="input-box" id="gradeLevel" placeholder="Enter Grade Level">
+          <textarea class="input-box" id="learningGoals" rows="3" placeholder="Enter Learning Goals"></textarea>
+          <button class="submit-btn" onclick="generateLessonPlan()">Generate Lesson Plan</button>
+          <div class="response-container">
+            <div class="response-header">
+              <button class="copy-btn" onclick="copyResponse('lessonPlanResponse')">Copy</button>
+            </div>
+            <div class="response-content" id="lessonPlanResponse" aria-live="polite">Lesson plan will appear here...</div>
+          </div>
+        `;
+      } else if (tool === 'quiz') {
+        header.innerHTML = "Quiz Creator";
+        content.innerHTML = `
+          <p><strong>How to Use:</strong> Create engaging quizzes for your class effortlessly. Enter a quiz topic and click "Generate Quiz" to let our AI generate relevant questions and answers.</p>
+          <input type="text" class="input-box" id="quizTopic" placeholder="Enter Quiz Topic">
+          <button class="submit-btn" onclick="generateQuiz()">Generate Quiz</button>
+          <div class="response-container">
+            <div class="response-header">
+              <button class="copy-btn" onclick="copyResponse('quizResponse')">Copy</button>
+            </div>
+            <div class="response-content" id="quizResponse" aria-live="polite">Quiz will appear here...</div>
+          </div>
+        `;
+      } else if (tool === 'materials') {
+        header.innerHTML = "Teaching Materials Generator";
+        content.innerHTML = `
+          <p><strong>How to Use:</strong> Create quality teaching materials quickly. Select your material type, provide a topic, and click "Generate Materials" to get tailored resources for your class.</p>
+          <input type="text" class="input-box" id="materialTopic" placeholder="Enter Topic">
+          <select class="input-box" id="materialType">
+            <option value="study_guide">Study Guide</option>
+            <option value="worksheet">Worksheet</option>
+            <option value="slides">PowerPoint Slides</option>
+          </select>
+          <button class="submit-btn" onclick="generateMaterials()">Generate Materials</button>
+          <div class="response-container">
+            <div class="response-header">
+              <button class="copy-btn" onclick="copyResponse('materialsResponse')">Copy</button>
+            </div>
+            <div class="response-content" id="materialsResponse" aria-live="polite">Teaching materials will appear here...</div>
+          </div>
+        `;
+      }
+    }
+
+    async function generateLessonPlan() {
+      let responseBox = document.getElementById("lessonPlanResponse");
+      responseBox.innerHTML = "🔄 Generating lesson plan...";
+      
+      let response = await fetch(backendURL + "/lesson_plan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subject: document.getElementById("subject").value,
+          grade_level: document.getElementById("gradeLevel").value,
+          learning_goals: document.getElementById("learningGoals").value
+        })
+      });
+      let data = await response.json();
+      responseBox.innerHTML = data.lesson_plan || "❌ Error generating lesson plan.";
+    }
+
+    async function generateQuiz() {
+      let responseBox = document.getElementById("quizResponse");
+      responseBox.innerHTML = "🔄 Generating quiz...";
+      
+      let response = await fetch(backendURL + "/quiz_creator", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic: document.getElementById("quizTopic").value })
+      });
+      let data = await response.json();
+      responseBox.innerHTML = data.quiz || "❌ Error generating quiz.";
+    }
+
+    async function generateMaterials() {
+      let responseBox = document.getElementById("materialsResponse");
+      responseBox.innerHTML = "🔄 Generating materials...";
+      
+      let response = await fetch(backendURL + "/teaching_materials", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          topic: document.getElementById("materialTopic").value,
+          material_type: document.getElementById("materialType").value
+        })
+      });
+      let data = await response.json();
+      responseBox.innerHTML = data.teaching_materials || "❌ Error generating materials.";
+    }
+
+    async function sendTutorRequest() {
+      let input = document.getElementById("tutorInput").value.trim();
+      let responseBox = document.getElementById("tutorResponse");
+
+      if (!input) {
+        responseBox.innerHTML = "❌ Please enter a question before asking the tutor.";
+        return;
+      }
+
+      responseBox.innerHTML = "🔄 Generating response...";
+
+      try {
+        let response = await fetch(backendURL + "/tutor_assistant", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ "question": input })
+        });
+        let data = await response.json();
+        responseBox.innerHTML = data.response || "❌ Error generating response.";
+      } catch (error) {
+        console.error("Tutor Error:", error);
+        responseBox.innerHTML = `❌ Failed to get a response: ${error.message}`;
+      }
+    }
+
+    function copyResponse(responseId) {
+      const textToCopy = document.getElementById(responseId).innerText;
+      navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+          alert("Response copied to clipboard!");
+        })
+        .catch(err => {
+          console.error("Copy error:", err);
+        });
+    }
+
+    // Analytics Integration Placeholder
+    // Insert analytics tracking script here (e.g., Google Analytics)
+  </script>
+</body>
+</html>
