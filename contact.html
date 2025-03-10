@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="description" content="Edvanta empowers educators with innovative AI-powered tools that transform teaching and learning. Join us in revolutionizing education worldwide."/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Edvanta - Advancing Education with AI</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="Contact Edvanta to learn more about our innovative AI-powered educational tools. Reach out to collaborate, request support, or share your ideas." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Edvanta - Advancing Education with AI</title>
   
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
-
+  
   <style>
     :root {
       --edvanta-blue: #1565C0;
@@ -23,11 +23,11 @@
     }
     body {
       font-family: 'Lato', sans-serif;
-      color: var(--text-color);
       background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
-      display: flex;
-      flex-direction: column;
+      color: var(--text-color);
       min-height: 100vh;
+      padding-top: 70px;
+      padding-bottom: 50px;
     }
     .global-header {
       background-color: var(--edvanta-blue);
@@ -42,10 +42,7 @@
       right: 0;
       z-index: 1000;
     }
-    .global-header h1 {
-      margin: 0;
-      font-size: 24px;
-    }
+    .global-header h1 { font-size: 24px; }
     .global-nav {
       display: flex;
       gap: 15px;
@@ -79,16 +76,14 @@
     .hamburger.open span:nth-child(1) {
       transform: rotate(45deg) translate(5px, 5px);
     }
-    .hamburger.open span:nth-child(2) {
-      opacity: 0;
-    }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) {
       transform: rotate(-45deg) translate(5px, -5px);
     }
     .mobile-menu-overlay {
       display: none;
       position: fixed;
-      top: 0;
+      top: 70px;
       left: 0;
       right: 0;
       bottom: 0;
@@ -105,10 +100,7 @@
       transform: translateY(0);
       opacity: 1;
     }
-    .mobile-menu-overlay h2 {
-      color: white;
-      margin-bottom: 20px;
-    }
+    .mobile-menu-overlay h2 { color: white; margin-bottom: 20px; }
     .mobile-nav-link {
       display: block;
       color: white;
@@ -122,56 +114,52 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
-    .hero {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 60px 20px;
-      background: url("hero-bg.png") center center/cover no-repeat;
-      position: relative;
-      margin-top: 70px;
-    }
-    .hero::before {
-      content: "";
-      position: absolute;
-      top:0; left:0; right:0; bottom:0;
-      background: rgba(0,0,0,0.4);
-      z-index: 1;
-    }
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      color: #fff;
-      max-width: 700px;
-    }
-    .hero-content h2 {
-      font-size: 48px;
-      margin-bottom: 20px;
-      font-weight: bold;
-    }
-    .hero-content p {
-      font-size: 20px;
-      line-height: 1.5;
-      margin-bottom: 40px;
-    }
-    .cta-button {
-      display: inline-block;
-      padding: 15px 30px;
-      font-size: 18px;
-      color: #fff;
-      background-color: var(--edvanta-blue);
-      border: none;
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      padding: 30px;
       border-radius: 8px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.3s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    .cta-button:hover {
+    h1 { margin-bottom: 20px; font-size: 32px; }
+    form { display: flex; flex-direction: column; }
+    label {
+      font-weight: bold;
+      margin: 10px 0 5px;
+    }
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    button {
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover { background-color: #d9a80c; }
+    .cta {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .cta a {
+      color: var(--edvanta-blue);
+      text-decoration: none;
+      font-weight: bold;
     }
     .global-footer {
       background-color: var(--bg-color);
@@ -204,59 +192,51 @@
       color: var(--edvanta-blue);
     }
     @media (max-width: 768px) {
-      .global-nav {
-        display: none;
-      }
-      .hamburger {
-        display: flex;
-      }
-      .hero {
-        margin-top: 60px;
-      }
+      .global-nav { display: none; }
+      .hamburger { display: flex; }
     }
   </style>
 </head>
 <body>
   <header class="global-header" role="banner">
     <h1>Edvanta</h1>
-    <!-- Desktop Navigation -->
     <nav class="global-nav" role="navigation" aria-label="Main Navigation">
       <a href="index.html" class="nav-link-global">Home</a>
       <a href="about.html" class="nav-link-global">About</a>
       <a href="contact.html" class="nav-link-global">Contact</a>
       <a href="help.html" class="nav-link-global">Help</a>
-      <a href="index-es.html" class="nav-link-global">ES</a>
+      <a href="contact-es.html" class="nav-link-global">ES</a>
     </nav>
-    <!-- Hamburger Icon (Mobile) -->
     <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
       <span></span>
       <span></span>
       <span></span>
     </div>
   </header>
-
-  <!-- Mobile Menu Overlay -->
   <div class="mobile-menu-overlay" id="mobileMenu">
     <h2>Navigation</h2>
     <a href="index.html" class="mobile-nav-link">Home</a>
     <a href="about.html" class="mobile-nav-link">About</a>
     <a href="contact.html" class="mobile-nav-link">Contact</a>
     <a href="help.html" class="mobile-nav-link">Help</a>
-    <a href="index-es.html" class="mobile-nav-link">ES</a>
+    <a href="contact-es.html" class="mobile-nav-link">ES</a>
   </div>
-
-  <!-- Hero Section -->
-  <main class="hero" role="main">
-    <div class="hero-content">
-      <h2>Advancing Education with AI</h2>
-      <p>
-        Edvanta is a groundbreaking platform designed to empower educators with innovative, AI-powered tools that transform teaching and learning. Join us in revolutionizing education worldwide.
-      </p>
-      <a href="tools.html" class="cta-button">Explore Our Tools</a>
+  <main role="main">
+    <h1>Contact Edvanta</h1>
+    <p>We'd love to hear from you! Whether you want to collaborate, need support, or have suggestions, please fill out the form below and we will get back to you as soon as possible.</p>
+    <form action="send-email.php" method="post" autocomplete="off">
+      <label for="name">Your Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required>
+      <label for="email">Your Email</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      <label for="message">Your Message</label>
+      <textarea id="message" name="message" placeholder="Type your message here..." required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+    <div class="cta">
+      <p>Want to work together? <a href="mailto:caamano.luismiguel@gmail.com">Email us directly</a> (address hidden).</p>
     </div>
   </main>
-
-  <!-- Footer -->
   <footer class="global-footer" role="contentinfo">
     <div class="footer-content">
       <p>&copy; 2025 Edvanta. All Rights Reserved.</p>
@@ -267,7 +247,6 @@
       </nav>
     </div>
   </footer>
-
   <script defer>
     function toggleMobileMenu() {
       const mobileMenu = document.getElementById("mobileMenu");

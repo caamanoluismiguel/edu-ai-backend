@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="description" content="Edvanta empowers educators with innovative AI-powered tools that transform teaching and learning. Join us in revolutionizing education worldwide."/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Edvanta - Advancing Education with AI</title>
-  
-  <!-- Favicon -->
+  <meta charset="UTF-8">
+  <meta name="description" content="Find help and support for Edvanta. Access FAQs, tutorials, troubleshooting guides, and more to get the most out of our AI-powered educational tools.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help & Support - Edvanta</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
-
   <style>
     :root {
       --edvanta-blue: #1565C0;
@@ -16,18 +13,14 @@
       --text-color: #212529;
       --bg-color: #F8F9FA;
     }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Lato', sans-serif;
-      color: var(--text-color);
       background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
-      display: flex;
-      flex-direction: column;
+      color: var(--text-color);
       min-height: 100vh;
+      padding-top: 70px;
+      padding-bottom: 50px;
     }
     .global-header {
       background-color: var(--edvanta-blue);
@@ -37,19 +30,11 @@
       align-items: center;
       justify-content: space-between;
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 1000;
     }
-    .global-header h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-    .global-nav {
-      display: flex;
-      gap: 15px;
-    }
+    .global-header h1 { font-size: 24px; }
+    .global-nav { display: flex; gap: 15px; }
     .nav-link-global {
       text-decoration: none;
       color: white;
@@ -61,37 +46,26 @@
       text-shadow: 0 0 3px rgba(244,194,13,0.5);
     }
     .hamburger {
-      display: none;
-      width: 25px;
-      height: 25px;
-      cursor: pointer;
-      flex-direction: column;
-      justify-content: space-around;
+      display: none; width: 25px; height: 25px;
+      cursor: pointer; flex-direction: column; justify-content: space-around;
       z-index: 1100;
     }
     .hamburger span {
-      display: block;
-      height: 3px;
-      background: white;
+      display: block; height: 3px; background: white;
       border-radius: 3px;
       transition: transform 0.3s ease, opacity 0.3s ease;
     }
     .hamburger.open span:nth-child(1) {
       transform: rotate(45deg) translate(5px, 5px);
     }
-    .hamburger.open span:nth-child(2) {
-      opacity: 0;
-    }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) {
       transform: rotate(-45deg) translate(5px, -5px);
     }
     .mobile-menu-overlay {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 70px; left: 0; right: 0; bottom: 0;
       background-color: var(--edvanta-blue);
       z-index: 1000;
       padding: 20px;
@@ -105,10 +79,7 @@
       transform: translateY(0);
       opacity: 1;
     }
-    .mobile-menu-overlay h2 {
-      color: white;
-      margin-bottom: 20px;
-    }
+    .mobile-menu-overlay h2 { color: white; margin-bottom: 20px; }
     .mobile-nav-link {
       display: block;
       color: white;
@@ -122,57 +93,20 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
-    .hero {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 60px 20px;
-      background: url("hero-bg.png") center center/cover no-repeat;
-      position: relative;
-      margin-top: 70px;
-    }
-    .hero::before {
-      content: "";
-      position: absolute;
-      top:0; left:0; right:0; bottom:0;
-      background: rgba(0,0,0,0.4);
-      z-index: 1;
-    }
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      color: #fff;
-      max-width: 700px;
-    }
-    .hero-content h2 {
-      font-size: 48px;
-      margin-bottom: 20px;
-      font-weight: bold;
-    }
-    .hero-content p {
-      font-size: 20px;
-      line-height: 1.5;
-      margin-bottom: 40px;
-    }
-    .cta-button {
-      display: inline-block;
-      padding: 15px 30px;
-      font-size: 18px;
-      color: #fff;
-      background-color: var(--edvanta-blue);
-      border: none;
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      padding: 30px;
       border-radius: 8px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.3s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    .cta-button:hover {
-      background-color: var(--edvanta-yellow);
-      color: var(--text-color);
-    }
+    h1 { margin-bottom: 20px; font-size: 32px; }
+    h2 { margin-top: 20px; font-size: 28px; }
+    p { margin-bottom: 15px; line-height: 1.6; }
+    .faq-section { margin-top: 20px; }
+    .faq-question { font-weight: bold; margin-bottom: 5px; }
+    .faq-answer { margin-bottom: 15px; }
     .global-footer {
       background-color: var(--bg-color);
       color: var(--text-color);
@@ -180,14 +114,9 @@
       text-align: center;
       border-top: 1px solid #ccc;
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
     }
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+    .footer-content { max-width: 1200px; margin: 0 auto; }
     .footer-nav {
       margin-top: 10px;
       display: flex;
@@ -200,63 +129,63 @@
       font-size: 14px;
       transition: color 0.3s;
     }
-    .footer-link:hover {
-      color: var(--edvanta-blue);
-    }
+    .footer-link:hover { color: var(--edvanta-blue); }
     @media (max-width: 768px) {
-      .global-nav {
-        display: none;
-      }
-      .hamburger {
-        display: flex;
-      }
-      .hero {
-        margin-top: 60px;
-      }
+      .global-nav { display: none; }
+      .hamburger { display: flex; }
     }
   </style>
 </head>
 <body>
   <header class="global-header" role="banner">
     <h1>Edvanta</h1>
-    <!-- Desktop Navigation -->
     <nav class="global-nav" role="navigation" aria-label="Main Navigation">
       <a href="index.html" class="nav-link-global">Home</a>
       <a href="about.html" class="nav-link-global">About</a>
       <a href="contact.html" class="nav-link-global">Contact</a>
       <a href="help.html" class="nav-link-global">Help</a>
-      <a href="index-es.html" class="nav-link-global">ES</a>
+      <a href="help-es.html" class="nav-link-global">ES</a>
     </nav>
-    <!-- Hamburger Icon (Mobile) -->
     <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
       <span></span>
       <span></span>
       <span></span>
     </div>
   </header>
-
-  <!-- Mobile Menu Overlay -->
   <div class="mobile-menu-overlay" id="mobileMenu">
     <h2>Navigation</h2>
     <a href="index.html" class="mobile-nav-link">Home</a>
     <a href="about.html" class="mobile-nav-link">About</a>
     <a href="contact.html" class="mobile-nav-link">Contact</a>
     <a href="help.html" class="mobile-nav-link">Help</a>
-    <a href="index-es.html" class="mobile-nav-link">ES</a>
+    <a href="help-es.html" class="mobile-nav-link">ES</a>
   </div>
-
-  <!-- Hero Section -->
-  <main class="hero" role="main">
-    <div class="hero-content">
-      <h2>Advancing Education with AI</h2>
-      <p>
-        Edvanta is a groundbreaking platform designed to empower educators with innovative, AI-powered tools that transform teaching and learning. Join us in revolutionizing education worldwide.
-      </p>
-      <a href="tools.html" class="cta-button">Explore Our Tools</a>
-    </div>
+  <main role="main">
+    <h1>Help & Support</h1>
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq">
+        <p class="faq-question">What is Edvanta?</p>
+        <p class="faq-answer">Edvanta is an AI-powered platform designed to empower educators with innovative tools that transform teaching and learning.</p>
+      </div>
+      <div class="faq">
+        <p class="faq-question">How do I use the AI Tutor Chat?</p>
+        <p class="faq-answer">Select the AI Tutor Chat tool, type your question, and click "Get Answer" to receive personalized guidance.</p>
+      </div>
+      <div class="faq">
+        <p class="faq-question">What should I do if I encounter an error?</p>
+        <p class="faq-answer">Check our troubleshooting section or visit our Contact page to reach out for support.</p>
+      </div>
+    </section>
+    <section class="faq-section">
+      <h2>Tutorials & Guides</h2>
+      <p>Explore our tutorials and guides that walk you through each feature of Edvanta—from using the AI Tutor Chat to generating lesson plans and quizzes.</p>
+    </section>
+    <section class="faq-section">
+      <h2>Need More Help?</h2>
+      <p>If you can’t find the answer you’re looking for, please visit our Contact page to get in touch with our support team.</p>
+    </section>
   </main>
-
-  <!-- Footer -->
   <footer class="global-footer" role="contentinfo">
     <div class="footer-content">
       <p>&copy; 2025 Edvanta. All Rights Reserved.</p>
@@ -267,7 +196,6 @@
       </nav>
     </div>
   </footer>
-
   <script defer>
     function toggleMobileMenu() {
       const mobileMenu = document.getElementById("mobileMenu");

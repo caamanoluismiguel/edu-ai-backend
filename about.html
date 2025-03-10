@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="description" content="Edvanta empowers educators with innovative AI-powered tools that transform teaching and learning. Join us in revolutionizing education worldwide."/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Edvanta - Advancing Education with AI</title>
-  
-  <!-- Favicon -->
+  <meta charset="UTF-8">
+  <meta name="description" content="Learn about Edvanta—our story, mission, and vision. Discover how we empower educators with innovative AI-powered tools to transform teaching and learning.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Edvanta - Advancing Education with AI</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
-
   <style>
     :root {
       --edvanta-blue: #1565C0;
@@ -23,11 +20,11 @@
     }
     body {
       font-family: 'Lato', sans-serif;
-      color: var(--text-color);
       background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
-      display: flex;
-      flex-direction: column;
+      color: var(--text-color);
       min-height: 100vh;
+      padding-top: 70px;
+      padding-bottom: 50px;
     }
     .global-header {
       background-color: var(--edvanta-blue);
@@ -42,10 +39,7 @@
       right: 0;
       z-index: 1000;
     }
-    .global-header h1 {
-      margin: 0;
-      font-size: 24px;
-    }
+    .global-header h1 { font-size: 24px; }
     .global-nav {
       display: flex;
       gap: 15px;
@@ -88,7 +82,7 @@
     .mobile-menu-overlay {
       display: none;
       position: fixed;
-      top: 0;
+      top: 70px;
       left: 0;
       right: 0;
       bottom: 0;
@@ -122,56 +116,28 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
-    .hero {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 60px 20px;
-      background: url("hero-bg.png") center center/cover no-repeat;
-      position: relative;
-      margin-top: 70px;
-    }
-    .hero::before {
-      content: "";
-      position: absolute;
-      top:0; left:0; right:0; bottom:0;
-      background: rgba(0,0,0,0.4);
-      z-index: 1;
-    }
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      color: #fff;
-      max-width: 700px;
-    }
-    .hero-content h2 {
-      font-size: 48px;
-      margin-bottom: 20px;
-      font-weight: bold;
-    }
-    .hero-content p {
-      font-size: 20px;
-      line-height: 1.5;
-      margin-bottom: 40px;
-    }
-    .cta-button {
-      display: inline-block;
-      padding: 15px 30px;
-      font-size: 18px;
-      color: #fff;
-      background-color: var(--edvanta-blue);
-      border: none;
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      padding: 30px;
       border-radius: 8px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.3s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    .cta-button:hover {
-      background-color: var(--edvanta-yellow);
-      color: var(--text-color);
+    h1 {
+      margin-bottom: 20px;
+      font-size: 32px;
+    }
+    h2 {
+      margin-top: 20px;
+      font-size: 28px;
+    }
+    p {
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+    section {
+      margin-bottom: 20px;
     }
     .global-footer {
       background-color: var(--bg-color);
@@ -204,59 +170,62 @@
       color: var(--edvanta-blue);
     }
     @media (max-width: 768px) {
-      .global-nav {
-        display: none;
-      }
-      .hamburger {
-        display: flex;
-      }
-      .hero {
-        margin-top: 60px;
-      }
+      .global-nav { display: none; }
+      .hamburger { display: flex; }
     }
   </style>
 </head>
 <body>
   <header class="global-header" role="banner">
     <h1>Edvanta</h1>
-    <!-- Desktop Navigation -->
     <nav class="global-nav" role="navigation" aria-label="Main Navigation">
       <a href="index.html" class="nav-link-global">Home</a>
       <a href="about.html" class="nav-link-global">About</a>
       <a href="contact.html" class="nav-link-global">Contact</a>
       <a href="help.html" class="nav-link-global">Help</a>
-      <a href="index-es.html" class="nav-link-global">ES</a>
+      <a href="about-es.html" class="nav-link-global">ES</a>
     </nav>
-    <!-- Hamburger Icon (Mobile) -->
-    <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+    <div class="hamburger" onclick="toggleMobileMenu()" id="hamburger">
       <span></span>
       <span></span>
       <span></span>
     </div>
   </header>
 
-  <!-- Mobile Menu Overlay -->
   <div class="mobile-menu-overlay" id="mobileMenu">
     <h2>Navigation</h2>
     <a href="index.html" class="mobile-nav-link">Home</a>
     <a href="about.html" class="mobile-nav-link">About</a>
     <a href="contact.html" class="mobile-nav-link">Contact</a>
     <a href="help.html" class="mobile-nav-link">Help</a>
-    <a href="index-es.html" class="mobile-nav-link">ES</a>
+    <a href="about-es.html" class="mobile-nav-link">ES</a>
   </div>
 
-  <!-- Hero Section -->
-  <main class="hero" role="main">
-    <div class="hero-content">
-      <h2>Advancing Education with AI</h2>
+  <main role="main">
+    <h1>About Edvanta</h1>
+    <section>
+      <h2>Our Story</h2>
       <p>
-        Edvanta is a groundbreaking platform designed to empower educators with innovative, AI-powered tools that transform teaching and learning. Join us in revolutionizing education worldwide.
+        With over 15 years of experience in education, our founder has worked alongside hundreds of teachers and students, witnessing firsthand the challenges of effective knowledge transfer. We discovered that success in the classroom isn’t solely about subject mastery—it’s about engaging students through clear communication and innovative teaching tools. This insight inspired the creation of Edvanta.
       </p>
-      <a href="tools.html" class="cta-button">Explore Our Tools</a>
-    </div>
+      <p>
+        Edvanta was born from a passion to bridge the gap between traditional teaching and modern technology. We believe that when teachers are empowered with the right tools, they can truly transform learning experiences.
+      </p>
+    </section>
+    <section>
+      <h2>Our Mission</h2>
+      <p>
+        Our mission is to empower educators to do more and do better. Edvanta aims to help teachers embrace AI as a powerful ally, turning challenges into opportunities for growth. We are committed to making our platform an essential resource in every classroom.
+      </p>
+    </section>
+    <section>
+      <h2>Our Vision</h2>
+      <p>
+        We envision a future where every classroom is a hub of innovation and creativity, supported by advanced AI tools that elevate the art of teaching. Edvanta is dedicated to building a community of empowered educators who lead the way toward a brighter educational landscape.
+      </p>
+    </section>
   </main>
 
-  <!-- Footer -->
   <footer class="global-footer" role="contentinfo">
     <div class="footer-content">
       <p>&copy; 2025 Edvanta. All Rights Reserved.</p>
