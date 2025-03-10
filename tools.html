@@ -93,6 +93,28 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
+    /* Added Tools Section for Mobile Navigation */
+    .mobile-tools-section {
+      margin-top: 15px;
+    }
+    .mobile-tools-section h2 {
+      color: white;
+      font-size: 20px;
+      margin: 15px 0 10px;
+    }
+    .mobile-tools-link {
+      display: block;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      transition: background 0.3s;
+    }
+    .mobile-tools-link:hover {
+      background-color: var(--edvanta-yellow);
+      color: var(--text-color);
+    }
     .sidebar {
       width: 250px;
       background-color: var(--edvanta-blue);
@@ -126,10 +148,7 @@
       color: var(--text-color);
       font-weight: bold;
     }
-    .main-wrapper {
-      display: flex;
-      min-height: calc(100vh - 120px);
-    }
+    .main-wrapper { display: flex; min-height: calc(100vh - 120px); }
     .main-content {
       margin-left: 270px;
       padding: 40px;
@@ -233,10 +252,9 @@
   </style>
 </head>
 <body>
+  <!-- Global Header -->
   <header class="global-header" role="banner">
-    <div class="header-content">
-      <h1>Edvanta</h1>
-    </div>
+    <h1>Edvanta</h1>
     <nav class="global-nav" role="navigation" aria-label="Main Navigation">
       <a href="index.html" class="nav-link-global">Home</a>
       <a href="about.html" class="nav-link-global">About</a>
@@ -250,6 +268,8 @@
       <span></span>
     </div>
   </header>
+
+  <!-- Mobile Menu Overlay with Global & Tools Links -->
   <div class="mobile-menu-overlay" id="mobileMenu">
     <h2>Navigation</h2>
     <a href="index.html" class="mobile-nav-link">Home</a>
@@ -257,16 +277,26 @@
     <a href="contact.html" class="mobile-nav-link">Contact</a>
     <a href="help.html" class="mobile-nav-link">Help</a>
     <a href="tools-es.html" class="mobile-nav-link">ES</a>
+    <hr style="border:none; border-top:1px solid rgba(255,255,255,0.2); margin:15px 0;">
+    <div class="mobile-tools-section">
+      <h2>Tools</h2>
+      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('tutorLink'); loadTool('tutor'); toggleMobileMenu();">💬 AI Tutor Chat</a>
+      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('lessonPlanLink'); loadTool('lesson_plan'); toggleMobileMenu();">📚 Lesson Plan Generator</a>
+      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('quizLink'); loadTool('quiz'); toggleMobileMenu();">❓ Quiz Creator</a>
+      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('materialsLink'); loadTool('materials'); toggleMobileMenu();">📝 Teaching Materials Generator</a>
+    </div>
   </div>
+
   <!-- Sidebar for Desktop -->
   <aside class="sidebar" role="navigation" aria-label="Tool Navigation">
     <h2>Edvanta Tools</h2>
-    <a href="#" class="nav-link active" id="tutorLink">💬 AI Tutor Chat</a>
+    <a href="#" class="nav-link" id="tutorLink">💬 AI Tutor Chat</a>
     <a href="#" class="nav-link" id="lessonPlanLink">📚 Lesson Plan Generator</a>
     <a href="#" class="nav-link" id="quizLink">❓ Quiz Creator</a>
-    <a href="#" class="nav-link" id="materialsLink">📝 Teaching Materials</a>
+    <a href="#" class="nav-link" id="materialsLink">📝 Teaching Materials Generator</a>
   </aside>
-  <!-- Main Content -->
+
+  <!-- Main Wrapper -->
   <div class="main-wrapper">
     <main class="main-content" role="main">
       <h1 class="tool-header">Edvanta Tools</h1>
@@ -275,6 +305,8 @@
       </section>
     </main>
   </div>
+
+  <!-- Global Footer -->
   <footer class="global-footer" role="contentinfo">
     <div class="footer-content">
       <p>&copy; 2025 Edvanta. All Rights Reserved.</p>
@@ -285,6 +317,7 @@
       </nav>
     </div>
   </footer>
+
   <script defer>
     const mobileMenu = document.getElementById("mobileMenu");
     const hamburger = document.getElementById("hamburger");
@@ -326,7 +359,7 @@
       if (tool === 'tutor') {
         header.innerHTML = "AI Tutor Chat";
         content.innerHTML = `
-          <p><strong>How to Use:</strong> Ask questions and get personalized guidance from our AI-powered tutor. Type your question below and click "Get Answer".</p>
+          <p><strong>How to Use:</strong> Ask questions and receive personalized guidance from our AI-powered tutor. Type your question below and click "Get Answer".</p>
           <textarea class="input-box" id="tutorInput" rows="4" placeholder="Type your question here..."></textarea>
           <button class="submit-btn" onclick="sendTutorRequest()">Get Answer</button>
           <div class="response-container">
@@ -367,7 +400,7 @@
       } else if (tool === 'materials') {
         header.innerHTML = "Teaching Materials Generator";
         content.innerHTML = `
-          <p><strong>How to Use:</strong> Create quality teaching materials quickly. Select your material type, provide a topic, and click "Generate Materials".</p>
+          <p><strong>How to Use:</strong> Create quality teaching materials quickly. Select the material type, enter a topic, and click "Generate Materials".</p>
           <input type="text" class="input-box" id="materialTopic" placeholder="Enter Topic">
           <select class="input-box" id="materialType">
             <option value="study_guide">Study Guide</option>
@@ -442,7 +475,7 @@
         responseBox.innerHTML = data.response || "❌ Error generating response.";
       } catch (error) {
         console.error("Tutor Error:", error);
-        responseBox.innerHTML = `❌ Failed to get a response: ${error.message}`;
+        responseBox.innerHTML = `❌ Error: ${error.message}`;
       }
     }
     function copyResponse(responseId) {

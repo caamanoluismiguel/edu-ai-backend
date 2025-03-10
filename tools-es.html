@@ -93,6 +93,28 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
+    /* Added Tools Section for Mobile Navigation */
+    .mobile-tools-section {
+      margin-top: 15px;
+    }
+    .mobile-tools-section h2 {
+      color: white;
+      font-size: 20px;
+      margin: 15px 0 10px;
+    }
+    .mobile-tools-link {
+      display: block;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      transition: background 0.3s;
+    }
+    .mobile-tools-link:hover {
+      background-color: var(--edvanta-yellow);
+      color: var(--text-color);
+    }
     .sidebar {
       width: 250px;
       background-color: var(--edvanta-blue);
@@ -230,6 +252,7 @@
   </style>
 </head>
 <body>
+  <!-- Global Header -->
   <header class="global-header" role="banner">
     <h1>Edvanta</h1>
     <nav class="global-nav" role="navigation" aria-label="Navegación Principal">
@@ -245,6 +268,8 @@
       <span></span>
     </div>
   </header>
+
+  <!-- Mobile Menu Overlay with Global & Tools Links -->
   <div class="mobile-menu-overlay" id="mobileMenu">
     <h2>Navegación</h2>
     <a href="index-es.html" class="mobile-nav-link">Inicio</a>
@@ -252,8 +277,17 @@
     <a href="contact-es.html" class="mobile-nav-link">Contacto</a>
     <a href="help-es.html" class="mobile-nav-link">Ayuda</a>
     <a href="tools.html" class="mobile-nav-link">EN</a>
+    <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.2); margin:15px 0;">
+    <div class="mobile-tools-section">
+      <h2>Herramientas</h2>
+      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('tutorLink'); loadTool('tutor'); toggleMobileMenu();">💬 Chat Tutor AI</a>
+      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('lessonPlanLink'); loadTool('lesson_plan'); toggleMobileMenu();">📚 Generador de Planes de Clase</a>
+      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('quizLink'); loadTool('quiz'); toggleMobileMenu();">❓ Creador de Quiz</a>
+      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('materialsLink'); loadTool('materials'); toggleMobileMenu();">📝 Generador de Materiales</a>
+    </div>
   </div>
-  <!-- Sidebar (Desktop) -->
+
+  <!-- Sidebar for Desktop -->
   <aside class="sidebar" role="navigation" aria-label="Navegación de Herramientas">
     <h2>Herramientas Edvanta</h2>
     <a href="#" class="nav-link" id="tutorLink">💬 Chat Tutor AI</a>
@@ -261,6 +295,7 @@
     <a href="#" class="nav-link" id="quizLink">❓ Creador de Quiz</a>
     <a href="#" class="nav-link" id="materialsLink">📝 Generador de Materiales</a>
   </aside>
+
   <!-- Main Wrapper -->
   <div class="main-wrapper">
     <main class="main-content" role="main">
@@ -270,6 +305,8 @@
       </section>
     </main>
   </div>
+
+  <!-- Global Footer -->
   <footer class="global-footer" role="contentinfo">
     <div class="footer-content">
       <p>&copy; 2025 Edvanta. Todos los derechos reservados.</p>
@@ -280,6 +317,7 @@
       </nav>
     </div>
   </footer>
+
   <script defer>
     const mobileMenu = document.getElementById("mobileMenu");
     const hamburger = document.getElementById("hamburger");
