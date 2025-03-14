@@ -79,37 +79,17 @@
       transform: translateY(0);
       opacity: 1;
     }
-    .mobile-menu-overlay h2 {
-      color: white;
-      margin-bottom: 10px;
-      font-size: 20px;
-    }
+    .mobile-menu-overlay h2 { color: white; margin-bottom: 20px; }
     .mobile-nav-link {
       display: block;
       color: white;
       text-decoration: none;
       font-size: 16px;
-      padding: 10px 0;
+      padding: 15px 0;
       border-bottom: 1px solid rgba(255,255,255,0.2);
       transition: background 0.3s;
     }
     .mobile-nav-link:hover {
-      background-color: var(--edvanta-yellow);
-      color: var(--text-color);
-    }
-    .mobile-tools-section {
-      margin-top: 15px;
-    }
-    .mobile-tools-link {
-      display: block;
-      color: white;
-      text-decoration: none;
-      font-size: 16px;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      transition: background 0.3s;
-    }
-    .mobile-tools-link:hover {
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
@@ -282,6 +262,7 @@
     <a href="contact.html" class="mobile-nav-link">Contact</a>
     <a href="help.html" class="mobile-nav-link">Help</a>
     <a href="tools-es.html" class="mobile-nav-link">ES</a>
+    <hr style="border:none; border-top:1px solid rgba(255,255,255,0.2); margin:15px 0;">
     <div class="mobile-tools-section">
       <h2>Tools</h2>
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('tutorLink'); loadTool('tutor'); toggleMobileMenu();">💬 AI Tutor Chat</a>
@@ -292,7 +273,7 @@
     </div>
   </div>
 
-  <!-- Sidebar for Desktop -->
+  <!-- Sidebar -->
   <aside class="sidebar" role="navigation" aria-label="Tool Navigation">
     <h2>Edvanta Tools</h2>
     <a href="#" class="nav-link" id="tutorLink">💬 AI Tutor Chat</a>
@@ -302,7 +283,7 @@
     <a href="#" class="nav-link" id="imageLink">🖼️ Image Generator</a>
   </aside>
 
-  <!-- Main Wrapper -->
+  <!-- Main Content -->
   <div class="main-wrapper">
     <main class="main-content" role="main">
       <h1 class="tool-header">Edvanta Tools</h1>
@@ -325,7 +306,6 @@
   </footer>
 
   <script defer>
-    // Re-attach setActiveLink to window for global access
     window.setActiveLink = function(activeId) {
       const links = document.querySelectorAll('.sidebar .nav-link');
       links.forEach(link => {
@@ -356,12 +336,83 @@
         content.innerHTML = storedToolOutputs[tool];
         return;
       }
-
-      // Tools: tutor, lesson_plan, quiz, materials, image
-      // (Same code from your existing version, omitted for brevity in this snippet)
-      // ...
-      // ...
-      // Ensure you keep the same tool loading logic as before.
+      if (tool === 'tutor') {
+        header.innerHTML = "AI Tutor Chat";
+        content.innerHTML = `
+          <p><strong>How to Use:</strong> Ask a question and receive personalized guidance from our AI-powered tutor. Type your question below and click "Get Answer".</p>
+          <textarea class="input-box" id="tutorInput" rows="4" placeholder="Type your question here..."></textarea>
+          <button class="submit-btn" onclick="sendTutorRequest()">Get Answer</button>
+          <div class="response-container">
+            <div class="response-header">
+              <button class="copy-btn" onclick="copyResponse('tutorResponse')">Copy</button>
+              <button class="expand-btn" id="tutorExpand" onclick="expandContent('tutorResponse', 'tutor')" disabled>Expand Content</button>
+            </div>
+            <div class="response-content" id="tutorResponse" aria-live="polite">The tutor's response will appear here...</div>
+          </div>
+        `;
+      } else if (tool === 'lesson_plan') {
+        header.innerHTML = "Lesson Plan Generator";
+        content.innerHTML = `
+          <p><strong>How to Use:</strong> Generate detailed lesson plans quickly. Enter your subject, grade level, and learning goals, then click "Generate Lesson Plan".</p>
+          <input type="text" class="input-box" id="subject" placeholder="Enter Subject">
+          <input type="text" class="input-box" id="gradeLevel" placeholder="Enter Grade Level">
+          <textarea class="input-box" id="learningGoals" rows="3" placeholder="Enter Learning Goals"></textarea>
+          <button class="submit-btn" onclick="generateLessonPlan()">Generate Lesson Plan</button>
+          <div class="response-container">
+            <div class="response-header">
+              <button class="copy-btn" onclick="copyResponse('lessonPlanResponse')">Copy</button>
+              <button class="expand-btn" id="lessonPlanExpand" onclick="expandContent('lessonPlanResponse', 'lesson_plan')" disabled>Expand Content</button>
+            </div>
+            <div class="response-content" id="lessonPlanResponse" aria-live="polite">The lesson plan will appear here...</div>
+          </div>
+        `;
+      } else if (tool === 'quiz') {
+        header.innerHTML = "Quiz Creator";
+        content.innerHTML = `
+          <p><strong>How to Use:</strong> Create engaging quizzes effortlessly. Enter a quiz topic and click "Generate Quiz" to have our AI generate relevant questions and answers.</p>
+          <input type="text" class="input-box" id="quizTopic" placeholder="Enter Quiz Topic">
+          <button class="submit-btn" onclick="generateQuiz()">Generate Quiz</button>
+          <div class="response-container">
+            <div class="response-header">
+              <button class="copy-btn" onclick="copyResponse('quizResponse')">Copy</button>
+            </div>
+            <div class="response-content" id="quizResponse" aria-live="polite">The quiz will appear here...</div>
+          </div>
+        `;
+      } else if (tool === 'materials') {
+        header.innerHTML = "Teaching Materials Generator";
+        content.innerHTML = `
+          <p><strong>How to Use:</strong> Create quality teaching materials quickly. Select the material type, enter a topic, and click "Generate Materials".</p>
+          <input type="text" class="input-box" id="materialTopic" placeholder="Enter Topic">
+          <select class="input-box" id="materialType">
+            <option value="study_guide">Study Guide</option>
+            <option value="worksheet">Worksheet</option>
+            <option value="slides">PowerPoint Slides</option>
+          </select>
+          <button class="submit-btn" onclick="generateMaterials()">Generate Materials</button>
+          <div class="response-container">
+            <div class="response-header">
+              <button class="copy-btn" onclick="copyResponse('materialsResponse')">Copy</button>
+              <button class="expand-btn" id="materialsExpand" onclick="expandContent('materialsResponse', 'materials')" disabled>Expand Content</button>
+            </div>
+            <div class="response-content" id="materialsResponse" aria-live="polite">The teaching materials will appear here...</div>
+          </div>
+        `;
+      } else if (tool === 'image') {
+        header.innerHTML = "Image Generator";
+        content.innerHTML = `
+          <p><strong>How to Use:</strong> Enter a detailed prompt to generate a high-quality educational image. For example: "Ultra-detailed, high-resolution illustration of the water cycle for elementary students, with vivid colors and no text overlay." Then click "Generate Image".</p>
+          <input type="text" class="input-box" id="imgPrompt" style="width:100%; font-size:16px; padding:12px;" placeholder="Enter your detailed image prompt here...">
+          <button class="submit-btn" onclick="generateImage()">Generate Image</button>
+          <div class="response-container">
+            <div class="response-header">
+              <button class="copy-btn" onclick="copyResponse('imageResponse')">Copy</button>
+              <button class="download-btn" onclick="downloadImage('imageResponse')">Download</button>
+            </div>
+            <div class="response-content" id="imageResponse" aria-live="polite">The generated image will appear here...</div>
+          </div>
+        `;
+      }
     }
 
     function getHeaderForTool(tool) {
@@ -373,8 +424,156 @@
       return "Edvanta Tools";
     }
 
-    // Keep the rest of your tool logic (generateLessonPlan, generateQuiz, etc.)
-    // exactly as it was, so the user experience remains the same.
+    function enableExpandButton(responseId, buttonId) {
+      const responseContent = document.getElementById(responseId).innerText;
+      const btn = document.getElementById(buttonId);
+      if (responseContent && responseContent.trim() !== "" && btn) {
+        btn.disabled = false;
+      }
+    }
+
+    async function generateLessonPlan() {
+      let responseBox = document.getElementById("lessonPlanResponse");
+      responseBox.innerHTML = "🔄 Generating lesson plan...";
+      let response = await fetch("https://edu-ai-backend-production.up.railway.app/lesson_plan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subject: document.getElementById("subject").value,
+          grade_level: document.getElementById("gradeLevel").value,
+          learning_goals: document.getElementById("learningGoals").value
+        })
+      });
+      let data = await response.json();
+      responseBox.innerHTML = data.lesson_plan || "❌ Error generating lesson plan.";
+      enableExpandButton("lessonPlanResponse", "lessonPlanExpand");
+    }
+
+    async function generateQuiz() {
+      let responseBox = document.getElementById("quizResponse");
+      responseBox.innerHTML = "🔄 Generating quiz...";
+      let response = await fetch("https://edu-ai-backend-production.up.railway.app/quiz_creator", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic: document.getElementById("quizTopic").value })
+      });
+      let data = await response.json();
+      responseBox.innerHTML = data.quiz || "❌ Error generating quiz.";
+    }
+
+    async function generateMaterials() {
+      let responseBox = document.getElementById("materialsResponse");
+      responseBox.innerHTML = "🔄 Generating materials...";
+      let response = await fetch("https://edu-ai-backend-production.up.railway.app/teaching_materials", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          topic: document.getElementById("materialTopic").value,
+          material_type: document.getElementById("materialType").value
+        })
+      });
+      let data = await response.json();
+      responseBox.innerHTML = data.teaching_materials || "❌ Error generating materials.";
+      enableExpandButton("materialsResponse", "materialsExpand");
+    }
+
+    async function sendTutorRequest() {
+      let input = document.getElementById("tutorInput").value.trim();
+      let responseBox = document.getElementById("tutorResponse");
+      if (!input) {
+        responseBox.innerHTML = "❌ Please enter a question before asking the tutor.";
+        return;
+      }
+      responseBox.innerHTML = "🔄 Generating response...";
+      try {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/tutor_assistant", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: input })
+        });
+        let data = await response.json();
+        responseBox.innerHTML = data.response || "❌ Error generating response.";
+        enableExpandButton("tutorResponse", "tutorExpand");
+      } catch (error) {
+        console.error("Tutor Error:", error);
+        responseBox.innerHTML = `❌ Error: ${error.message}`;
+      }
+    }
+
+    async function generateImage() {
+      const prompt = document.getElementById("imgPrompt").value.trim();
+      const responseBox = document.getElementById("imageResponse");
+      if (!prompt) {
+        responseBox.innerHTML = "<p style='color:red;'>Please enter a prompt.</p>";
+        return;
+      }
+      responseBox.innerHTML = "🔄 Generating image, please wait...";
+      try {
+        const response = await fetch("https://edu-ai-backend-production.up.railway.app/image_generator", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: prompt })
+        });
+        const data = await response.json();
+        if (data.image_url) {
+          responseBox.innerHTML = `<img src="${data.image_url}" alt="Generated Educational Image"><br><br><small>Image generated based on your prompt.</small>`;
+        } else {
+          responseBox.innerHTML = `<p style='color:red;'>Error: ${data.error}</p>`;
+        }
+      } catch (error) {
+        responseBox.innerHTML = `<p style='color:red;'>Error: ${error.message}</p>`;
+      }
+    }
+
+    function downloadImage(responseId) {
+      const responseContainer = document.getElementById(responseId);
+      const imgElem = responseContainer.querySelector("img");
+      if (imgElem && imgElem.src) {
+        const link = document.createElement("a");
+        link.href = imgElem.src;
+        link.download = "generated-image.png";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        alert("No image available to download.");
+      }
+    }
+
+    function copyResponse(responseId) {
+      const textToCopy = document.getElementById(responseId).innerText;
+      navigator.clipboard.writeText(textToCopy)
+        .then(() => { alert("Response copied to clipboard!"); })
+        .catch(err => { console.error("Copy error:", err); });
+    }
+
+    window.onload = function() {
+      document.getElementById("tutorLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("tutorLink");
+        loadTool('tutor');
+      });
+      document.getElementById("lessonPlanLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("lessonPlanLink");
+        loadTool('lesson_plan');
+      });
+      document.getElementById("quizLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("quizLink");
+        loadTool('quiz');
+      });
+      document.getElementById("materialsLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("materialsLink");
+        loadTool('materials');
+      });
+      document.getElementById("imageLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("imageLink");
+        loadTool('image');
+      });
+    };
   </script>
 </body>
 </html>
