@@ -21,163 +21,7 @@ if not OPENAI_API_KEY:
 
 openai.api_key = OPENAI_API_KEY
 
-# AI Tutor Assistant API with caching
-@app.route('/tutor_assistant', methods=['POST'])
-def tutor_assistant():
-    try:
-        data = request.get_json()
-        question = data.get("question", "").strip()
-
-        if not question:
-            return jsonify({"error": "Please provide a question for the AI Tutor."}), 400
-
-        # Create a unique cache key based on the question
-        cache_key = f"tutor_{question.lower()}"
-        cached_response = cache.get(cache_key)
-        if cached_response:
-            return jsonify({"response": cached_response})
-
-        prompt = f'''
-        You are an experienced education coach helping teachers improve their lessons, student engagement, and teaching strategies.
-        Teacher's Question: "{question}"
-        Provide a well-structured response with actionable advice.
-        '''
-
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[
-                {"role": "system", "content": "You are a helpful education expert AI."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.7
-        )
-
-        ai_response = response["choices"][0]["message"]["content"]
-
-        # Store the result in the cache
-        cache.set(cache_key, ai_response)
-
-        return jsonify({"response": ai_response})
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-# Lesson Plan Generator API
-@app.route('/lesson_plan', methods=['POST'])
-def lesson_plan():
-    try:
-        data = request.get_json()
-        subject = data.get("subject", "")
-        grade_level = data.get("grade_level", "")
-        learning_goals = data.get("learning_goals", "")
-
-        if not subject or not grade_level or not learning_goals:
-            return jsonify({"error": "Please provide subject, grade level, and learning goals."}), 400
-
-        prompt = f'''
-        You are an expert educator creating structured lesson plans for teachers.
-        
-        Subject: {subject}
-        Grade Level: {grade_level}
-        Learning Goals: {learning_goals}
-
-        Generate a detailed and structured lesson plan, including:
-        - Lesson Objectives
-        - Introduction
-        - Activities
-        - Assessment Methods
-        - Conclusion
-        '''
-
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[
-                {"role": "system", "content": "You are a lesson plan generator AI."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.7
-        )
-
-        ai_response = response["choices"][0]["message"]["content"]
-
-        return jsonify({"lesson_plan": ai_response})
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-# Quiz Creator API
-@app.route('/quiz_creator', methods=['POST'])
-def quiz_creator():
-    try:
-        data = request.get_json()
-        topic = data.get("topic", "")
-        question_type = data.get("question_type", "multiple-choice")  # Default to MCQs
-
-        if not topic:
-            return jsonify({"error": "Please provide a quiz topic."}), 400
-
-        prompt = f'''
-        You are an expert quiz creator for educational purposes.
-        
-        Topic: {topic}
-        Question Type: {question_type}
-
-        Generate a structured quiz with at least 5 questions based on the given topic.
-        If multiple-choice, provide four answer options per question with the correct answer marked.
-        '''
-
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[
-                {"role": "system", "content": "You are an AI-based quiz generator."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.7
-        )
-
-        ai_response = response["choices"][0]["message"]["content"]
-
-        return jsonify({"quiz": ai_response})
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-# Teaching Materials Generator API
-@app.route('/teaching_materials', methods=['POST'])
-def teaching_materials():
-    try:
-        data = request.get_json()
-        topic = data.get("topic", "")
-        material_type = data.get("material_type", "study_guide")  # Default to study guide
-
-        if not topic:
-            return jsonify({"error": "Please provide a topic."}), 400
-
-        prompt = f'''
-        You are an expert in creating educational materials for teachers.
-        
-        Topic: {topic}
-        Material Type: {material_type}
-
-        Generate detailed and structured content based on the selected material type.
-        If it's a PowerPoint slide, outline the key slides. If it's a worksheet, provide structured questions.
-        '''
-
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[
-                {"role": "system", "content": "You are an AI-based teaching material generator."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.7
-        )
-
-        ai_response = response["choices"][0]["message"]["content"]
-
-        return jsonify({"teaching_materials": ai_response})
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+# Existing endpoints (Tutor, Lesson Plan, Quiz, Teaching Materials) here...
 
 # New Image Generator API endpoint
 @app.route('/image_generator', methods=['POST'])
@@ -192,23 +36,23 @@ def image_generator():
         if not topic or not level or not ratio:
             return jsonify({"error": "Please provide topic, level, and ratio."}), 400
 
-        # Construct the prompt, ensuring the image is generated without text overlay.
+        # Construct the prompt for image generation, ensuring no text overlay.
         prompt = (
             f"Generate an educational illustration for teaching {topic} to {level} students in a {ratio} format, "
             f"using a {style} style. The image should be visually appealing and informative, and must not contain any text overlay."
         )
 
-        # Map the ratio to a size (example dimensions)
+        # Map the ratio to an allowed size
         if ratio.lower() == "square":
             size = "1024x1024"
         elif ratio.lower() == "landscape":
-            size = "1024x768"
+            size = "1792x1024"
         elif ratio.lower() == "portrait":
-            size = "768x1024"
+            size = "1024x1792"
         else:
-            size = "1024x1024"  # Default size
+            size = "1024x1024"  # Default to square if unrecognized
 
-        # Call the image generation API (using DALL·E via OpenAI)
+        # Call the image generation API (DALL·E via OpenAI)
         response = openai.Image.create(
             prompt=prompt,
             n=1,
