@@ -179,5 +179,36 @@ def teaching_materials():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# New Expand Content API
+@app.route('/expand_content', methods=['POST'])
+def expand_content():
+    try:
+        data = request.get_json()
+        initial_content = data.get("content", "").strip()
+        tool = data.get("tool", "").strip()
+
+        if not initial_content:
+            return jsonify({"error": "No content provided for expansion."}), 400
+
+        prompt = f"Expand and elaborate on the following content to provide a more detailed and enriched explanation:\n\n{initial_content}"
+        if tool:
+            prompt += f"\n\nContext: This content is from the {tool} tool."
+
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a highly knowledgeable assistant who expands content with clarity and detail."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7
+        )
+
+        expanded_content = response["choices"][0]["message"]["content"]
+
+        return jsonify({"expanded_content": expanded_content})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
