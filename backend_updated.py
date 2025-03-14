@@ -3,6 +3,7 @@ import openai
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
+from flask_caching import Cache  # New import for caching
 
 # Load environment variables
 load_dotenv()
@@ -10,47 +11,56 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
+# Configure and initialize the cache (using SimpleCache for demonstration)
+cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache', 'CACHE_DEFAULT_TIMEOUT': 300})
+
 # Get OpenAI API Key from Railway environment variables
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
 if not OPENAI_API_KEY:
     raise ValueError("Missing OpenAI API Key. Ensure it's set in Railway's environment variables.")
 
 openai.api_key = OPENAI_API_KEY
 
-# AI Tutor Assistant API
+# AI Tutor Assistant API with caching
 @app.route('/tutor_assistant', methods=['POST'])
 def tutor_assistant():
     try:
         data = request.get_json()
-        question = data.get("question", "")
+        question = data.get("question", "").strip()
 
         if not question:
             return jsonify({"error": "Please provide a question for the AI Tutor."}), 400
 
+        # Create a unique cache key based on the question
+        cache_key = f"tutor_{question.lower()}"
+        cached_response = cache.get(cache_key)
+        if cached_response:
+            return jsonify({"response": cached_response})
+
         prompt = f'''
         You are an experienced education coach helping teachers improve their lessons, student engagement, and teaching strategies.
-        Your role is to provide clear, structured, and detailed guidance to teachers.
-        
         Teacher's Question: "{question}"
-        
         Provide a well-structured response with actionable advice.
         '''
 
         response = openai.ChatCompletion.create(
             model="gpt-4",
-            messages=[{"role": "system", "content": "You are a helpful education expert AI."},
-                      {"role": "user", "content": prompt}],
+            messages=[
+                {"role": "system", "content": "You are a helpful education expert AI."},
+                {"role": "user", "content": prompt}
+            ],
             temperature=0.7
         )
 
         ai_response = response["choices"][0]["message"]["content"]
 
+        # Store the result in the cache
+        cache.set(cache_key, ai_response)
+
         return jsonify({"response": ai_response})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 # Lesson Plan Generator API
 @app.route('/lesson_plan', methods=['POST'])
@@ -81,8 +91,10 @@ def lesson_plan():
 
         response = openai.ChatCompletion.create(
             model="gpt-4",
-            messages=[{"role": "system", "content": "You are a lesson plan generator AI."},
-                      {"role": "user", "content": prompt}],
+            messages=[
+                {"role": "system", "content": "You are a lesson plan generator AI."},
+                {"role": "user", "content": prompt}
+            ],
             temperature=0.7
         )
 
@@ -92,7 +104,6 @@ def lesson_plan():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 # Quiz Creator API
 @app.route('/quiz_creator', methods=['POST'])
@@ -117,8 +128,10 @@ def quiz_creator():
 
         response = openai.ChatCompletion.create(
             model="gpt-4",
-            messages=[{"role": "system", "content": "You are an AI-based quiz generator."},
-                      {"role": "user", "content": prompt}],
+            messages=[
+                {"role": "system", "content": "You are an AI-based quiz generator."},
+                {"role": "user", "content": prompt}
+            ],
             temperature=0.7
         )
 
@@ -128,7 +141,6 @@ def quiz_creator():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 # Teaching Materials Generator API
 @app.route('/teaching_materials', methods=['POST'])
@@ -153,8 +165,10 @@ def teaching_materials():
 
         response = openai.ChatCompletion.create(
             model="gpt-4",
-            messages=[{"role": "system", "content": "You are an AI-based teaching material generator."},
-                      {"role": "user", "content": prompt}],
+            messages=[
+                {"role": "system", "content": "You are an AI-based teaching material generator."},
+                {"role": "user", "content": prompt}
+            ],
             temperature=0.7
         )
 
@@ -165,7 +179,5 @@ def teaching_materials():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
-# Run the Flask App
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
