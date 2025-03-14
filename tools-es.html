@@ -13,7 +13,11 @@
       --text-color: #212529;
       --bg-color: #F8F9FA;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Lato', sans-serif;
       background-color: var(--bg-color);
@@ -32,8 +36,14 @@
       top: 0; left: 0; right: 0;
       z-index: 1000;
     }
-    .global-header h1 { font-size: 24px; }
-    .global-nav { display: flex; gap: 15px; }
+    .global-header h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+    .global-nav {
+      display: flex;
+      gap: 15px;
+    }
     .nav-link-global {
       text-decoration: none;
       color: white;
@@ -46,19 +56,26 @@
     }
     .hamburger {
       display: none;
-      width: 25px; height: 25px;
-      cursor: pointer; flex-direction: column; justify-content: space-around;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      flex-direction: column;
+      justify-content: space-around;
       z-index: 1100;
     }
     .hamburger span {
-      display: block; height: 3px; background: white;
+      display: block;
+      height: 3px;
+      background: white;
       border-radius: 3px;
       transition: transform 0.3s ease, opacity 0.3s ease;
     }
     .hamburger.open span:nth-child(1) {
       transform: rotate(45deg) translate(5px, 5px);
     }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
     .hamburger.open span:nth-child(3) {
       transform: rotate(-45deg) translate(5px, -5px);
     }
@@ -79,7 +96,11 @@
       transform: translateY(0);
       opacity: 1;
     }
-    .mobile-menu-overlay h2 { color: white; margin-bottom: 20px; }
+    .mobile-menu-overlay h2 {
+      color: white;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
     .mobile-nav-link {
       display: block;
       color: white;
@@ -90,6 +111,22 @@
       transition: background 0.3s;
     }
     .mobile-nav-link:hover {
+      background-color: var(--edvanta-yellow);
+      color: var(--text-color);
+    }
+    .mobile-tools-section {
+      margin-top: 15px;
+    }
+    .mobile-tools-link {
+      display: block;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      transition: background 0.3s;
+    }
+    .mobile-tools-link:hover {
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
@@ -106,7 +143,10 @@
       bottom: 50px;
       transition: all 0.3s ease;
     }
-    .sidebar h2 { font-size: 20px; margin-bottom: 20px; }
+    .sidebar h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
     .nav-link {
       text-decoration: none;
       color: white;
@@ -126,13 +166,19 @@
       color: var(--text-color);
       font-weight: bold;
     }
-    .main-wrapper { display: flex; min-height: calc(100vh - 120px); }
+    .main-wrapper {
+      display: flex;
+      min-height: calc(100vh - 120px);
+    }
     .main-content {
       margin-left: 270px;
       padding: 40px;
       flex-grow: 1;
     }
-    .tool-header { font-size: 24px; margin-bottom: 20px; }
+    .tool-header {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
     .tool-container {
       background: white;
       padding: 20px;
@@ -175,7 +221,9 @@
       justify-content: flex-end;
       align-items: center;
     }
-    .copy-btn, .expand-btn, .download-btn {
+    .copy-btn,
+    .expand-btn,
+    .download-btn {
       background-color: var(--edvanta-yellow);
       border: none;
       color: var(--text-color);
@@ -186,7 +234,9 @@
       margin-left: 5px;
       transition: background 0.3s, box-shadow 0.3s;
     }
-    .copy-btn:hover, .expand-btn:hover, .download-btn:hover {
+    .copy-btn:hover,
+    .expand-btn:hover,
+    .download-btn:hover {
       background-color: #d9a80c;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
@@ -214,7 +264,10 @@
       position: fixed;
       bottom: 0; left: 0; right: 0;
     }
-    .footer-content { max-width: 1200px; margin: 0 auto; }
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
     .footer-nav {
       margin-top: 10px;
       display: flex;
@@ -227,12 +280,22 @@
       font-size: 14px;
       transition: color 0.3s;
     }
-    .footer-link:hover { color: var(--edvanta-blue); }
+    .footer-link:hover {
+      color: var(--edvanta-blue);
+    }
     @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .main-content { margin-left: 0; }
-      .hamburger { display: flex; }
-      .global-nav { display: none; }
+      .sidebar {
+        display: none;
+      }
+      .main-content {
+        margin-left: 0;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .global-nav {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -256,20 +319,20 @@
 
   <!-- Menú Móvil -->
   <div class="mobile-menu-overlay" id="mobileMenu">
-    <h2>Navigation</h2>
+    <h2>Navegación</h2>
     <a href="index-es.html" class="mobile-nav-link">Inicio</a>
     <a href="about-es.html" class="mobile-nav-link">Acerca de</a>
     <a href="contact-es.html" class="mobile-nav-link">Contacto</a>
     <a href="help-es.html" class="mobile-nav-link">Ayuda</a>
     <a href="tools.html" class="mobile-nav-link">EN</a>
-    <hr style="border:none; border-top:1px solid rgba(255,255,255,0.2); margin:15px 0;">
+    <hr style="border: none; border-top:1px solid rgba(255,255,255,0.2); margin:15px 0;">
     <div class="mobile-tools-section">
-      <h2>Tools</h2>
-      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('tutorLink'); loadTool('tutor'); toggleMobileMenu();">💬 AI Tutor Chat</a>
-      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('lessonPlanLink'); loadTool('lesson_plan'); toggleMobileMenu();">📚 Lesson Plan Generator</a>
-      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('quizLink'); loadTool('quiz'); toggleMobileMenu();">❓ Quiz Creator</a>
-      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('materialsLink'); loadTool('materials'); toggleMobileMenu();">📝 Teaching Materials Generator</a>
-      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('imageLink'); loadTool('image'); toggleMobileMenu();">🖼️ Image Generator</a>
+      <h2>Herramientas</h2>
+      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('tutorLink'); loadTool('tutor'); toggleMobileMenu();">💬 Chat Tutor IA</a>
+      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('lessonPlanLink'); loadTool('lesson_plan'); toggleMobileMenu();">📚 Generador de Planes de Clase</a>
+      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('quizLink'); loadTool('quiz'); toggleMobileMenu();">❓ Creador de Quiz</a>
+      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('materialsLink'); loadTool('materials'); toggleMobileMenu();">📝 Generador de Materiales Didácticos</a>
+      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('imageLink'); loadTool('image'); toggleMobileMenu();">🖼️ Generador de Imágenes</a>
     </div>
   </div>
 
@@ -293,7 +356,7 @@
     </main>
   </div>
 
-  <!-- Pie de Página -->
+  <!-- Pie de Página Global -->
   <footer class="global-footer" role="contentinfo">
     <div class="footer-content">
       <p>&copy; 2025 Edvanta. Todos los derechos reservados.</p>
@@ -432,6 +495,12 @@
       }
     }
 
+    /* Optional: If you have an API or method to expand content further, define it here. */
+    window.expandContent = function(responseId, toolName) {
+      alert("Función de expansión no implementada por completo. Solo es un marcador de posición.");
+    };
+
+    /* The fetch calls remain as previously provided for each tool. */
     async function generateLessonPlan() {
       let responseBox = document.getElementById("lessonPlanResponse");
       responseBox.innerHTML = "🔄 Generando plan de clase...";
@@ -504,10 +573,10 @@
       const prompt = document.getElementById("imgPrompt").value.trim();
       const responseBox = document.getElementById("imageResponse");
       if (!prompt) {
-        responseBox.innerHTML = "<p style='color:red;'>Please enter a prompt.</p>";
+        responseBox.innerHTML = "<p style='color:red;'>Por favor, ingresa un enunciado.</p>";
         return;
       }
-      responseBox.innerHTML = "🔄 Generating image, please wait...";
+      responseBox.innerHTML = "🔄 Generando imagen, por favor espera...";
       try {
         const response = await fetch("https://edu-ai-backend-production.up.railway.app/image_generator", {
           method: "POST",
@@ -516,7 +585,7 @@
         });
         const data = await response.json();
         if (data.image_url) {
-          responseBox.innerHTML = `<img src="${data.image_url}" alt="Generated Educational Image"><br><br><small>Image generated based on your prompt.</small>`;
+          responseBox.innerHTML = `<img src="${data.image_url}" alt="Imagen Educativa Generada"><br><br><small>Imagen generada según tu enunciado.</small>`;
         } else {
           responseBox.innerHTML = `<p style='color:red;'>Error: ${data.error}</p>`;
         }
@@ -531,7 +600,7 @@
       if (imgElem && imgElem.src) {
         const link = document.createElement("a");
         link.href = imgElem.src;
-        link.download = "generated-image.png";
+        link.download = "imagen-generada.png";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
