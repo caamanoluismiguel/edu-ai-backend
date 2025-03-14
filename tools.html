@@ -93,28 +93,6 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
-    /* Added Tools Section for Mobile Navigation */
-    .mobile-tools-section {
-      margin-top: 15px;
-    }
-    .mobile-tools-section h2 {
-      color: white;
-      font-size: 20px;
-      margin: 15px 0 10px;
-    }
-    .mobile-tools-link {
-      display: block;
-      color: white;
-      text-decoration: none;
-      font-size: 16px;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      transition: background 0.3s;
-    }
-    .mobile-tools-link:hover {
-      background-color: var(--edvanta-yellow);
-      color: var(--text-color);
-    }
     .sidebar {
       width: 250px;
       background-color: var(--edvanta-blue);
@@ -197,6 +175,27 @@
       justify-content: flex-end;
       align-items: center;
     }
+    .copy-btn, .expand-btn {
+      background-color: var(--edvanta-yellow);
+      border: none;
+      color: var(--text-color);
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-left: 5px;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .copy-btn:hover, .expand-btn:hover {
+      background-color: #d9a80c;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .expand-btn:disabled {
+      background-color: #ccc;
+      color: #888;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
     .response-content {
       padding: 20px;
       background: #f9f9f9;
@@ -205,20 +204,6 @@
       white-space: pre-wrap;
       max-height: 300px;
       overflow-y: auto;
-    }
-    .copy-btn {
-      background-color: var(--edvanta-yellow);
-      border: none;
-      color: var(--text-color);
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background 0.3s, box-shadow 0.3s;
-    }
-    .copy-btn:hover {
-      background-color: #d9a80c;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
     .global-footer {
       background-color: var(--bg-color);
@@ -301,7 +286,17 @@
     <main class="main-content" role="main">
       <h1 class="tool-header">Edvanta Tools</h1>
       <section class="tool-container">
-        <p>Welcome to Edvanta Tools, where innovative AI-powered solutions empower educators to transform teaching and learning. Select a tool from the menu to begin.</p>
+        <!-- Example for Tutor Chat tool -->
+        <p><strong>How to Use:</strong> Ask questions and receive personalized guidance from our AI-powered tutor. Type your question below and click "Get Answer".</p>
+        <textarea class="input-box" id="tutorInput" rows="4" placeholder="Type your question here..."></textarea>
+        <button class="submit-btn" onclick="sendTutorRequest()">Get Answer</button>
+        <div class="response-container">
+          <div class="response-header">
+            <button class="copy-btn" onclick="copyResponse('tutorResponse')">Copy</button>
+            <button class="expand-btn" id="tutorExpand" onclick="expandContent('tutorResponse', 'tutor')" disabled>Expand Content</button>
+          </div>
+          <div class="response-content" id="tutorResponse" aria-live="polite">AI Response will appear here...</div>
+        </div>
       </section>
     </main>
   </div>
@@ -318,44 +313,47 @@
     </div>
   </footer>
 
+  <!-- Script placed at the end of the body for proper loading -->
   <script defer>
-    const mobileMenu = document.getElementById("mobileMenu");
-    const hamburger = document.getElementById("hamburger");
-    function toggleMobileMenu() {
-      mobileMenu.classList.toggle("open");
-      hamburger.classList.toggle("open");
-    }
-    function setActiveLink(activeId) {
+    // Explicitly attach setActiveLink to the global window object
+    window.setActiveLink = function(activeId) {
       const links = document.querySelectorAll('.sidebar .nav-link');
       links.forEach(link => {
         link.classList.toggle('active', link.id === activeId);
       });
-    }
-    window.onload = function() {
-      document.getElementById("tutorLink").addEventListener("click", function(e) {
-        e.preventDefault();
-        setActiveLink("tutorLink");
-        loadTool('tutor');
-      });
-      document.getElementById("lessonPlanLink").addEventListener("click", function(e) {
-        e.preventDefault();
-        setActiveLink("lessonPlanLink");
-        loadTool('lesson_plan');
-      });
-      document.getElementById("quizLink").addEventListener("click", function(e) {
-        e.preventDefault();
-        setActiveLink("quizLink");
-        loadTool('quiz');
-      });
-      document.getElementById("materialsLink").addEventListener("click", function(e) {
-        e.preventDefault();
-        setActiveLink("materialsLink");
-        loadTool('materials');
-      });
     };
+
+    // Global variables to store generated outputs and track current tool
+    let storedToolOutputs = {};
+    let currentTool = null;
+
+    const mobileMenu = document.getElementById("mobileMenu");
+    const hamburger = document.getElementById("hamburger");
+
+    function toggleMobileMenu() {
+      mobileMenu.classList.toggle("open");
+      hamburger.classList.toggle("open");
+    }
+
+    // Updated loadTool function to handle switching tools correctly
     function loadTool(tool) {
+      // Save current tool's output if switching from a different tool
+      if (currentTool !== null && currentTool !== tool) {
+        storedToolOutputs[currentTool] = document.querySelector('.tool-container').innerHTML;
+      }
+      currentTool = tool;
+
       const content = document.querySelector('.tool-container');
       const header = document.querySelector('.tool-header');
+
+      // Restore stored output if available
+      if (storedToolOutputs.hasOwnProperty(tool) && storedToolOutputs[tool] !== "") {
+        header.innerHTML = getHeaderForTool(tool);
+        content.innerHTML = storedToolOutputs[tool];
+        return;
+      }
+
+      // Otherwise, load the default interface for the tool
       if (tool === 'tutor') {
         header.innerHTML = "AI Tutor Chat";
         content.innerHTML = `
@@ -365,6 +363,7 @@
           <div class="response-container">
             <div class="response-header">
               <button class="copy-btn" onclick="copyResponse('tutorResponse')">Copy</button>
+              <button class="expand-btn" id="tutorExpand" onclick="expandContent('tutorResponse', 'tutor')" disabled>Expand Content</button>
             </div>
             <div class="response-content" id="tutorResponse" aria-live="polite">AI Response will appear here...</div>
           </div>
@@ -380,6 +379,7 @@
           <div class="response-container">
             <div class="response-header">
               <button class="copy-btn" onclick="copyResponse('lessonPlanResponse')">Copy</button>
+              <button class="expand-btn" id="lessonPlanExpand" onclick="expandContent('lessonPlanResponse', 'lesson_plan')" disabled>Expand Content</button>
             </div>
             <div class="response-content" id="lessonPlanResponse" aria-live="polite">Lesson plan will appear here...</div>
           </div>
@@ -411,12 +411,32 @@
           <div class="response-container">
             <div class="response-header">
               <button class="copy-btn" onclick="copyResponse('materialsResponse')">Copy</button>
+              <button class="expand-btn" id="materialsExpand" onclick="expandContent('materialsResponse', 'materials')" disabled>Expand Content</button>
             </div>
             <div class="response-content" id="materialsResponse" aria-live="polite">Teaching materials will appear here...</div>
           </div>
         `;
       }
     }
+
+    // Helper to return header text based on tool
+    function getHeaderForTool(tool) {
+      if (tool === 'tutor') return "AI Tutor Chat";
+      if (tool === 'lesson_plan') return "Lesson Plan Generator";
+      if (tool === 'quiz') return "Quiz Creator";
+      if (tool === 'materials') return "Teaching Materials Generator";
+      return "Edvanta Tools";
+    }
+
+    // Enable the Expand Content button after a successful generation
+    function enableExpandButton(responseId, buttonId) {
+      const responseContent = document.getElementById(responseId).innerText;
+      const btn = document.getElementById(buttonId);
+      if (responseContent && responseContent.trim() !== "" && btn) {
+        btn.disabled = false;
+      }
+    }
+
     async function generateLessonPlan() {
       let responseBox = document.getElementById("lessonPlanResponse");
       responseBox.innerHTML = "🔄 Generating lesson plan...";
@@ -431,7 +451,9 @@
       });
       let data = await response.json();
       responseBox.innerHTML = data.lesson_plan || "❌ Error generating lesson plan.";
+      enableExpandButton("lessonPlanResponse", "lessonPlanExpand");
     }
+
     async function generateQuiz() {
       let responseBox = document.getElementById("quizResponse");
       responseBox.innerHTML = "🔄 Generating quiz...";
@@ -442,7 +464,9 @@
       });
       let data = await response.json();
       responseBox.innerHTML = data.quiz || "❌ Error generating quiz.";
+      // Quiz tool does not have expand functionality.
     }
+
     async function generateMaterials() {
       let responseBox = document.getElementById("materialsResponse");
       responseBox.innerHTML = "🔄 Generating materials...";
@@ -456,7 +480,9 @@
       });
       let data = await response.json();
       responseBox.innerHTML = data.teaching_materials || "❌ Error generating materials.";
+      enableExpandButton("materialsResponse", "materialsExpand");
     }
+
     async function sendTutorRequest() {
       let input = document.getElementById("tutorInput").value.trim();
       let responseBox = document.getElementById("tutorResponse");
@@ -473,17 +499,69 @@
         });
         let data = await response.json();
         responseBox.innerHTML = data.response || "❌ Error generating response.";
+        enableExpandButton("tutorResponse", "tutorExpand");
       } catch (error) {
         console.error("Tutor Error:", error);
         responseBox.innerHTML = `❌ Error: ${error.message}`;
       }
     }
+
+    async function expandContent(responseId, toolType) {
+      const responseContainer = document.getElementById(responseId);
+      const currentContent = responseContainer.innerText;
+      if (!currentContent || currentContent.trim() === "") {
+        alert("There is no content to expand.");
+        return;
+      }
+      responseContainer.innerHTML = "🔄 Expanding content...";
+      try {
+        const res = await fetch("https://edu-ai-backend-production.up.railway.app/expand_content", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ content: currentContent, tool: toolType })
+        });
+        const data = await res.json();
+        if (data.expanded_content) {
+          // Append a note explaining the expansion
+          responseContainer.innerHTML = data.expanded_content + "<br><br><small>Content was expanded with additional details and context by our advanced AI elaboration.</small>";
+        } else {
+          responseContainer.innerHTML = "❌ Error expanding content.";
+        }
+      } catch (error) {
+        responseContainer.innerHTML = `❌ Error: ${error.message}`;
+      }
+    }
+
     function copyResponse(responseId) {
       const textToCopy = document.getElementById(responseId).innerText;
       navigator.clipboard.writeText(textToCopy)
         .then(() => { alert("Response copied to clipboard!"); })
         .catch(err => { console.error("Copy error:", err); });
     }
+
+    // Set up event listeners for tool navigation once DOM is loaded
+    window.onload = function() {
+      document.getElementById("tutorLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("tutorLink");
+        loadTool('tutor');
+      });
+      document.getElementById("lessonPlanLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("lessonPlanLink");
+        loadTool('lesson_plan');
+      });
+      document.getElementById("quizLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("quizLink");
+        loadTool('quiz');
+      });
+      document.getElementById("materialsLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("materialsLink");
+        loadTool('materials');
+      });
+    };
   </script>
 </body>
 </html>

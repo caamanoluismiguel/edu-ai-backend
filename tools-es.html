@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Las herramientas de Edvanta ofrecen soluciones innovadoras impulsadas por IA para educadores. Utiliza nuestro Chat Tutor AI, Generador de Planes de Clase, Creador de Quiz y Generador de Materiales Didácticos para mejorar tu experiencia docente."/>
+  <meta name="description" content="Las Herramientas de Edvanta ofrecen soluciones innovadoras impulsadas por IA para educadores. Utiliza nuestro Chat Tutor AI, Generador de Planes de Clase, Creador de Quiz y Generador de Materiales Didácticos para mejorar tu experiencia docente."/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Herramientas Edvanta - Avanzando la Educación con IA</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
@@ -93,28 +93,6 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
-    /* Added Tools Section for Mobile Navigation */
-    .mobile-tools-section {
-      margin-top: 15px;
-    }
-    .mobile-tools-section h2 {
-      color: white;
-      font-size: 20px;
-      margin: 15px 0 10px;
-    }
-    .mobile-tools-link {
-      display: block;
-      color: white;
-      text-decoration: none;
-      font-size: 16px;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      transition: background 0.3s;
-    }
-    .mobile-tools-link:hover {
-      background-color: var(--edvanta-yellow);
-      color: var(--text-color);
-    }
     .sidebar {
       width: 250px;
       background-color: var(--edvanta-blue);
@@ -197,6 +175,27 @@
       justify-content: flex-end;
       align-items: center;
     }
+    .copy-btn, .expand-btn {
+      background-color: var(--edvanta-yellow);
+      border: none;
+      color: var(--text-color);
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-left: 5px;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .copy-btn:hover, .expand-btn:hover {
+      background-color: #d9a80c;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .expand-btn:disabled {
+      background-color: #ccc;
+      color: #888;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
     .response-content {
       padding: 20px;
       background: #f9f9f9;
@@ -205,20 +204,6 @@
       white-space: pre-wrap;
       max-height: 300px;
       overflow-y: auto;
-    }
-    .copy-btn {
-      background-color: var(--edvanta-yellow);
-      border: none;
-      color: var(--text-color);
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background 0.3s, box-shadow 0.3s;
-    }
-    .copy-btn:hover {
-      background-color: #d9a80c;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
     .global-footer {
       background-color: var(--bg-color);
@@ -269,7 +254,7 @@
     </div>
   </header>
 
-  <!-- Mobile Menu Overlay with Global & Tools Links -->
+  <!-- Mobile Menu Overlay -->
   <div class="mobile-menu-overlay" id="mobileMenu">
     <h2>Navegación</h2>
     <a href="index-es.html" class="mobile-nav-link">Inicio</a>
@@ -277,7 +262,7 @@
     <a href="contact-es.html" class="mobile-nav-link">Contacto</a>
     <a href="help-es.html" class="mobile-nav-link">Ayuda</a>
     <a href="tools.html" class="mobile-nav-link">EN</a>
-    <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.2); margin:15px 0;">
+    <hr style="border:none; border-top:1px solid rgba(255,255,255,0.2); margin:15px 0;">
     <div class="mobile-tools-section">
       <h2>Herramientas</h2>
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('tutorLink'); loadTool('tutor'); toggleMobileMenu();">💬 Chat Tutor AI</a>
@@ -301,7 +286,17 @@
     <main class="main-content" role="main">
       <h1 class="tool-header">Herramientas Edvanta</h1>
       <section class="tool-container">
-        <p>Bienvenido a las Herramientas Edvanta, donde soluciones innovadoras impulsadas por IA potencian a los educadores para transformar la enseñanza y el aprendizaje. Selecciona una herramienta del menú para comenzar.</p>
+        <!-- Ejemplo para el Chat Tutor AI -->
+        <p><strong>Cómo usar:</strong> Haz preguntas y recibe orientación personalizada de nuestro tutor impulsado por IA. Escribe tu pregunta a continuación y haz clic en "Obtener respuesta".</p>
+        <textarea class="input-box" id="tutorInput" rows="4" placeholder="Escribe tu pregunta aquí..."></textarea>
+        <button class="submit-btn" onclick="sendTutorRequest()">Obtener respuesta</button>
+        <div class="response-container">
+          <div class="response-header">
+            <button class="copy-btn" onclick="copyResponse('tutorResponse')">Copiar</button>
+            <button class="expand-btn" id="tutorExpand" onclick="expandContent('tutorResponse', 'tutor')" disabled>Expandir contenido</button>
+          </div>
+          <div class="response-content" id="tutorResponse" aria-live="polite">La respuesta del tutor aparecerá aquí...</div>
+        </div>
       </section>
     </main>
   </div>
@@ -311,60 +306,63 @@
     <div class="footer-content">
       <p>&copy; 2025 Edvanta. Todos los derechos reservados.</p>
       <nav class="footer-nav">
-        <a href="#" class="footer-link">Preguntas Frecuentes</a>
-        <a href="#" class="footer-link">Términos de Servicio</a>
-        <a href="#" class="footer-link">Política de Privacidad</a>
+        <a href="#" class="footer-link">Preguntas frecuentes</a>
+        <a href="#" class="footer-link">Términos del servicio</a>
+        <a href="#" class="footer-link">Política de privacidad</a>
       </nav>
     </div>
   </footer>
 
   <script defer>
-    const mobileMenu = document.getElementById("mobileMenu");
-    const hamburger = document.getElementById("hamburger");
-    function toggleMobileMenu() {
-      mobileMenu.classList.toggle("open");
-      hamburger.classList.toggle("open");
-    }
-    function setActiveLink(activeId) {
+    // Explicitly attach setActiveLink to the global window object
+    window.setActiveLink = function(activeId) {
       const links = document.querySelectorAll('.sidebar .nav-link');
       links.forEach(link => {
         link.classList.toggle('active', link.id === activeId);
       });
-    }
-    window.onload = function() {
-      document.getElementById("tutorLink").addEventListener("click", function(e) {
-        e.preventDefault();
-        setActiveLink("tutorLink");
-        loadTool('tutor');
-      });
-      document.getElementById("lessonPlanLink").addEventListener("click", function(e) {
-        e.preventDefault();
-        setActiveLink("lessonPlanLink");
-        loadTool('lesson_plan');
-      });
-      document.getElementById("quizLink").addEventListener("click", function(e) {
-        e.preventDefault();
-        setActiveLink("quizLink");
-        loadTool('quiz');
-      });
-      document.getElementById("materialsLink").addEventListener("click", function(e) {
-        e.preventDefault();
-        setActiveLink("materialsLink");
-        loadTool('materials');
-      });
     };
+
+    // Global variables to store generated outputs and track current tool
+    let storedToolOutputs = {};
+    let currentTool = null;
+
+    const mobileMenu = document.getElementById("mobileMenu");
+    const hamburger = document.getElementById("hamburger");
+
+    function toggleMobileMenu() {
+      mobileMenu.classList.toggle("open");
+      hamburger.classList.toggle("open");
+    }
+
+    // Updated loadTool function to handle switching tools correctly
     function loadTool(tool) {
+      // Save output if switching from a different tool
+      if (currentTool !== null && currentTool !== tool) {
+        storedToolOutputs[currentTool] = document.querySelector('.tool-container').innerHTML;
+      }
+      currentTool = tool;
+
       const content = document.querySelector('.tool-container');
       const header = document.querySelector('.tool-header');
+
+      // Restore stored output if available
+      if (storedToolOutputs.hasOwnProperty(tool) && storedToolOutputs[tool] !== "") {
+        header.innerHTML = getHeaderForTool(tool);
+        content.innerHTML = storedToolOutputs[tool];
+        return;
+      }
+
+      // Load default interface for the tool
       if (tool === 'tutor') {
         header.innerHTML = "Chat Tutor AI";
         content.innerHTML = `
-          <p><strong>Cómo usar:</strong> Haz preguntas y recibe orientación personalizada de nuestro tutor impulsado por IA. Escribe tu pregunta abajo y haz clic en "Obtener respuesta".</p>
+          <p><strong>Cómo usar:</strong> Haz preguntas y recibe orientación personalizada de nuestro tutor impulsado por IA. Escribe tu pregunta a continuación y haz clic en "Obtener respuesta".</p>
           <textarea class="input-box" id="tutorInput" rows="4" placeholder="Escribe tu pregunta aquí..."></textarea>
           <button class="submit-btn" onclick="sendTutorRequest()">Obtener respuesta</button>
           <div class="response-container">
             <div class="response-header">
               <button class="copy-btn" onclick="copyResponse('tutorResponse')">Copiar</button>
+              <button class="expand-btn" id="tutorExpand" onclick="expandContent('tutorResponse', 'tutor')" disabled>Expandir contenido</button>
             </div>
             <div class="response-content" id="tutorResponse" aria-live="polite">La respuesta del tutor aparecerá aquí...</div>
           </div>
@@ -372,14 +370,15 @@
       } else if (tool === 'lesson_plan') {
         header.innerHTML = "Generador de Planes de Clase";
         content.innerHTML = `
-          <p><strong>Cómo usar:</strong> Genera planes de clase detallados rápidamente. Ingresa la asignatura, el nivel y los objetivos de aprendizaje, luego haz clic en "Generar plan".</p>
+          <p><strong>Cómo usar:</strong> Genera planes de clase detallados rápidamente. Ingresa la asignatura, el nivel y los objetivos de aprendizaje, luego haz clic en "Generar plan de clase".</p>
           <input type="text" class="input-box" id="subject" placeholder="Ingresa la asignatura">
           <input type="text" class="input-box" id="gradeLevel" placeholder="Ingresa el nivel">
           <textarea class="input-box" id="learningGoals" rows="3" placeholder="Ingresa los objetivos de aprendizaje"></textarea>
-          <button class="submit-btn" onclick="generateLessonPlan()">Generar plan</button>
+          <button class="submit-btn" onclick="generateLessonPlan()">Generar plan de clase</button>
           <div class="response-container">
             <div class="response-header">
               <button class="copy-btn" onclick="copyResponse('lessonPlanResponse')">Copiar</button>
+              <button class="expand-btn" id="lessonPlanExpand" onclick="expandContent('lessonPlanResponse', 'lesson_plan')" disabled>Expandir contenido</button>
             </div>
             <div class="response-content" id="lessonPlanResponse" aria-live="polite">El plan de clase aparecerá aquí...</div>
           </div>
@@ -387,7 +386,7 @@
       } else if (tool === 'quiz') {
         header.innerHTML = "Creador de Quiz";
         content.innerHTML = `
-          <p><strong>Cómo usar:</strong> Crea quizzes atractivos para tu clase de forma sencilla. Ingresa un tema y haz clic en "Generar quiz" para que nuestra IA genere preguntas y respuestas relevantes.</p>
+          <p><strong>Cómo usar:</strong> Crea quizzes atractivos para tu clase de forma sencilla. Ingresa un tema para el quiz y haz clic en "Generar quiz" para que nuestra IA genere preguntas y respuestas relevantes.</p>
           <input type="text" class="input-box" id="quizTopic" placeholder="Ingresa el tema del quiz">
           <button class="submit-btn" onclick="generateQuiz()">Generar quiz</button>
           <div class="response-container">
@@ -411,12 +410,32 @@
           <div class="response-container">
             <div class="response-header">
               <button class="copy-btn" onclick="copyResponse('materialsResponse')">Copiar</button>
+              <button class="expand-btn" id="materialsExpand" onclick="expandContent('materialsResponse', 'materials')" disabled>Expandir contenido</button>
             </div>
             <div class="response-content" id="materialsResponse" aria-live="polite">Los materiales didácticos aparecerán aquí...</div>
           </div>
         `;
       }
     }
+
+    // Helper to return header text based on tool
+    function getHeaderForTool(tool) {
+      if (tool === 'tutor') return "Chat Tutor AI";
+      if (tool === 'lesson_plan') return "Generador de Planes de Clase";
+      if (tool === 'quiz') return "Creador de Quiz";
+      if (tool === 'materials') return "Generador de Materiales";
+      return "Herramientas Edvanta";
+    }
+
+    // Enable the Expand Content button after a successful generation
+    function enableExpandButton(responseId, buttonId) {
+      const responseContent = document.getElementById(responseId).innerText;
+      const btn = document.getElementById(buttonId);
+      if (responseContent && responseContent.trim() !== "" && btn) {
+        btn.disabled = false;
+      }
+    }
+
     async function generateLessonPlan() {
       let responseBox = document.getElementById("lessonPlanResponse");
       responseBox.innerHTML = "🔄 Generando plan de clase...";
@@ -431,7 +450,9 @@
       });
       let data = await response.json();
       responseBox.innerHTML = data.lesson_plan || "❌ Error al generar el plan de clase.";
+      enableExpandButton("lessonPlanResponse", "lessonPlanExpand");
     }
+
     async function generateQuiz() {
       let responseBox = document.getElementById("quizResponse");
       responseBox.innerHTML = "🔄 Generando quiz...";
@@ -442,7 +463,9 @@
       });
       let data = await response.json();
       responseBox.innerHTML = data.quiz || "❌ Error al generar el quiz.";
+      // El creador de quiz no tiene funcionalidad de expansión.
     }
+
     async function generateMaterials() {
       let responseBox = document.getElementById("materialsResponse");
       responseBox.innerHTML = "🔄 Generando materiales...";
@@ -456,12 +479,14 @@
       });
       let data = await response.json();
       responseBox.innerHTML = data.teaching_materials || "❌ Error al generar los materiales.";
+      enableExpandButton("materialsResponse", "materialsExpand");
     }
+
     async function sendTutorRequest() {
       let input = document.getElementById("tutorInput").value.trim();
       let responseBox = document.getElementById("tutorResponse");
       if (!input) {
-        responseBox.innerHTML = "❌ Por favor ingresa una pregunta antes de consultar al tutor.";
+        responseBox.innerHTML = "❌ Por favor, ingresa una pregunta antes de consultar al tutor.";
         return;
       }
       responseBox.innerHTML = "🔄 Generando respuesta...";
@@ -473,17 +498,69 @@
         });
         let data = await response.json();
         responseBox.innerHTML = data.response || "❌ Error al generar la respuesta.";
+        enableExpandButton("tutorResponse", "tutorExpand");
       } catch (error) {
-        console.error("Tutor Error:", error);
+        console.error("Error del tutor:", error);
         responseBox.innerHTML = `❌ Error: ${error.message}`;
       }
     }
+
+    async function expandContent(responseId, toolType) {
+      const responseContainer = document.getElementById(responseId);
+      const currentContent = responseContainer.innerText;
+      if (!currentContent || currentContent.trim() === "") {
+        alert("No hay contenido para expandir.");
+        return;
+      }
+      responseContainer.innerHTML = "🔄 Expandiendo contenido...";
+      try {
+        const res = await fetch("https://edu-ai-backend-production.up.railway.app/expand_content", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ content: currentContent, tool: toolType })
+        });
+        const data = await res.json();
+        if (data.expanded_content) {
+          // Agregar una nota explicando la expansión
+          responseContainer.innerHTML = data.expanded_content + "<br><br><small>El contenido se expandió con detalles y contexto adicional por nuestra IA avanzada.</small>";
+        } else {
+          responseContainer.innerHTML = "❌ Error al expandir el contenido.";
+        }
+      } catch (error) {
+        responseContainer.innerHTML = `❌ Error: ${error.message}`;
+      }
+    }
+
     function copyResponse(responseId) {
       const textToCopy = document.getElementById(responseId).innerText;
       navigator.clipboard.writeText(textToCopy)
         .then(() => { alert("¡Respuesta copiada al portapapeles!"); })
-        .catch(err => { console.error("Copy error:", err); });
+        .catch(err => { console.error("Error al copiar:", err); });
     }
+
+    // Configurar los event listeners para la navegación de herramientas una vez cargado el DOM
+    window.onload = function() {
+      document.getElementById("tutorLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("tutorLink");
+        loadTool('tutor');
+      });
+      document.getElementById("lessonPlanLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("lessonPlanLink");
+        loadTool('lesson_plan');
+      });
+      document.getElementById("quizLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("quizLink");
+        loadTool('quiz');
+      });
+      document.getElementById("materialsLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("materialsLink");
+        loadTool('materials');
+      });
+    };
   </script>
 </body>
 </html>
