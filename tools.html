@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Edvanta Tools offers innovative AI-powered solutions for educators. Use our AI Tutor Chat, Lesson Plan Generator, Quiz Creator, and Teaching Materials Generator to enhance your teaching experience."/>
+  <meta name="description" content="Edvanta Tools offers innovative AI-powered solutions for educators. Use our AI Tutor Chat, Lesson Plan Generator, Quiz Creator, Teaching Materials Generator, and Image Generator to enhance your teaching experience."/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edvanta Tools - Advancing Education with AI</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
@@ -175,7 +175,7 @@
       justify-content: flex-end;
       align-items: center;
     }
-    .copy-btn, .expand-btn {
+    .copy-btn, .expand-btn, .download-btn {
       background-color: var(--edvanta-yellow);
       border: none;
       color: var(--text-color);
@@ -186,7 +186,7 @@
       margin-left: 5px;
       transition: background 0.3s, box-shadow 0.3s;
     }
-    .copy-btn:hover, .expand-btn:hover {
+    .copy-btn:hover, .expand-btn:hover, .download-btn:hover {
       background-color: #d9a80c;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
@@ -254,7 +254,7 @@
     </div>
   </header>
 
-  <!-- Mobile Menu Overlay with Global & Tools Links -->
+  <!-- Mobile Menu Overlay -->
   <div class="mobile-menu-overlay" id="mobileMenu">
     <h2>Navigation</h2>
     <a href="index.html" class="mobile-nav-link">Home</a>
@@ -269,34 +269,26 @@
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('lessonPlanLink'); loadTool('lesson_plan'); toggleMobileMenu();">📚 Lesson Plan Generator</a>
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('quizLink'); loadTool('quiz'); toggleMobileMenu();">❓ Quiz Creator</a>
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('materialsLink'); loadTool('materials'); toggleMobileMenu();">📝 Teaching Materials Generator</a>
+      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('imageLink'); loadTool('image'); toggleMobileMenu();">🖼️ Image Generator</a>
     </div>
   </div>
 
-  <!-- Sidebar for Desktop -->
+  <!-- Sidebar -->
   <aside class="sidebar" role="navigation" aria-label="Tool Navigation">
     <h2>Edvanta Tools</h2>
     <a href="#" class="nav-link" id="tutorLink">💬 AI Tutor Chat</a>
     <a href="#" class="nav-link" id="lessonPlanLink">📚 Lesson Plan Generator</a>
     <a href="#" class="nav-link" id="quizLink">❓ Quiz Creator</a>
     <a href="#" class="nav-link" id="materialsLink">📝 Teaching Materials Generator</a>
+    <a href="#" class="nav-link" id="imageLink">🖼️ Image Generator</a>
   </aside>
 
-  <!-- Main Wrapper -->
+  <!-- Main Content -->
   <div class="main-wrapper">
     <main class="main-content" role="main">
       <h1 class="tool-header">Edvanta Tools</h1>
       <section class="tool-container">
-        <!-- Example for Tutor Chat tool -->
-        <p><strong>How to Use:</strong> Ask questions and receive personalized guidance from our AI-powered tutor. Type your question below and click "Get Answer".</p>
-        <textarea class="input-box" id="tutorInput" rows="4" placeholder="Type your question here..."></textarea>
-        <button class="submit-btn" onclick="sendTutorRequest()">Get Answer</button>
-        <div class="response-container">
-          <div class="response-header">
-            <button class="copy-btn" onclick="copyResponse('tutorResponse')">Copy</button>
-            <button class="expand-btn" id="tutorExpand" onclick="expandContent('tutorResponse', 'tutor')" disabled>Expand Content</button>
-          </div>
-          <div class="response-content" id="tutorResponse" aria-live="polite">AI Response will appear here...</div>
-        </div>
+        <p>Select a tool from the sidebar.</p>
       </section>
     </main>
   </div>
@@ -313,9 +305,7 @@
     </div>
   </footer>
 
-  <!-- Script placed at the end of the body for proper loading -->
   <script defer>
-    // Explicitly attach setActiveLink to the global window object
     window.setActiveLink = function(activeId) {
       const links = document.querySelectorAll('.sidebar .nav-link');
       links.forEach(link => {
@@ -323,7 +313,6 @@
       });
     };
 
-    // Global variables to store generated outputs and track current tool
     let storedToolOutputs = {};
     let currentTool = null;
 
@@ -335,29 +324,22 @@
       hamburger.classList.toggle("open");
     }
 
-    // Updated loadTool function to handle switching tools correctly
     function loadTool(tool) {
-      // Save current tool's output if switching from a different tool
       if (currentTool !== null && currentTool !== tool) {
         storedToolOutputs[currentTool] = document.querySelector('.tool-container').innerHTML;
       }
       currentTool = tool;
-
       const content = document.querySelector('.tool-container');
       const header = document.querySelector('.tool-header');
-
-      // Restore stored output if available
       if (storedToolOutputs.hasOwnProperty(tool) && storedToolOutputs[tool] !== "") {
         header.innerHTML = getHeaderForTool(tool);
         content.innerHTML = storedToolOutputs[tool];
         return;
       }
-
-      // Otherwise, load the default interface for the tool
       if (tool === 'tutor') {
         header.innerHTML = "AI Tutor Chat";
         content.innerHTML = `
-          <p><strong>How to Use:</strong> Ask questions and receive personalized guidance from our AI-powered tutor. Type your question below and click "Get Answer".</p>
+          <p><strong>How to Use:</strong> Ask a question and receive personalized guidance from our AI-powered tutor. Type your question below and click "Get Answer".</p>
           <textarea class="input-box" id="tutorInput" rows="4" placeholder="Type your question here..."></textarea>
           <button class="submit-btn" onclick="sendTutorRequest()">Get Answer</button>
           <div class="response-container">
@@ -365,7 +347,7 @@
               <button class="copy-btn" onclick="copyResponse('tutorResponse')">Copy</button>
               <button class="expand-btn" id="tutorExpand" onclick="expandContent('tutorResponse', 'tutor')" disabled>Expand Content</button>
             </div>
-            <div class="response-content" id="tutorResponse" aria-live="polite">AI Response will appear here...</div>
+            <div class="response-content" id="tutorResponse" aria-live="polite">The tutor's response will appear here...</div>
           </div>
         `;
       } else if (tool === 'lesson_plan') {
@@ -381,7 +363,7 @@
               <button class="copy-btn" onclick="copyResponse('lessonPlanResponse')">Copy</button>
               <button class="expand-btn" id="lessonPlanExpand" onclick="expandContent('lessonPlanResponse', 'lesson_plan')" disabled>Expand Content</button>
             </div>
-            <div class="response-content" id="lessonPlanResponse" aria-live="polite">Lesson plan will appear here...</div>
+            <div class="response-content" id="lessonPlanResponse" aria-live="polite">The lesson plan will appear here...</div>
           </div>
         `;
       } else if (tool === 'quiz') {
@@ -394,7 +376,7 @@
             <div class="response-header">
               <button class="copy-btn" onclick="copyResponse('quizResponse')">Copy</button>
             </div>
-            <div class="response-content" id="quizResponse" aria-live="polite">Quiz will appear here...</div>
+            <div class="response-content" id="quizResponse" aria-live="polite">The quiz will appear here...</div>
           </div>
         `;
       } else if (tool === 'materials') {
@@ -413,22 +395,35 @@
               <button class="copy-btn" onclick="copyResponse('materialsResponse')">Copy</button>
               <button class="expand-btn" id="materialsExpand" onclick="expandContent('materialsResponse', 'materials')" disabled>Expand Content</button>
             </div>
-            <div class="response-content" id="materialsResponse" aria-live="polite">Teaching materials will appear here...</div>
+            <div class="response-content" id="materialsResponse" aria-live="polite">The teaching materials will appear here...</div>
+          </div>
+        `;
+      } else if (tool === 'image') {
+        header.innerHTML = "Image Generator";
+        content.innerHTML = `
+          <p><strong>How to Use:</strong> Enter a detailed prompt to generate a high-quality educational image. For example: "Ultra-detailed, high-resolution illustration of the water cycle for elementary students, with vivid colors and no text overlay." Then click "Generate Image".</p>
+          <input type="text" class="input-box" id="imgPrompt" style="width:100%; font-size:16px; padding:12px;" placeholder="Enter your detailed image prompt here...">
+          <button class="submit-btn" onclick="generateImage()">Generate Image</button>
+          <div class="response-container">
+            <div class="response-header">
+              <button class="copy-btn" onclick="copyResponse('imageResponse')">Copy</button>
+              <button class="download-btn" onclick="downloadImage('imageResponse')">Download</button>
+            </div>
+            <div class="response-content" id="imageResponse" aria-live="polite">The generated image will appear here...</div>
           </div>
         `;
       }
     }
 
-    // Helper to return header text based on tool
     function getHeaderForTool(tool) {
       if (tool === 'tutor') return "AI Tutor Chat";
       if (tool === 'lesson_plan') return "Lesson Plan Generator";
       if (tool === 'quiz') return "Quiz Creator";
       if (tool === 'materials') return "Teaching Materials Generator";
+      if (tool === 'image') return "Image Generator";
       return "Edvanta Tools";
     }
 
-    // Enable the Expand Content button after a successful generation
     function enableExpandButton(responseId, buttonId) {
       const responseContent = document.getElementById(responseId).innerText;
       const btn = document.getElementById(buttonId);
@@ -464,7 +459,6 @@
       });
       let data = await response.json();
       responseBox.innerHTML = data.quiz || "❌ Error generating quiz.";
-      // Quiz tool does not have expand functionality.
     }
 
     async function generateMaterials() {
@@ -506,29 +500,43 @@
       }
     }
 
-    async function expandContent(responseId, toolType) {
-      const responseContainer = document.getElementById(responseId);
-      const currentContent = responseContainer.innerText;
-      if (!currentContent || currentContent.trim() === "") {
-        alert("There is no content to expand.");
+    async function generateImage() {
+      const prompt = document.getElementById("imgPrompt").value.trim();
+      const responseBox = document.getElementById("imageResponse");
+      if (!prompt) {
+        responseBox.innerHTML = "<p style='color:red;'>Please enter a prompt.</p>";
         return;
       }
-      responseContainer.innerHTML = "🔄 Expanding content...";
+      responseBox.innerHTML = "🔄 Generating image, please wait...";
       try {
-        const res = await fetch("https://edu-ai-backend-production.up.railway.app/expand_content", {
+        const response = await fetch("https://edu-ai-backend-production.up.railway.app/image_generator", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ content: currentContent, tool: toolType })
+          body: JSON.stringify({ prompt: prompt })
         });
-        const data = await res.json();
-        if (data.expanded_content) {
-          // Append a note explaining the expansion
-          responseContainer.innerHTML = data.expanded_content + "<br><br><small>Content was expanded with additional details and context by our advanced AI elaboration.</small>";
+        const data = await response.json();
+        if (data.image_url) {
+          responseBox.innerHTML = `<img src="${data.image_url}" alt="Generated Educational Image"><br><br><small>Image generated based on your prompt.</small>`;
         } else {
-          responseContainer.innerHTML = "❌ Error expanding content.";
+          responseBox.innerHTML = `<p style='color:red;'>Error: ${data.error}</p>`;
         }
       } catch (error) {
-        responseContainer.innerHTML = `❌ Error: ${error.message}`;
+        responseBox.innerHTML = `<p style='color:red;'>Error: ${error.message}</p>`;
+      }
+    }
+
+    function downloadImage(responseId) {
+      const responseContainer = document.getElementById(responseId);
+      const imgElem = responseContainer.querySelector("img");
+      if (imgElem && imgElem.src) {
+        const link = document.createElement("a");
+        link.href = imgElem.src;
+        link.download = "generated-image.png";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        alert("No image available to download.");
       }
     }
 
@@ -539,7 +547,6 @@
         .catch(err => { console.error("Copy error:", err); });
     }
 
-    // Set up event listeners for tool navigation once DOM is loaded
     window.onload = function() {
       document.getElementById("tutorLink").addEventListener("click", function(e) {
         e.preventDefault();
@@ -560,6 +567,11 @@
         e.preventDefault();
         setActiveLink("materialsLink");
         loadTool('materials');
+      });
+      document.getElementById("imageLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("imageLink");
+        loadTool('image');
       });
     };
   </script>
