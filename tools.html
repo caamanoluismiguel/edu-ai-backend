@@ -13,11 +13,7 @@
       --text-color: #212529;
       --bg-color: #F8F9FA;
     }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Lato', sans-serif;
       background-color: var(--bg-color);
@@ -36,14 +32,8 @@
       top: 0; left: 0; right: 0;
       z-index: 1000;
     }
-    .global-header h1 {
-      font-size: 24px;
-      margin: 0;
-    }
-    .global-nav {
-      display: flex;
-      gap: 15px;
-    }
+    .global-header h1 { font-size: 24px; }
+    .global-nav { display: flex; gap: 15px; }
     .nav-link-global {
       text-decoration: none;
       color: white;
@@ -56,29 +46,18 @@
     }
     .hamburger {
       display: none;
-      width: 25px;
-      height: 25px;
-      cursor: pointer;
-      flex-direction: column;
-      justify-content: space-around;
+      width: 25px; height: 25px;
+      cursor: pointer; flex-direction: column; justify-content: space-around;
       z-index: 1100;
     }
     .hamburger span {
-      display: block;
-      height: 3px;
-      background: white;
+      display: block; height: 3px; background: white;
       border-radius: 3px;
       transition: transform 0.3s ease, opacity 0.3s ease;
     }
-    .hamburger.open span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-    .hamburger.open span:nth-child(2) {
-      opacity: 0;
-    }
-    .hamburger.open span:nth-child(3) {
-      transform: rotate(-45deg) translate(5px, -5px);
-    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
     .mobile-menu-overlay {
       display: none;
       position: fixed;
@@ -142,10 +121,7 @@
       top: 70px; bottom: 50px;
       transition: all 0.3s ease;
     }
-    .sidebar h2 {
-      font-size: 20px;
-      margin-bottom: 20px;
-    }
+    .sidebar h2 { font-size: 20px; margin-bottom: 20px; }
     .nav-link {
       text-decoration: none;
       color: white;
@@ -156,42 +132,18 @@
       transition: background 0.3s;
       cursor: pointer;
     }
-    .nav-link:hover {
-      background-color: var(--edvanta-yellow);
-      color: var(--text-color);
-    }
-    .nav-link.active {
-      background-color: var(--edvanta-yellow);
-      color: var(--text-color);
-      font-weight: bold;
-    }
-    .main-wrapper {
-      display: flex;
-      min-height: calc(100vh - 120px);
-    }
-    .main-content {
-      margin-left: 270px;
-      padding: 40px;
-      flex-grow: 1;
-    }
-    .tool-header {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
+    .nav-link:hover { background-color: var(--edvanta-yellow); color: var(--text-color); }
+    .nav-link.active { background-color: var(--edvanta-yellow); color: var(--text-color); font-weight: bold; }
+    .main-wrapper { display: flex; min-height: calc(100vh - 120px); }
+    .main-content { margin-left: 270px; padding: 40px; flex-grow: 1; }
+    .tool-header { font-size: 24px; margin-bottom: 20px; }
     .tool-container {
       background: white;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    .input-box {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin-bottom: 15px;
-    }
+    .input-box { width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px; }
     .submit-btn {
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
@@ -202,10 +154,7 @@
       cursor: pointer;
       transition: background 0.3s, box-shadow 0.3s;
     }
-    .submit-btn:hover {
-      background-color: #d9a80c;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
+    .submit-btn:hover { background-color: #d9a80c; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
     .response-container {
       margin-top: 20px;
       border: 1px solid #ddd;
@@ -220,9 +169,7 @@
       justify-content: flex-end;
       align-items: center;
     }
-    .copy-btn,
-    .expand-btn,
-    .download-btn {
+    .copy-btn, .expand-btn, .download-btn {
       background-color: var(--edvanta-yellow);
       border: none;
       color: var(--text-color);
@@ -233,18 +180,8 @@
       margin-left: 5px;
       transition: background 0.3s, box-shadow 0.3s;
     }
-    .copy-btn:hover,
-    .expand-btn:hover,
-    .download-btn:hover {
-      background-color: #d9a80c;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-    .expand-btn:disabled {
-      background-color: #ccc;
-      color: #888;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
+    .copy-btn:hover, .expand-btn:hover, .download-btn:hover { background-color: #d9a80c; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+    .expand-btn:disabled { background-color: #ccc; color: #888; cursor: not-allowed; box-shadow: none; }
     .response-content {
       padding: 20px;
       background: #f9f9f9;
@@ -263,10 +200,7 @@
       position: fixed;
       bottom: 0; left: 0; right: 0;
     }
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+    .footer-content { max-width: 1200px; margin: 0 auto; }
     .footer-nav {
       margin-top: 10px;
       display: flex;
@@ -279,22 +213,12 @@
       font-size: 14px;
       transition: color 0.3s;
     }
-    .footer-link:hover {
-      color: var(--edvanta-blue);
-    }
+    .footer-link:hover { color: var(--edvanta-blue); }
     @media (max-width: 768px) {
-      .sidebar {
-        display: none;
-      }
-      .main-content {
-        margin-left: 0;
-      }
-      .hamburger {
-        display: flex;
-      }
-      .global-nav {
-        display: none;
-      }
+      .sidebar { display: none; }
+      .main-content { margin-left: 0; }
+      .hamburger { display: flex; }
+      .global-nav { display: none; }
     }
   </style>
 </head>
@@ -324,7 +248,7 @@
     <a href="contact.html" class="mobile-nav-link">Contact</a>
     <a href="help.html" class="mobile-nav-link">Help</a>
     <a href="tools-es.html" class="mobile-nav-link">ES</a>
-    <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.2); margin:15px 0;">
+    <hr style="border: none; border-top:1px solid rgba(255,255,255,0.2); margin:15px 0;">
     <div class="mobile-tools-section">
       <h2>Tools</h2>
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('tutorLink'); loadTool('tutor'); toggleMobileMenu();">💬 AI Tutor Chat</a>
@@ -345,7 +269,7 @@
     <a href="#" class="nav-link" id="imageLink">🖼️ Image Generator</a>
   </aside>
 
-  <!-- Main Wrapper -->
+  <!-- Main Content -->
   <div class="main-wrapper">
     <main class="main-content" role="main">
       <h1 class="tool-header">Edvanta Tools</h1>
@@ -367,8 +291,8 @@
     </div>
   </footer>
 
-  <script defer>
-    // Mark the active link in the sidebar
+  <script>
+    // Mark active link
     window.setActiveLink = function(activeId) {
       const links = document.querySelectorAll('.sidebar .nav-link');
       links.forEach(link => {
@@ -378,42 +302,56 @@
 
     let storedToolOutputs = {};
     let currentTool = null;
-
     const mobileMenu = document.getElementById("mobileMenu");
     const hamburger = document.getElementById("hamburger");
-
+    
     function toggleMobileMenu() {
       mobileMenu.classList.toggle("open");
       hamburger.classList.toggle("open");
     }
-
-    // Expand Content placeholder (avoid console errors)
-    window.expandContent = function(responseId, toolName) {
-      alert("Expand feature is not implemented. This is just a placeholder function.");
-    };
-
-    // loadTool: Save current tool output and load the new tool
+    
+    // Expand Content function (calls backend /expand_content)
+    async function expandContent(responseId, toolName) {
+      const responseBox = document.getElementById(responseId);
+      const currentText = responseBox.innerText;
+      if (!currentText || currentText.trim() === "") {
+        alert("No content available to expand.");
+        return;
+      }
+      responseBox.innerHTML = "🔄 Expanding content, please wait...";
+      try {
+        const res = await fetch("https://edu-ai-backend-production.up.railway.app/expand_content", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ content: currentText, tool: toolName })
+        });
+        const data = await res.json();
+        if (data.expanded_content) {
+          responseBox.innerHTML = data.expanded_content;
+        } else {
+          responseBox.innerHTML = `<p style='color:red;'>Error: ${data.error}</p>`;
+        }
+      } catch (error) {
+        responseBox.innerHTML = `<p style='color:red;'>Error: ${error.message}</p>`;
+      }
+    }
+    
     function loadTool(tool) {
       if (currentTool !== null && currentTool !== tool) {
         storedToolOutputs[currentTool] = document.querySelector('.tool-container').innerHTML;
       }
       currentTool = tool;
-
       const content = document.querySelector('.tool-container');
       const header = document.querySelector('.tool-header');
-
-      // If we already have stored content, restore it
       if (storedToolOutputs.hasOwnProperty(tool) && storedToolOutputs[tool] !== "") {
         header.innerHTML = getHeaderForTool(tool);
         content.innerHTML = storedToolOutputs[tool];
         return;
       }
-
-      // Otherwise, define new content for the tool
       if (tool === 'tutor') {
         header.innerHTML = "AI Tutor Chat";
         content.innerHTML = `
-          <p><strong>How to Use:</strong> Ask a question and receive personalized guidance from our AI-powered tutor. Type your question below and click "Get Answer".</p>
+          <p><strong>How to Use:</strong> Ask a question and receive personalized guidance. Type your question below and click "Get Answer".</p>
           <textarea class="input-box" id="tutorInput" rows="4" placeholder="Type your question here..."></textarea>
           <button class="submit-btn" onclick="sendTutorRequest()">Get Answer</button>
           <div class="response-container">
@@ -443,7 +381,7 @@
       } else if (tool === 'quiz') {
         header.innerHTML = "Quiz Creator";
         content.innerHTML = `
-          <p><strong>How to Use:</strong> Create engaging quizzes effortlessly. Enter a quiz topic and click "Generate Quiz" to have our AI generate relevant questions and answers.</p>
+          <p><strong>How to Use:</strong> Create engaging quizzes effortlessly. Enter a quiz topic and click "Generate Quiz".</p>
           <input type="text" class="input-box" id="quizTopic" placeholder="Enter Quiz Topic">
           <button class="submit-btn" onclick="generateQuiz()">Generate Quiz</button>
           <div class="response-container">
@@ -488,8 +426,7 @@
         `;
       }
     }
-
-    // Return appropriate header text for each tool
+    
     function getHeaderForTool(tool) {
       if (tool === 'tutor') return "AI Tutor Chat";
       if (tool === 'lesson_plan') return "Lesson Plan Generator";
@@ -498,7 +435,7 @@
       if (tool === 'image') return "Image Generator";
       return "Edvanta Tools";
     }
-
+    
     function enableExpandButton(responseId, buttonId) {
       const responseContent = document.getElementById(responseId).innerText;
       const btn = document.getElementById(buttonId);
@@ -506,9 +443,7 @@
         btn.disabled = false;
       }
     }
-
-    // ========== Tools' fetch-based functions ==========
-
+    
     async function generateLessonPlan() {
       const responseBox = document.getElementById("lessonPlanResponse");
       responseBox.innerHTML = "🔄 Generating lesson plan...";
@@ -529,7 +464,7 @@
         responseBox.innerHTML = `❌ Error: ${error.message}`;
       }
     }
-
+    
     async function generateQuiz() {
       const responseBox = document.getElementById("quizResponse");
       responseBox.innerHTML = "🔄 Generating quiz...";
@@ -545,7 +480,7 @@
         responseBox.innerHTML = `❌ Error: ${error.message}`;
       }
     }
-
+    
     async function generateMaterials() {
       const responseBox = document.getElementById("materialsResponse");
       responseBox.innerHTML = "🔄 Generating materials...";
@@ -565,7 +500,7 @@
         responseBox.innerHTML = `❌ Error: ${error.message}`;
       }
     }
-
+    
     async function sendTutorRequest() {
       const input = document.getElementById("tutorInput").value.trim();
       const responseBox = document.getElementById("tutorResponse");
@@ -587,7 +522,7 @@
         responseBox.innerHTML = `❌ Error: ${error.message}`;
       }
     }
-
+    
     async function generateImage() {
       const prompt = document.getElementById("imgPrompt").value.trim();
       const responseBox = document.getElementById("imageResponse");
@@ -609,10 +544,10 @@
           responseBox.innerHTML = `<p style='color:red;'>Error: ${data.error}</p>`;
         }
       } catch (error) {
-        responseBox.innerHTML = `❌ Error: ${error.message}`;
+        responseBox.innerHTML = `<p style='color:red;'>Error: ${error.message}</p>`;
       }
     }
-
+    
     function downloadImage(responseId) {
       const responseContainer = document.getElementById(responseId);
       const imgElem = responseContainer.querySelector("img");
@@ -627,15 +562,14 @@
         alert("No image available to download.");
       }
     }
-
+    
     function copyResponse(responseId) {
       const textToCopy = document.getElementById(responseId).innerText;
       navigator.clipboard.writeText(textToCopy)
         .then(() => { alert("Response copied to clipboard!"); })
         .catch(err => { console.error("Copy error:", err); });
     }
-
-    // Set up event listeners once the page loads
+    
     window.onload = function() {
       document.getElementById("tutorLink").addEventListener("click", function(e) {
         e.preventDefault();
