@@ -3,7 +3,6 @@ import openai
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
-from flask_caching import Cache  # For caching responses
 
 # Load environment variables
 load_dotenv()
@@ -11,38 +10,25 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-# Configure and initialize the cache (using SimpleCache for demonstration)
-cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache', 'CACHE_DEFAULT_TIMEOUT': 300})
-
-# Get OpenAI API Key from environment variables
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
-    raise ValueError("Missing OpenAI API Key. Ensure it's set in your environment variables.")
-
+    raise ValueError("Missing OpenAI API Key. Ensure it's set in Railway's environment variables.")
 openai.api_key = OPENAI_API_KEY
 
-# AI Tutor Assistant API with caching
+# AI Tutor Assistant API
 @app.route('/tutor_assistant', methods=['POST'])
 def tutor_assistant():
     try:
         data = request.get_json()
-        question = data.get("question", "").strip()
-
+        question = data.get("question", "")
         if not question:
             return jsonify({"error": "Please provide a question for the AI Tutor."}), 400
 
-        # Use a cache key based on the lowercased question
-        cache_key = f"tutor_{question.lower()}"
-        cached_response = cache.get(cache_key)
-        if cached_response:
-            return jsonify({"response": cached_response})
-
         prompt = f"""
-You are an experienced education coach helping teachers improve their lessons, student engagement, and teaching strategies.
+You are an experienced education coach helping teachers improve their lessons and strategies.
 Teacher's Question: "{question}"
 Provide a well-structured response with actionable advice.
 """
-
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
@@ -51,9 +37,7 @@ Provide a well-structured response with actionable advice.
             ],
             temperature=0.7
         )
-
         ai_response = response["choices"][0]["message"]["content"]
-        cache.set(cache_key, ai_response)
         return jsonify({"response": ai_response})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -63,28 +47,24 @@ Provide a well-structured response with actionable advice.
 def lesson_plan():
     try:
         data = request.get_json()
-        subject = data.get("subject", "").strip()
-        grade_level = data.get("grade_level", "").strip()
-        learning_goals = data.get("learning_goals", "").strip()
-
+        subject = data.get("subject", "")
+        grade_level = data.get("grade_level", "")
+        learning_goals = data.get("learning_goals", "")
         if not subject or not grade_level or not learning_goals:
             return jsonify({"error": "Please provide subject, grade level, and learning goals."}), 400
 
         prompt = f"""
 You are an expert educator creating structured lesson plans for teachers.
-
 Subject: {subject}
 Grade Level: {grade_level}
 Learning Goals: {learning_goals}
-
-Generate a detailed lesson plan including:
+Generate a detailed lesson plan with:
 - Lesson Objectives
 - Introduction
 - Activities
 - Assessment Methods
 - Conclusion
 """
-
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
@@ -103,22 +83,17 @@ Generate a detailed lesson plan including:
 def quiz_creator():
     try:
         data = request.get_json()
-        topic = data.get("topic", "").strip()
-        question_type = data.get("question_type", "multiple-choice").strip()
-
+        topic = data.get("topic", "")
+        question_type = data.get("question_type", "multiple-choice")
         if not topic:
             return jsonify({"error": "Please provide a quiz topic."}), 400
 
         prompt = f"""
 You are an expert quiz creator for educational purposes.
-
 Topic: {topic}
 Question Type: {question_type}
-
-Generate a structured quiz with at least 5 questions based on the given topic.
-If multiple-choice, provide four answer options per question with the correct answer marked.
+Generate a structured quiz with at least 5 questions. If multiple-choice, include four options per question and mark the correct answer.
 """
-
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
@@ -137,22 +112,18 @@ If multiple-choice, provide four answer options per question with the correct an
 def teaching_materials():
     try:
         data = request.get_json()
-        topic = data.get("topic", "").strip()
-        material_type = data.get("material_type", "study_guide").strip()
-
+        topic = data.get("topic", "")
+        material_type = data.get("material_type", "study_guide")
         if not topic:
             return jsonify({"error": "Please provide a topic."}), 400
 
         prompt = f"""
 You are an expert in creating educational materials for teachers.
-
 Topic: {topic}
 Material Type: {material_type}
-
-Generate detailed and structured content for the selected material type.
-If it's a PowerPoint slide, outline the key slides. If it's a worksheet, provide structured questions.
+Generate detailed and structured content based on the selected material type.
+For PowerPoint slides, outline key slides. For worksheets, provide structured questions.
 """
-
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
@@ -166,31 +137,33 @@ If it's a PowerPoint slide, outline the key slides. If it's a worksheet, provide
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Simplified Image Generator API endpoint (new)
-@app.route('/image_generator', methods=['POST'])
-def image_generator():
+# NEW: Expand Content API
+@app.route('/expand_content', methods=['POST'])
+def expand_content():
     try:
         data = request.get_json()
-        prompt = data.get("prompt", "").strip()
-        if not prompt:
-            return jsonify({"error": "Please provide a prompt."}), 400
+        current_content = data.get("content", "")
+        tool = data.get("tool", "")
+        if not current_content:
+            return jsonify({"error": "No content provided for expansion."}), 400
 
-        # Use a default size (square) for all images
-        size = "1024x1024"
-
-        # Refine the prompt to include descriptors for high quality and no text overlay.
-        refined_prompt = (
-            f"Generate an ultra-detailed, high-resolution, and vivid educational illustration based on the prompt: {prompt}. "
-            f"The image should be visually appealing, in a realistic style, and must not contain any text overlay."
+        # Create a prompt to expand the given content
+        prompt = f"""
+You are an expert in educational content enhancement.
+Expand and elaborate on the following content to provide additional detail and insights. Ensure the response is well-structured and actionable.
+Content: {current_content}
+Tool: {tool}
+"""
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are an expert content expander."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7
         )
-
-        response = openai.Image.create(
-            prompt=refined_prompt,
-            n=1,
-            size=size
-        )
-        image_url = response["data"][0]["url"]
-        return jsonify({"image_url": image_url})
+        expanded_content = response["choices"][0]["message"]["content"]
+        return jsonify({"expanded_content": expanded_content})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
