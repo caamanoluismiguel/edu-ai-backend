@@ -137,6 +137,25 @@ For PowerPoint slides, outline key slides. For worksheets, provide structured qu
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# NEW: Image Generator API
+@app.route('/image_generator', methods=['POST'])
+def image_generator():
+    try:
+        data = request.get_json()
+        prompt = data.get("prompt", "")
+        if not prompt:
+            return jsonify({"error": "Please provide an image prompt."}), 400
+
+        response = openai.Image.create(
+            prompt=prompt,
+            n=1,
+            size="1024x1024"
+        )
+        image_url = response["data"][0]["url"]
+        return jsonify({"image_url": image_url})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 # NEW: Expand Content API
 @app.route('/expand_content', methods=['POST'])
 def expand_content():
