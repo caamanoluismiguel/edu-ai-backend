@@ -29,6 +29,7 @@
       flex-direction: column;
       min-height: 100vh;
     }
+    /* Global Header */
     .global-header {
       background-color: var(--edvanta-blue);
       color: white;
@@ -43,9 +44,10 @@
       z-index: 1000;
     }
     .global-header h1 {
-      margin: 0;
       font-size: 24px;
+      margin: 0;
     }
+    /* Global Navigation */
     .global-nav {
       display: flex;
       gap: 15px;
@@ -60,6 +62,7 @@
       color: var(--edvanta-yellow);
       text-shadow: 0 0 3px rgba(244,194,13,0.5);
     }
+    /* Hamburger Icon */
     .hamburger {
       display: none;
       width: 25px;
@@ -79,12 +82,11 @@
     .hamburger.open span:nth-child(1) {
       transform: rotate(45deg) translate(5px, 5px);
     }
-    .hamburger.open span:nth-child(2) {
-      opacity: 0;
-    }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) {
       transform: rotate(-45deg) translate(5px, -5px);
     }
+    /* Mobile Menu Overlay */
     .mobile-menu-overlay {
       display: none;
       position: fixed;
@@ -105,10 +107,19 @@
       transform: translateY(0);
       opacity: 1;
     }
-    .mobile-menu-overlay h2 {
-      color: white;
-      margin-bottom: 20px;
+    /* Mobile Menu Close Button */
+    .mobile-menu-close {
+      text-align: right;
+      margin-bottom: 10px;
     }
+    .mobile-menu-close button {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
+    /* Mobile Navigation Links */
     .mobile-nav-link {
       display: block;
       color: white;
@@ -122,6 +133,7 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
+    /* Hero Section */
     .hero {
       flex: 1;
       display: flex;
@@ -137,7 +149,7 @@
     .hero::before {
       content: "";
       position: absolute;
-      top:0; left:0; right:0; bottom:0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0.4);
       z-index: 1;
     }
@@ -173,6 +185,7 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
+    /* Global Footer */
     .global-footer {
       background-color: var(--bg-color);
       color: var(--text-color);
@@ -204,30 +217,25 @@
       color: var(--edvanta-blue);
     }
     @media (max-width: 768px) {
-      .global-nav {
-        display: none;
-      }
-      .hamburger {
-        display: flex;
-      }
-      .hero {
-        margin-top: 60px;
-      }
+      .global-nav { display: none; }
+      .hamburger { display: flex; }
+      .hero { margin-top: 60px; }
     }
   </style>
 </head>
 <body>
+  <!-- Global Header -->
   <header class="global-header" role="banner">
     <h1>Edvanta</h1>
-    <!-- Desktop Navigation -->
     <nav class="global-nav" role="navigation" aria-label="Main Navigation">
       <a href="index.html" class="nav-link-global">Home</a>
       <a href="about.html" class="nav-link-global">About</a>
       <a href="contact.html" class="nav-link-global">Contact</a>
       <a href="help.html" class="nav-link-global">Help</a>
+      <a href="tools.html" class="nav-link-global">Tools</a>
+      <a href="learning-hub.html" class="nav-link-global">Learning Hub</a>
       <a href="index-es.html" class="nav-link-global">ES</a>
     </nav>
-    <!-- Hamburger Icon (Mobile) -->
     <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
       <span></span>
       <span></span>
@@ -237,11 +245,15 @@
 
   <!-- Mobile Menu Overlay -->
   <div class="mobile-menu-overlay" id="mobileMenu">
-    <h2>Navigation</h2>
+    <div class="mobile-menu-close">
+      <button onclick="toggleMobileMenu()">×</button>
+    </div>
     <a href="index.html" class="mobile-nav-link">Home</a>
     <a href="about.html" class="mobile-nav-link">About</a>
     <a href="contact.html" class="mobile-nav-link">Contact</a>
     <a href="help.html" class="mobile-nav-link">Help</a>
+    <a href="tools.html" class="mobile-nav-link">Tools</a>
+    <a href="learning-hub.html" class="mobile-nav-link">Learning Hub</a>
     <a href="index-es.html" class="mobile-nav-link">ES</a>
   </div>
 
@@ -256,7 +268,7 @@
     </div>
   </main>
 
-  <!-- Footer -->
+  <!-- Global Footer -->
   <footer class="global-footer" role="contentinfo">
     <div class="footer-content">
       <p>&copy; 2025 Edvanta. All Rights Reserved.</p>

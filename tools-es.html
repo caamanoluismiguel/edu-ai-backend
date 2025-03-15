@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Las Herramientas de Edvanta ofrecen soluciones innovadoras impulsadas por IA para educadores. Utiliza nuestro Chat Tutor IA, Generador de Planes de Clase, Creador de Quiz, Generador de Materiales Didácticos y Generador de Imágenes para mejorar tu experiencia docente."/>
+  <meta name="description" content="Herramientas Edvanta ofrece soluciones innovadoras impulsadas por IA para educadores. Utiliza nuestro Chat Tutor IA, Generador de Planes de Clase, Creador de Quiz, Generador de Materiales Didácticos y Generador de Imágenes para mejorar tu experiencia docente."/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Herramientas Edvanta - Avanzando la Educación con IA</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
@@ -25,6 +25,7 @@
       padding-top: 70px;
       padding-bottom: 50px;
     }
+    /* Global Header */
     .global-header {
       background-color: var(--edvanta-blue);
       color: white;
@@ -40,6 +41,7 @@
       font-size: 24px;
       margin: 0;
     }
+    /* Global Navigation (Desktop) */
     .global-nav {
       display: flex;
       gap: 15px;
@@ -54,6 +56,7 @@
       color: var(--edvanta-yellow);
       text-shadow: 0 0 3px rgba(244,194,13,0.5);
     }
+    /* Hamburger Icon */
     .hamburger {
       display: none;
       width: 25px;
@@ -79,10 +82,11 @@
     .hamburger.open span:nth-child(3) {
       transform: rotate(-45deg) translate(5px, -5px);
     }
+    /* Mobile Menu Overlay */
     .mobile-menu-overlay {
       display: none;
       position: fixed;
-      top: 70px; left: 0; right: 0; bottom: 50px;
+      top: 0; left: 0; right: 0; bottom: 0;
       background-color: var(--edvanta-blue);
       z-index: 1000;
       padding: 20px;
@@ -96,16 +100,23 @@
       transform: translateY(0);
       opacity: 1;
     }
-    .mobile-menu-overlay h2 {
-      color: white;
-      margin-bottom: 20px;
-      font-size: 20px;
+    .mobile-menu-close {
+      text-align: right;
+      margin-bottom: 10px;
     }
+    .mobile-menu-close button {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
+    /* Mobile Navigation Links */
     .mobile-nav-link {
       display: block;
       color: white;
       text-decoration: none;
-      font-size: 16px;
+      font-size: 18px;
       padding: 15px 0;
       border-bottom: 1px solid rgba(255,255,255,0.2);
       transition: background 0.3s;
@@ -114,8 +125,14 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
+    /* Tools Section in Mobile Menu */
     .mobile-tools-section {
       margin-top: 15px;
+    }
+    .mobile-tools-section h2 {
+      color: white;
+      font-size: 20px;
+      margin-bottom: 10px;
     }
     .mobile-tools-link {
       display: block;
@@ -130,6 +147,7 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
+    /* Sidebar */
     .sidebar {
       width: 250px;
       background-color: var(--edvanta-blue);
@@ -166,6 +184,7 @@
       color: var(--text-color);
       font-weight: bold;
     }
+    /* Main Wrapper */
     .main-wrapper {
       display: flex;
       min-height: calc(100vh - 120px);
@@ -221,9 +240,7 @@
       justify-content: flex-end;
       align-items: center;
     }
-    .copy-btn,
-    .expand-btn,
-    .download-btn {
+    .copy-btn, .expand-btn, .download-btn {
       background-color: var(--edvanta-yellow);
       border: none;
       color: var(--text-color);
@@ -255,6 +272,7 @@
       max-height: 300px;
       overflow-y: auto;
     }
+    /* Global Footer */
     .global-footer {
       background-color: var(--bg-color);
       color: var(--text-color);
@@ -262,7 +280,9 @@
       text-align: center;
       border-top: 1px solid #ccc;
       position: fixed;
-      bottom: 0; left: 0; right: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
     }
     .footer-content {
       max-width: 1200px;
@@ -284,23 +304,16 @@
       color: var(--edvanta-blue);
     }
     @media (max-width: 768px) {
-      .sidebar {
-        display: none;
-      }
-      .main-content {
-        margin-left: 0;
-      }
-      .hamburger {
-        display: flex;
-      }
-      .global-nav {
-        display: none;
-      }
+      .global-nav { display: none; }
+      .hamburger { display: flex; }
+      /* Hide the sidebar on mobile, since we replicate Tools links in the mobile menu. */
+      .sidebar { display: none; }
+      .main-content { margin-left: 0; }
     }
   </style>
 </head>
 <body>
-  <!-- Encabezado Global -->
+  <!-- Global Header -->
   <header class="global-header" role="banner">
     <h1>Edvanta</h1>
     <nav class="global-nav" role="navigation" aria-label="Navegación Principal">
@@ -308,6 +321,8 @@
       <a href="about-es.html" class="nav-link-global">Acerca de</a>
       <a href="contact-es.html" class="nav-link-global">Contacto</a>
       <a href="help-es.html" class="nav-link-global">Ayuda</a>
+      <a href="tools-es.html" class="nav-link-global">Herramientas</a>
+      <a href="learning-hub-es.html" class="nav-link-global">Centro de Aprendizaje</a>
       <a href="tools.html" class="nav-link-global">EN</a>
     </nav>
     <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
@@ -316,16 +331,22 @@
       <span></span>
     </div>
   </header>
-
-  <!-- Menú Móvil -->
+  
+  <!-- Mobile Menu Overlay -->
   <div class="mobile-menu-overlay" id="mobileMenu">
-    <h2>Navegación</h2>
+    <div class="mobile-menu-close">
+      <button onclick="toggleMobileMenu()">×</button>
+    </div>
+    <!-- Top-level links -->
     <a href="index-es.html" class="mobile-nav-link">Inicio</a>
     <a href="about-es.html" class="mobile-nav-link">Acerca de</a>
     <a href="contact-es.html" class="mobile-nav-link">Contacto</a>
     <a href="help-es.html" class="mobile-nav-link">Ayuda</a>
+    <a href="tools-es.html" class="mobile-nav-link">Herramientas</a>
+    <a href="learning-hub-es.html" class="mobile-nav-link">Centro de Aprendizaje</a>
     <a href="tools.html" class="mobile-nav-link">EN</a>
-    <hr style="border: none; border-top:1px solid rgba(255,255,255,0.2); margin:15px 0;">
+    <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.2); margin:15px 0;">
+    <!-- Tools sub-links in mobile menu -->
     <div class="mobile-tools-section">
       <h2>Herramientas</h2>
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('tutorLink'); loadTool('tutor'); toggleMobileMenu();">💬 Chat Tutor IA</a>
@@ -335,8 +356,8 @@
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('imageLink'); loadTool('image'); toggleMobileMenu();">🖼️ Generador de Imágenes</a>
     </div>
   </div>
-
-  <!-- Barra Lateral -->
+  
+  <!-- (Hidden) Sidebar for Tools on Desktop -->
   <aside class="sidebar" role="navigation" aria-label="Navegación de Herramientas">
     <h2>Herramientas Edvanta</h2>
     <a href="#" class="nav-link" id="tutorLink">💬 Chat Tutor IA</a>
@@ -345,8 +366,8 @@
     <a href="#" class="nav-link" id="materialsLink">📝 Generador de Materiales Didácticos</a>
     <a href="#" class="nav-link" id="imageLink">🖼️ Generador de Imágenes</a>
   </aside>
-
-  <!-- Contenedor Principal -->
+  
+  <!-- Main Tools Content -->
   <div class="main-wrapper">
     <main class="main-content" role="main">
       <h1 class="tool-header">Herramientas Edvanta</h1>
@@ -355,42 +376,41 @@
       </section>
     </main>
   </div>
-
-  <!-- Pie de Página Global -->
+  
+  <!-- Global Footer -->
   <footer class="global-footer" role="contentinfo">
     <div class="footer-content">
       <p>&copy; 2025 Edvanta. Todos los derechos reservados.</p>
       <nav class="footer-nav">
-        <a href="#" class="footer-link">Preguntas frecuentes</a>
-        <a href="#" class="footer-link">Términos del servicio</a>
-        <a href="#" class="footer-link">Política de privacidad</a>
+        <a href="#" class="footer-link">Preguntas Frecuentes</a>
+        <a href="#" class="footer-link">Términos del Servicio</a>
+        <a href="#" class="footer-link">Política de Privacidad</a>
       </nav>
     </div>
   </footer>
-
+  
   <script defer>
-    window.setActiveLink = function(activeId) {
-      const links = document.querySelectorAll('.sidebar .nav-link');
-      links.forEach(link => {
-        link.classList.toggle('active', link.id === activeId);
-      });
-    };
-
-    let storedToolOutputs = {};
-    let currentTool = null;
-
-    const mobileMenu = document.getElementById("mobileMenu");
-    const hamburger = document.getElementById("hamburger");
-
+    // Toggle the mobile menu
     function toggleMobileMenu() {
+      const mobileMenu = document.getElementById("mobileMenu");
+      const hamburger = document.getElementById("hamburger");
       mobileMenu.classList.toggle("open");
       hamburger.classList.toggle("open");
     }
-
-    // Función Expandir Contenido actualizada
+    
+    // Enable the expand button if content is available
+    function enableExpandButton(responseId, buttonId) {
+      const responseContent = document.getElementById(responseId).innerText;
+      const button = document.getElementById(buttonId);
+      if (responseContent && responseContent.trim() !== "") {
+        button.disabled = false;
+      }
+    }
+    
+    // Expand content by calling the backend
     async function expandContent(responseId, toolName) {
-      const currentContent = document.getElementById(responseId).innerText;
       const responseBox = document.getElementById(responseId);
+      const currentContent = responseBox.innerText;
       responseBox.innerHTML = "🔄 Expandiendo contenido, por favor espera...";
       try {
         const response = await fetch("https://edu-ai-backend-production.up.railway.app/expand_content", {
@@ -408,160 +428,48 @@
         responseBox.innerHTML = `❌ Error: ${error.message}`;
       }
     }
-
-    function enableExpandButton(responseId, buttonId) {
-      const responseContent = document.getElementById(responseId).innerText;
-      const btn = document.getElementById(buttonId);
-      if (responseContent && responseContent.trim() !== "" && btn) {
-        btn.disabled = false;
-      }
-    }
-
-    /* Funciones fetch para cada herramienta */
-
-    async function generateLessonPlan() {
-      let responseBox = document.getElementById("lessonPlanResponse");
-      responseBox.innerHTML = "🔄 Generando plan de clase...";
-      let response = await fetch("https://edu-ai-backend-production.up.railway.app/lesson_plan", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          subject: document.getElementById("subject").value,
-          grade_level: document.getElementById("gradeLevel").value,
-          learning_goals: document.getElementById("learningGoals").value
-        })
+    
+    // Mark a sidebar link as active
+    window.setActiveLink = function(activeId) {
+      const links = document.querySelectorAll('.sidebar .nav-link');
+      links.forEach(link => {
+        link.classList.toggle('active', link.id === activeId);
       });
-      let data = await response.json();
-      responseBox.innerHTML = data.lesson_plan || "❌ Error al generar el plan de clase.";
-      enableExpandButton("lessonPlanResponse", "lessonPlanExpand");
-    }
-
-    async function generateQuiz() {
-      let responseBox = document.getElementById("quizResponse");
-      responseBox.innerHTML = "🔄 Generando quiz...";
-      let response = await fetch("https://edu-ai-backend-production.up.railway.app/quiz_creator", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic: document.getElementById("quizTopic").value })
-      });
-      let data = await response.json();
-      responseBox.innerHTML = data.quiz || "❌ Error al generar el quiz.";
-    }
-
-    async function generateMaterials() {
-      let responseBox = document.getElementById("materialsResponse");
-      responseBox.innerHTML = "🔄 Generando materiales...";
-      let response = await fetch("https://edu-ai-backend-production.up.railway.app/teaching_materials", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          topic: document.getElementById("materialTopic").value,
-          material_type: document.getElementById("materialType").value
-        })
-      });
-      let data = await response.json();
-      responseBox.innerHTML = data.teaching_materials || "❌ Error al generar los materiales.";
-      enableExpandButton("materialsResponse", "materialsExpand");
-    }
-
-    async function sendTutorRequest() {
-      let input = document.getElementById("tutorInput").value.trim();
-      let responseBox = document.getElementById("tutorResponse");
-      if (!input) {
-        responseBox.innerHTML = "❌ Por favor, ingresa una pregunta antes de consultar al tutor.";
-        return;
-      }
-      responseBox.innerHTML = "🔄 Generando respuesta...";
-      try {
-        let response = await fetch("https://edu-ai-backend-production.up.railway.app/tutor_assistant", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question: input })
-        });
-        let data = await response.json();
-        responseBox.innerHTML = data.response || "❌ Error al generar la respuesta.";
-        enableExpandButton("tutorResponse", "tutorExpand");
-      } catch (error) {
-        console.error("Error del tutor:", error);
-        responseBox.innerHTML = `❌ Error: ${error.message}`;
-      }
-    }
-
-    async function generateImage() {
-      const prompt = document.getElementById("imgPrompt").value.trim();
-      const responseBox = document.getElementById("imageResponse");
-      if (!prompt) {
-        responseBox.innerHTML = "<p style='color:red;'>Por favor, ingresa un enunciado.</p>";
-        return;
-      }
-      responseBox.innerHTML = "🔄 Generando imagen, por favor espera...";
-      try {
-        const response = await fetch("https://edu-ai-backend-production.up.railway.app/image_generator", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: prompt })
-        });
-        const data = await response.json();
-        if (data.image_url) {
-          responseBox.innerHTML = `<img src="${data.image_url}" alt="Imagen Educativa Generada"><br><br><small>Imagen generada según tu enunciado.</small>`;
-        } else {
-          responseBox.innerHTML = `<p style='color:red;'>Error: ${data.error}</p>`;
-        }
-      } catch (error) {
-        responseBox.innerHTML = `<p style='color:red;'>Error: ${error.message}</p>`;
-      }
-    }
-
-    function downloadImage(responseId) {
-      const responseContainer = document.getElementById(responseId);
-      const imgElem = responseContainer.querySelector("img");
-      if (imgElem && imgElem.src) {
-        const link = document.createElement("a");
-        link.href = imgElem.src;
-        link.download = "imagen-generada.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } else {
-        alert("No hay imagen para descargar.");
-      }
-    }
-
-    function copyResponse(responseId) {
-      const textToCopy = document.getElementById(responseId).innerText;
-      navigator.clipboard.writeText(textToCopy)
-        .then(() => { alert("¡Respuesta copiada al portapapeles!"); })
-        .catch(err => { console.error("Error al copiar:", err); });
-    }
-
+    };
+    
+    let storedToolOutputs = {};
+    let currentTool = null;
+    
+    // Attach event listeners for the sidebar tool links
     window.onload = function() {
+      // Desktop sidebar links
       document.getElementById("tutorLink").addEventListener("click", function(e) {
         e.preventDefault();
         setActiveLink("tutorLink");
-        loadTool('tutor');
+        loadTool("tutor");
       });
       document.getElementById("lessonPlanLink").addEventListener("click", function(e) {
         e.preventDefault();
         setActiveLink("lessonPlanLink");
-        loadTool('lesson_plan');
+        loadTool("lesson_plan");
       });
       document.getElementById("quizLink").addEventListener("click", function(e) {
         e.preventDefault();
         setActiveLink("quizLink");
-        loadTool('quiz');
+        loadTool("quiz");
       });
       document.getElementById("materialsLink").addEventListener("click", function(e) {
         e.preventDefault();
         setActiveLink("materialsLink");
-        loadTool('materials');
+        loadTool("materials");
       });
       document.getElementById("imageLink").addEventListener("click", function(e) {
         e.preventDefault();
         setActiveLink("imageLink");
-        loadTool('image');
+        loadTool("image");
       });
     };
-
+    
     function loadTool(tool) {
       if (currentTool !== null && currentTool !== tool) {
         storedToolOutputs[currentTool] = document.querySelector('.tool-container').innerHTML;
@@ -569,15 +477,17 @@
       currentTool = tool;
       const content = document.querySelector('.tool-container');
       const header = document.querySelector('.tool-header');
+      // If we have stored content from a previous session, restore it
       if (storedToolOutputs.hasOwnProperty(tool) && storedToolOutputs[tool] !== "") {
         header.innerHTML = getHeaderForTool(tool);
         content.innerHTML = storedToolOutputs[tool];
         return;
       }
+      // Otherwise, define new content
       if (tool === 'tutor') {
         header.innerHTML = "Chat Tutor IA";
         content.innerHTML = `
-          <p><strong>Cómo usar:</strong> Haz preguntas y recibe orientación personalizada de nuestro tutor impulsado por IA. Escribe tu pregunta a continuación y haz clic en "Obtener respuesta".</p>
+          <p><strong>Cómo usar:</strong> Haz preguntas y recibe orientación personalizada de nuestro tutor impulsado por IA. Escribe tu pregunta y haz clic en "Obtener respuesta".</p>
           <textarea class="input-box" id="tutorInput" rows="4" placeholder="Escribe tu pregunta aquí..."></textarea>
           <button class="submit-btn" onclick="sendTutorRequest()">Obtener respuesta</button>
           <div class="response-container">
@@ -591,7 +501,7 @@
       } else if (tool === 'lesson_plan') {
         header.innerHTML = "Generador de Planes de Clase";
         content.innerHTML = `
-          <p><strong>Cómo usar:</strong> Genera planes de clase detallados rápidamente. Ingresa la asignatura, el nivel y los objetivos de aprendizaje, luego haz clic en "Generar plan de clase".</p>
+          <p><strong>Cómo usar:</strong> Genera planes de clase detallados. Ingresa la asignatura, el nivel y los objetivos, y haz clic en "Generar plan de clase".</p>
           <input type="text" class="input-box" id="subject" placeholder="Ingresa la asignatura">
           <input type="text" class="input-box" id="gradeLevel" placeholder="Ingresa el nivel">
           <textarea class="input-box" id="learningGoals" rows="3" placeholder="Ingresa los objetivos de aprendizaje"></textarea>
@@ -607,7 +517,7 @@
       } else if (tool === 'quiz') {
         header.innerHTML = "Creador de Quiz";
         content.innerHTML = `
-          <p><strong>Cómo usar:</strong> Crea quizzes atractivos de manera sencilla. Ingresa un tema para el quiz y haz clic en "Generar quiz" para que nuestra IA genere preguntas y respuestas relevantes.</p>
+          <p><strong>Cómo usar:</strong> Crea quizzes atractivos. Ingresa un tema y haz clic en "Generar quiz" para que nuestra IA genere preguntas y respuestas.</p>
           <input type="text" class="input-box" id="quizTopic" placeholder="Ingresa el tema del quiz">
           <button class="submit-btn" onclick="generateQuiz()">Generar quiz</button>
           <div class="response-container">
@@ -620,7 +530,7 @@
       } else if (tool === 'materials') {
         header.innerHTML = "Generador de Materiales Didácticos";
         content.innerHTML = `
-          <p><strong>Cómo usar:</strong> Crea materiales didácticos de calidad rápidamente. Selecciona el tipo de material, ingresa un tema, y haz clic en "Generar materiales".</p>
+          <p><strong>Cómo usar:</strong> Crea materiales didácticos de calidad. Selecciona el tipo, ingresa un tema y haz clic en "Generar materiales".</p>
           <input type="text" class="input-box" id="materialTopic" placeholder="Ingresa el tema">
           <select class="input-box" id="materialType">
             <option value="study_guide">Guía de estudio</option>
@@ -639,7 +549,7 @@
       } else if (tool === 'image') {
         header.innerHTML = "Generador de Imágenes";
         content.innerHTML = `
-          <p><strong>Cómo usar:</strong> Ingresa un enunciado detallado para generar una imagen educativa de alta calidad. Por ejemplo: "Ilustración ultra detallada y de alta resolución del ciclo del agua para estudiantes de primaria, con colores vivos y sin texto." Luego haz clic en "Generar imagen".</p>
+          <p><strong>Cómo usar:</strong> Ingresa un enunciado detallado para generar una imagen educativa de alta calidad. Por ejemplo: "Ilustración ultra detallada del ciclo del agua para estudiantes de primaria, con colores vivos y sin texto." Luego haz clic en "Generar imagen".</p>
           <input type="text" class="input-box" id="imgPrompt" style="width:100%; font-size:16px; padding:12px;" placeholder="Ingresa tu enunciado aquí...">
           <button class="submit-btn" onclick="generateImage()">Generar imagen</button>
           <div class="response-container">
@@ -660,6 +570,123 @@
       if (tool === 'materials') return "Generador de Materiales Didácticos";
       if (tool === 'image') return "Generador de Imágenes";
       return "Herramientas Edvanta";
+    }
+
+    // AI Tutor request
+    async function sendTutorRequest() {
+      let input = document.getElementById("tutorInput").value.trim();
+      let responseBox = document.getElementById("tutorResponse");
+      if (!input) {
+        responseBox.innerHTML = "❌ Por favor, ingresa una pregunta antes de consultar al tutor.";
+        return;
+      }
+      responseBox.innerHTML = "🔄 Generando respuesta...";
+      try {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/tutor_assistant", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: input })
+        });
+        let data = await response.json();
+        responseBox.innerHTML = data.response || "❌ Error al generar la respuesta.";
+        enableExpandButton("tutorResponse", "tutorExpand");
+      } catch (error) {
+        responseBox.innerHTML = `❌ Error: ${error.message}`;
+      }
+    }
+
+    // Lesson Plan request
+    async function generateLessonPlan() {
+      let responseBox = document.getElementById("lessonPlanResponse");
+      responseBox.innerHTML = "🔄 Generando plan de clase...";
+      try {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/lesson_plan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            subject: document.getElementById("subject").value,
+            grade_level: document.getElementById("gradeLevel").value,
+            learning_goals: document.getElementById("learningGoals").value
+          })
+        });
+        let data = await response.json();
+        responseBox.innerHTML = data.lesson_plan || "❌ Error al generar el plan de clase.";
+        enableExpandButton("lessonPlanResponse", "lessonPlanExpand");
+      } catch (error) {
+        responseBox.innerHTML = `❌ Error: ${error.message}`;
+      }
+    }
+
+    // Quiz request
+    async function generateQuiz() {
+      let responseBox = document.getElementById("quizResponse");
+      responseBox.innerHTML = "🔄 Generando quiz...";
+      try {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/quiz_creator", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic: document.getElementById("quizTopic").value })
+        });
+        let data = await response.json();
+        responseBox.innerHTML = data.quiz || "❌ Error al generar el quiz.";
+      } catch (error) {
+        responseBox.innerHTML = `❌ Error: ${error.message}`;
+      }
+    }
+
+    // Teaching Materials request
+    async function generateMaterials() {
+      let responseBox = document.getElementById("materialsResponse");
+      responseBox.innerHTML = "🔄 Generando materiales didácticos...";
+      try {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/teaching_materials", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            topic: document.getElementById("materialTopic").value,
+            material_type: document.getElementById("materialType").value
+          })
+        });
+        let data = await response.json();
+        responseBox.innerHTML = data.teaching_materials || "❌ Error al generar los materiales.";
+        enableExpandButton("materialsResponse", "materialsExpand");
+      } catch (error) {
+        responseBox.innerHTML = `❌ Error: ${error.message}`;
+      }
+    }
+
+    // Image Generation request
+    async function generateImage() {
+      let prompt = document.getElementById("imgPrompt").value.trim();
+      let responseBox = document.getElementById("imageResponse");
+      if (!prompt) {
+        responseBox.innerHTML = "<p style='color:red;'>Por favor, ingresa un enunciado.</p>";
+        return;
+      }
+      responseBox.innerHTML = "🔄 Generando imagen, por favor espera...";
+      try {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/image_generator", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: prompt })
+        });
+        let data = await response.json();
+        if (data.image_url) {
+          responseBox.innerHTML = `<img src="${data.image_url}" alt="Imagen educativa generada"><br><br><small>Imagen generada según tu enunciado.</small>`;
+        } else {
+          responseBox.innerHTML = `<p style='color:red;'>Error: ${data.error}</p>`;
+        }
+      } catch (error) {
+        responseBox.innerHTML = `<p style='color:red;'>Error: ${error.message}</p>`;
+      }
+    }
+
+    // Toggle the mobile menu
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById("mobileMenu");
+      const hamburger = document.getElementById("hamburger");
+      mobileMenu.classList.toggle("open");
+      hamburger.classList.toggle("open");
     }
   </script>
 </body>

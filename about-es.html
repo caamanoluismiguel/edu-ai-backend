@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Conoce Edvanta: nuestra historia, misión y visión. Descubre cómo empoderamos a los educadores con herramientas innovadoras impulsadas por IA para transformar la enseñanza y el aprendizaje."/>
+  <meta name="description" content="Conoce Edvanta: nuestra historia, misión y visión. Descubre cómo empoderamos a los educadores con herramientas innovadoras impulsadas por IA para transformar la enseñanza y el aprendizaje.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Acerca de Edvanta - Avanzando la Educación con IA</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
@@ -13,11 +13,7 @@
       --text-color: #212529;
       --bg-color: #F8F9FA;
     }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Lato', sans-serif;
       background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
@@ -25,7 +21,10 @@
       min-height: 100vh;
       padding-top: 70px;
       padding-bottom: 50px;
+      display: flex;
+      flex-direction: column;
     }
+    /* Global Header */
     .global-header {
       background-color: var(--edvanta-blue);
       color: white;
@@ -37,7 +36,8 @@
       top: 0; left: 0; right: 0;
       z-index: 1000;
     }
-    .global-header h1 { font-size: 24px; }
+    .global-header h1 { font-size: 24px; margin: 0; }
+    /* Global Navigation */
     .global-nav {
       display: flex;
       gap: 15px;
@@ -52,6 +52,7 @@
       color: var(--edvanta-yellow);
       text-shadow: 0 0 3px rgba(244,194,13,0.5);
     }
+    /* Hamburger Icon */
     .hamburger {
       display: none;
       width: 25px;
@@ -71,16 +72,15 @@
     .hamburger.open span:nth-child(1) {
       transform: rotate(45deg) translate(5px, 5px);
     }
-    .hamburger.open span:nth-child(2) {
-      opacity: 0;
-    }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) {
       transform: rotate(-45deg) translate(5px, -5px);
     }
+    /* Mobile Menu Overlay */
     .mobile-menu-overlay {
       display: none;
       position: fixed;
-      top: 70px; left: 0; right: 0; bottom: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background-color: var(--edvanta-blue);
       z-index: 1000;
       padding: 20px;
@@ -94,7 +94,19 @@
       transform: translateY(0);
       opacity: 1;
     }
-    .mobile-menu-overlay h2 { color: white; margin-bottom: 20px; }
+    /* Mobile Menu Close Button */
+    .mobile-menu-close {
+      text-align: right;
+      margin-bottom: 10px;
+    }
+    .mobile-menu-close button {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
+    /* Mobile Navigation Links */
     .mobile-nav-link {
       display: block;
       color: white;
@@ -108,29 +120,20 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
+    /* Main Content */
     main {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 20px auto;
+      padding: 20px;
       background: white;
-      padding: 30px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    h1 {
-      margin-bottom: 20px;
-      font-size: 32px;
-    }
-    h2 {
-      margin-top: 20px;
-      font-size: 28px;
-    }
-    p {
-      margin-bottom: 15px;
-      line-height: 1.6;
-    }
-    section {
-      margin-bottom: 20px;
-    }
+    h1 { margin-bottom: 20px; font-size: 32px; }
+    h2 { margin-top: 20px; font-size: 28px; }
+    p { margin-bottom: 15px; line-height: 1.6; }
+    section { margin-bottom: 20px; }
+    /* Global Footer */
     .global-footer {
       background-color: var(--bg-color);
       color: var(--text-color);
@@ -138,14 +141,9 @@
       text-align: center;
       border-top: 1px solid #ccc;
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
     }
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+    .footer-content { max-width: 1200px; margin: 0 auto; }
     .footer-nav {
       margin-top: 10px;
       display: flex;
@@ -158,16 +156,16 @@
       font-size: 14px;
       transition: color 0.3s;
     }
-    .footer-link:hover {
-      color: var(--edvanta-blue);
-    }
+    .footer-link:hover { color: var(--edvanta-blue); }
     @media (max-width: 768px) {
       .global-nav { display: none; }
       .hamburger { display: flex; }
+      main { margin-top: 60px; }
     }
   </style>
 </head>
 <body>
+  <!-- Global Header -->
   <header class="global-header" role="banner">
     <h1>Edvanta</h1>
     <nav class="global-nav" role="navigation" aria-label="Navegación Principal">
@@ -175,6 +173,8 @@
       <a href="about-es.html" class="nav-link-global">Acerca de</a>
       <a href="contact-es.html" class="nav-link-global">Contacto</a>
       <a href="help-es.html" class="nav-link-global">Ayuda</a>
+      <a href="tools-es.html" class="nav-link-global">Herramientas</a>
+      <a href="learning-hub-es.html" class="nav-link-global">Centro de Aprendizaje</a>
       <a href="about.html" class="nav-link-global">EN</a>
     </nav>
     <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
@@ -184,46 +184,53 @@
     </div>
   </header>
 
+  <!-- Mobile Menu Overlay -->
   <div class="mobile-menu-overlay" id="mobileMenu">
-    <h2>Navegación</h2>
+    <div class="mobile-menu-close">
+      <button onclick="toggleMobileMenu()">×</button>
+    </div>
     <a href="index-es.html" class="mobile-nav-link">Inicio</a>
     <a href="about-es.html" class="mobile-nav-link">Acerca de</a>
     <a href="contact-es.html" class="mobile-nav-link">Contacto</a>
     <a href="help-es.html" class="mobile-nav-link">Ayuda</a>
+    <a href="tools-es.html" class="mobile-nav-link">Herramientas</a>
+    <a href="learning-hub-es.html" class="mobile-nav-link">Centro de Aprendizaje</a>
     <a href="about.html" class="mobile-nav-link">EN</a>
   </div>
 
+  <!-- Main Content -->
   <main role="main">
     <h1>Acerca de Edvanta</h1>
     <section>
       <h2>Nuestra Historia</h2>
       <p>
-        Con más de 15 años de experiencia en el ámbito educativo, nuestro fundador ha trabajado junto a cientos de docentes y estudiantes, siendo testigo de primera mano de los retos que enfrentan en la transferencia efectiva del conocimiento. Descubrimos que el éxito en el aula no se basa únicamente en el dominio de una materia, sino en la capacidad de involucrar a los estudiantes mediante una comunicación clara y el uso de herramientas innovadoras. Esta revelación inspiró la creación de Edvanta.
+        Con más de 15 años de experiencia en el ámbito educativo, nuestro fundador ha trabajado junto a cientos de docentes y estudiantes, siendo testigo de primera mano de los retos en la transferencia efectiva del conocimiento. Descubrimos que el éxito en el aula no depende únicamente del dominio de la materia, sino de la capacidad para involucrar a los estudiantes mediante una comunicación clara y el uso de herramientas innovadoras. Esta revelación inspiró la creación de Edvanta.
       </p>
       <p>
-        Edvanta nació de la pasión por cerrar la brecha entre la enseñanza tradicional y la tecnología moderna. Creemos firmemente que cuando los educadores cuentan con las herramientas adecuadas, pueden transformar verdaderamente la experiencia de aprendizaje.
+        Edvanta nació de la pasión por cerrar la brecha entre la enseñanza tradicional y la tecnología moderna. Creemos firmemente que, con las herramientas adecuadas, los educadores pueden transformar radicalmente la experiencia de aprendizaje.
       </p>
     </section>
     <section>
       <h2>Nuestra Misión</h2>
       <p>
-        Nuestra misión es empoderar a los educadores para que hagan más y mejor. Edvanta busca ayudar a los profesores a adoptar la inteligencia artificial como un aliado poderoso, transformando desafíos en oportunidades de crecimiento. Queremos convertir nuestra plataforma en un recurso indispensable que potencie cada aula.
+        Nuestra misión es empoderar a los educadores para que hagan más y mejor. Edvanta busca ayudar a los profesores a adoptar la inteligencia artificial como un aliado estratégico, transformando desafíos en oportunidades de crecimiento. Queremos que nuestra plataforma sea un recurso indispensable en cada aula.
       </p>
     </section>
     <section>
       <h2>Nuestra Visión</h2>
       <p>
-        Imaginamos un futuro donde cada aula se convierta en un centro de innovación y creatividad, respaldado por herramientas avanzadas de IA que elevan el arte de la enseñanza. En Edvanta, nos esforzamos por construir una comunidad de educadores empoderados que lideren el camino hacia un panorama educativo más prometedor y sostenible.
+        Imaginamos un futuro donde cada aula se convierta en un centro de innovación y creatividad, respaldado por herramientas avanzadas de IA que eleven la calidad de la enseñanza. En Edvanta, nos comprometemos a construir una comunidad de educadores empoderados que lideren el camino hacia un panorama educativo más prometedor.
       </p>
     </section>
   </main>
 
+  <!-- Global Footer -->
   <footer class="global-footer" role="contentinfo">
     <div class="footer-content">
       <p>&copy; 2025 Edvanta. Todos los derechos reservados.</p>
       <nav class="footer-nav">
         <a href="#" class="footer-link">Preguntas Frecuentes</a>
-        <a href="#" class="footer-link">Términos de Servicio</a>
+        <a href="#" class="footer-link">Términos del Servicio</a>
         <a href="#" class="footer-link">Política de Privacidad</a>
       </nav>
     </div>

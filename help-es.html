@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Encuentra ayuda y soporte para Edvanta. Accede a preguntas frecuentes, tutoriales, guías y más para aprovechar al máximo nuestras herramientas impulsadas por IA para educadores."/>
+  <meta name="description" content="Encuentra ayuda y soporte para Edvanta. Accede a preguntas frecuentes, tutoriales, guías de solución de problemas y más para aprovechar al máximo nuestras herramientas impulsadas por IA para educadores.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ayuda y Soporte - Edvanta</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
@@ -21,7 +21,10 @@
       min-height: 100vh;
       padding-top: 70px;
       padding-bottom: 50px;
+      display: flex;
+      flex-direction: column;
     }
+    /* Global Header */
     .global-header {
       background-color: var(--edvanta-blue);
       color: white;
@@ -33,8 +36,12 @@
       top: 0; left: 0; right: 0;
       z-index: 1000;
     }
-    .global-header h1 { font-size: 24px; }
-    .global-nav { display: flex; gap: 15px; }
+    .global-header h1 { font-size: 24px; margin: 0; }
+    /* Global Navigation */
+    .global-nav {
+      display: flex;
+      gap: 15px;
+    }
     .nav-link-global {
       text-decoration: none;
       color: white;
@@ -45,13 +52,20 @@
       color: var(--edvanta-yellow);
       text-shadow: 0 0 3px rgba(244,194,13,0.5);
     }
+    /* Hamburger Icon */
     .hamburger {
-      display: none; width: 25px; height: 25px;
-      cursor: pointer; flex-direction: column; justify-content: space-around;
+      display: none;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      flex-direction: column;
+      justify-content: space-around;
       z-index: 1100;
     }
     .hamburger span {
-      display: block; height: 3px; background: white;
+      display: block;
+      height: 3px;
+      background: white;
       border-radius: 3px;
       transition: transform 0.3s ease, opacity 0.3s ease;
     }
@@ -62,10 +76,14 @@
     .hamburger.open span:nth-child(3) {
       transform: rotate(-45deg) translate(5px, -5px);
     }
+    /* Mobile Menu Overlay */
     .mobile-menu-overlay {
       display: none;
       position: fixed;
-      top: 70px; left: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background-color: var(--edvanta-blue);
       z-index: 1000;
       padding: 20px;
@@ -79,7 +97,19 @@
       transform: translateY(0);
       opacity: 1;
     }
-    .mobile-menu-overlay h2 { color: white; margin-bottom: 20px; }
+    /* Mobile Menu Close Button */
+    .mobile-menu-close {
+      text-align: right;
+      margin-bottom: 10px;
+    }
+    .mobile-menu-close button {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
+    /* Mobile Navigation Links */
     .mobile-nav-link {
       display: block;
       color: white;
@@ -93,6 +123,7 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
+    /* Main Content */
     main {
       max-width: 800px;
       margin: 20px auto;
@@ -107,6 +138,7 @@
     .faq-section { margin-top: 20px; }
     .faq-question { font-weight: bold; margin-bottom: 5px; }
     .faq-answer { margin-bottom: 15px; }
+    /* Global Footer */
     .global-footer {
       background-color: var(--bg-color);
       color: var(--text-color);
@@ -116,7 +148,7 @@
       position: fixed;
       bottom: 0; left: 0; right: 0;
     }
-    .footer-content { max-width: 1200px; margin: 0 auto; }
+    .footer-content { max-width: 800px; margin: 0 auto; }
     .footer-nav {
       margin-top: 10px;
       display: flex;
@@ -133,10 +165,12 @@
     @media (max-width: 768px) {
       .global-nav { display: none; }
       .hamburger { display: flex; }
+      main { margin-top: 60px; }
     }
   </style>
 </head>
 <body>
+  <!-- Global Header -->
   <header class="global-header" role="banner">
     <h1>Edvanta</h1>
     <nav class="global-nav" role="navigation" aria-label="Navegación Principal">
@@ -144,6 +178,8 @@
       <a href="about-es.html" class="nav-link-global">Acerca de</a>
       <a href="contact-es.html" class="nav-link-global">Contacto</a>
       <a href="help-es.html" class="nav-link-global">Ayuda</a>
+      <a href="tools-es.html" class="nav-link-global">Herramientas</a>
+      <a href="learning-hub-es.html" class="nav-link-global">Centro de Aprendizaje</a>
       <a href="help.html" class="nav-link-global">EN</a>
     </nav>
     <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
@@ -152,50 +188,61 @@
       <span></span>
     </div>
   </header>
+  
+  <!-- Mobile Menu Overlay -->
   <div class="mobile-menu-overlay" id="mobileMenu">
-    <h2>Navegación</h2>
+    <div class="mobile-menu-close">
+      <button onclick="toggleMobileMenu()">×</button>
+    </div>
     <a href="index-es.html" class="mobile-nav-link">Inicio</a>
     <a href="about-es.html" class="mobile-nav-link">Acerca de</a>
     <a href="contact-es.html" class="mobile-nav-link">Contacto</a>
     <a href="help-es.html" class="mobile-nav-link">Ayuda</a>
+    <a href="tools-es.html" class="mobile-nav-link">Herramientas</a>
+    <a href="learning-hub-es.html" class="mobile-nav-link">Centro de Aprendizaje</a>
     <a href="help.html" class="mobile-nav-link">EN</a>
   </div>
+  
+  <!-- Main Content -->
   <main role="main">
     <h1>Ayuda y Soporte</h1>
     <section class="faq-section">
       <h2>Preguntas Frecuentes</h2>
       <div class="faq">
         <p class="faq-question">¿Qué es Edvanta?</p>
-        <p class="faq-answer">Edvanta es una plataforma impulsada por IA que ofrece herramientas innovadoras para empoderar a los educadores y transformar la enseñanza y el aprendizaje.</p>
+        <p class="faq-answer">Edvanta es una plataforma impulsada por IA diseñada para empoderar a los educadores con herramientas innovadoras que transforman la enseñanza y el aprendizaje.</p>
       </div>
       <div class="faq">
-        <p class="faq-question">¿Cómo utilizo el Chat de Tutor AI?</p>
-        <p class="faq-answer">Selecciona la herramienta "Chat de Tutor AI", escribe tu pregunta en el campo indicado y haz clic en "Obtener respuesta" para recibir orientación personalizada.</p>
+        <p class="faq-question">¿Cómo utilizo el Chat de Tutor IA?</p>
+        <p class="faq-answer">Selecciona la herramienta "Chat de Tutor IA", escribe tu pregunta y haz clic en "Obtener respuesta" para recibir orientación personalizada.</p>
       </div>
       <div class="faq">
         <p class="faq-question">¿Qué hago si encuentro un error?</p>
-        <p class="faq-answer">Si experimentas algún problema, revisa la sección de solución de problemas o visita nuestra página de Contacto para comunicarte con nuestro equipo de soporte.</p>
+        <p class="faq-answer">Revisa nuestra sección de solución de problemas o visita la página de Contacto para comunicarte con nuestro equipo de soporte.</p>
       </div>
     </section>
     <section class="faq-section">
       <h2>Tutoriales y Guías</h2>
-      <p>Explora nuestros tutoriales y guías detalladas que te enseñan a utilizar cada función de Edvanta, desde el Chat de Tutor AI hasta la generación de planes de clase y quizzes.</p>
+      <p>Explora nuestros tutoriales y guías que te muestran cómo utilizar cada función de Edvanta, desde el Chat de Tutor IA hasta la generación de planes de clase y quizzes.</p>
     </section>
     <section class="faq-section">
       <h2>¿Necesitas más ayuda?</h2>
       <p>Si no encuentras la respuesta a tu pregunta, visita nuestra página de Contacto para comunicarte con nuestro equipo de soporte.</p>
     </section>
   </main>
+  
+  <!-- Global Footer -->
   <footer class="global-footer" role="contentinfo">
     <div class="footer-content">
       <p>&copy; 2025 Edvanta. Todos los derechos reservados.</p>
       <nav class="footer-nav">
         <a href="#" class="footer-link">Preguntas Frecuentes</a>
-        <a href="#" class="footer-link">Términos de Servicio</a>
+        <a href="#" class="footer-link">Términos del Servicio</a>
         <a href="#" class="footer-link">Política de Privacidad</a>
       </nav>
     </div>
   </footer>
+  
   <script defer>
     function toggleMobileMenu() {
       const mobileMenu = document.getElementById("mobileMenu");

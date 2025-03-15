@@ -8,7 +8,7 @@
   
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
-
+  
   <style>
     :root {
       --edvanta-blue: #1565C0;
@@ -29,6 +29,7 @@
       flex-direction: column;
       min-height: 100vh;
     }
+    /* Global Header */
     .global-header {
       background-color: var(--edvanta-blue);
       color: white;
@@ -46,6 +47,7 @@
       margin: 0;
       font-size: 24px;
     }
+    /* Global Navigation */
     .global-nav {
       display: flex;
       gap: 15px;
@@ -60,6 +62,7 @@
       color: var(--edvanta-yellow);
       text-shadow: 0 0 3px rgba(244,194,13,0.5);
     }
+    /* Hamburger Icon */
     .hamburger {
       display: none;
       width: 25px;
@@ -79,16 +82,15 @@
     .hamburger.open span:nth-child(1) {
       transform: rotate(45deg) translate(5px, 5px);
     }
-    .hamburger.open span:nth-child(2) {
-      opacity: 0;
-    }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) {
       transform: rotate(-45deg) translate(5px, -5px);
     }
+    /* Mobile Menu Overlay */
     .mobile-menu-overlay {
       display: none;
       position: fixed;
-      top: 70px;
+      top: 0;
       left: 0;
       right: 0;
       bottom: 0;
@@ -105,10 +107,19 @@
       transform: translateY(0);
       opacity: 1;
     }
-    .mobile-menu-overlay h2 {
-      color: white;
-      margin-bottom: 20px;
+    /* Mobile Menu Close Button */
+    .mobile-menu-close {
+      text-align: right;
+      margin-bottom: 10px;
     }
+    .mobile-menu-close button {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
+    /* Mobile Navigation Links */
     .mobile-nav-link {
       display: block;
       color: white;
@@ -122,6 +133,7 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
+    /* Hero Section */
     .hero {
       flex: 1;
       display: flex;
@@ -173,6 +185,7 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
+    /* Global Footer */
     .global-footer {
       background-color: var(--bg-color);
       color: var(--text-color);
@@ -204,27 +217,23 @@
       color: var(--edvanta-blue);
     }
     @media (max-width: 768px) {
-      .global-nav {
-        display: none;
-      }
-      .hamburger {
-        display: flex;
-      }
-      .hero {
-        margin-top: 60px;
-      }
+      .global-nav { display: none; }
+      .hamburger { display: flex; }
+      .hero { margin-top: 60px; }
     }
   </style>
 </head>
 <body>
+  <!-- Global Header -->
   <header class="global-header" role="banner">
     <h1>Edvanta</h1>
-    <!-- Desktop Global Nav -->
     <nav class="global-nav" role="navigation" aria-label="Navegación Principal">
       <a href="index-es.html" class="nav-link-global">Inicio</a>
       <a href="about-es.html" class="nav-link-global">Acerca de</a>
       <a href="contact-es.html" class="nav-link-global">Contacto</a>
       <a href="help-es.html" class="nav-link-global">Ayuda</a>
+      <a href="tools-es.html" class="nav-link-global">Herramientas</a>
+      <a href="learning-hub-es.html" class="nav-link-global">Centro de Aprendizaje</a>
       <a href="index.html" class="nav-link-global">EN</a>
     </nav>
     <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
@@ -234,31 +243,38 @@
     </div>
   </header>
 
+  <!-- Mobile Menu Overlay -->
   <div class="mobile-menu-overlay" id="mobileMenu">
-    <h2>Navegación</h2>
+    <div class="mobile-menu-close">
+      <button onclick="toggleMobileMenu()">×</button>
+    </div>
     <a href="index-es.html" class="mobile-nav-link">Inicio</a>
     <a href="about-es.html" class="mobile-nav-link">Acerca de</a>
     <a href="contact-es.html" class="mobile-nav-link">Contacto</a>
     <a href="help-es.html" class="mobile-nav-link">Ayuda</a>
+    <a href="tools-es.html" class="mobile-nav-link">Herramientas</a>
+    <a href="learning-hub-es.html" class="mobile-nav-link">Centro de Aprendizaje</a>
     <a href="index.html" class="mobile-nav-link">EN</a>
   </div>
 
+  <!-- Hero Section -->
   <main class="hero" role="main">
     <div class="hero-content">
       <h2>Avanzando la Educación con IA</h2>
       <p>
-        Edvanta es una plataforma revolucionaria diseñada para potenciar a los educadores con herramientas innovadoras impulsadas por IA que transforman la enseñanza y el aprendizaje. Únete a nosotros para revolucionar la educación a nivel mundial.
+        Edvanta potencia a los educadores con herramientas innovadoras impulsadas por IA que transforman la enseñanza y el aprendizaje. Únete a nosotros para revolucionar la educación a nivel mundial.
       </p>
       <a href="tools-es.html" class="cta-button">Explora Nuestras Herramientas</a>
     </div>
   </main>
 
+  <!-- Global Footer -->
   <footer class="global-footer" role="contentinfo">
     <div class="footer-content">
       <p>&copy; 2025 Edvanta. Todos los derechos reservados.</p>
       <nav class="footer-nav">
         <a href="#" class="footer-link">Preguntas Frecuentes</a>
-        <a href="#" class="footer-link">Términos de Servicio</a>
+        <a href="#" class="footer-link">Términos del Servicio</a>
         <a href="#" class="footer-link">Política de Privacidad</a>
       </nav>
     </div>

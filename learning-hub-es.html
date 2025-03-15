@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Potencia tu enseñanza con los cursos de desarrollo profesional de Edvanta. Explora nuestro Centro de Aprendizaje y transforma tu experiencia en el aula."/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Centro de Aprendizaje - Edvanta</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <style>
+    :root {
+      --edvanta-blue: #1565C0;
+      --edvanta-yellow: #F4C20D;
+      --text-color: #212529;
+      --bg-color: #F8F9FA;
+      --pastel-blue: #E3F2FD;
+    }
+    /* Global Reset and Styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Lato', sans-serif;
+      color: var(--text-color);
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+      min-height: 100vh;
+      padding-top: 70px;
+      padding-bottom: 50px;
+    }
+    /* Global Header */
+    .global-header {
+      background-color: var(--edvanta-blue);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+    }
+    .global-header h1 { font-size: 24px; }
+    .global-nav {
+      display: flex;
+      gap: 15px;
+    }
+    .nav-link-global {
+      text-decoration: none;
+      color: white;
+      font-size: 16px;
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+    .nav-link-global:hover {
+      color: var(--edvanta-yellow);
+      text-shadow: 0 0 3px rgba(244,194,13,0.5);
+    }
+    .hamburger {
+      display: none;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      flex-direction: column;
+      justify-content: space-around;
+      z-index: 1100;
+    }
+    .hamburger span {
+      display: block;
+      height: 3px;
+      background: white;
+      border-radius: 3px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .hamburger.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+    /* Mobile Menu Overlay */
+    .mobile-menu-overlay {
+      display: none;
+      position: fixed;
+      top: 70px; left: 0; right: 0; bottom: 50px;
+      background-color: var(--edvanta-blue);
+      z-index: 1000;
+      padding: 20px;
+      overflow-y: auto;
+      transform: translateY(-20px);
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .mobile-menu-overlay.open {
+      display: block;
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .mobile-menu-overlay h2 {
+      color: white;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+    .mobile-nav-link {
+      display: block;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      transition: background 0.3s;
+    }
+    .mobile-nav-link:hover {
+      background-color: var(--edvanta-yellow);
+      color: var(--text-color);
+    }
+    /* Global Footer */
+    .global-footer {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 15px 20px;
+      text-align: center;
+      border-top: 1px solid #ccc;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+    }
+    .footer-content { max-width: 1200px; margin: 0 auto; }
+    .footer-nav {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    .footer-link {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+    .footer-link:hover { color: var(--edvanta-blue); }
+    @media (max-width: 768px) {
+      .global-nav { display: none; }
+      .hamburger { display: flex; }
+    }
+    /* Centro de Aprendizaje Content */
+    main {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    .learning-hub-container {
+      background-color: var(--pastel-blue);
+      padding: 30px;
+      border-radius: 8px;
+    }
+    /* Hero Section with Background Image */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 40px;
+      background: url("hero-learning-hub.png") center/cover no-repeat;
+      border-radius: 8px;
+      margin-bottom: 40px;
+      color: #fff;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.4);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    .hero h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 18px;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
+    .cta-btn {
+      display: inline-block;
+      padding: 12px 20px;
+      font-size: 16px;
+      color: var(--text-color);
+      background-color: var(--edvanta-yellow);
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+    .cta-btn:hover {
+      background-color: #d9a80c;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    /* Course Cards Grid */
+    .course-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .course-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      width: calc(33.33% - 20px);
+      min-width: 280px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+    .course-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    .course-card img {
+      width: 100%;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      object-fit: cover;
+      height: 160px;
+    }
+    .course-card h3 { font-size: 20px; margin-bottom: 10px; }
+    .course-card p { font-size: 16px; margin-bottom: 15px; line-height: 1.4; }
+    .course-card .course-btn {
+      padding: 10px 15px;
+      font-size: 16px;
+      background-color: var(--edvanta-yellow);
+      color: var(--text-color);
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s, box-shadow 0.3s;
+      align-self: flex-start;
+    }
+    .course-card .course-btn:hover {
+      background-color: #d9a80c;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    @media (max-width: 768px) {
+      .course-cards { flex-direction: column; align-items: center; }
+      .course-card { width: 100%; max-width: 400px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Global Header -->
+  <header class="global-header" role="banner">
+    <h1>Edvanta</h1>
+    <nav class="global-nav" role="navigation" aria-label="Navegación Principal">
+      <a href="index-es.html" class="nav-link-global">Inicio</a>
+      <a href="about-es.html" class="nav-link-global">Acerca de</a>
+      <a href="contact-es.html" class="nav-link-global">Contacto</a>
+      <a href="help-es.html" class="nav-link-global">Ayuda</a>
+      <a href="tools-es.html" class="nav-link-global">Herramientas</a>
+      <a href="learning-hub-es.html" class="nav-link-global">Centro de Aprendizaje</a>
+      <a href="learning-hub.html" class="nav-link-global">EN</a>
+    </nav>
+    <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobileMenu">
+    <h2>Navegación</h2>
+    <a href="index-es.html" class="mobile-nav-link">Inicio</a>
+    <a href="about-es.html" class="mobile-nav-link">Acerca de</a>
+    <a href="contact-es.html" class="mobile-nav-link">Contacto</a>
+    <a href="help-es.html" class="mobile-nav-link">Ayuda</a>
+    <a href="tools-es.html" class="mobile-nav-link">Herramientas</a>
+    <a href="learning-hub-es.html" class="mobile-nav-link">Centro de Aprendizaje</a>
+    <a href="learning-hub.html" class="mobile-nav-link">EN</a>
+  </div>
+
+  <!-- Main Centro de Aprendizaje Content -->
+  <main role="main">
+    <div class="learning-hub-container">
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-content">
+          <h2>Centro de Aprendizaje: Potencia tu Enseñanza</h2>
+          <p>
+            Explora nuestros cursos de desarrollo profesional diseñados para mejorar tus habilidades pedagógicas y transformar tu experiencia en el aula. Sigue un camino claro hacia la innovación.
+          </p>
+          <a href="#courses" class="cta-btn">Explorar Cursos</a>
+        </div>
+      </section>
+      
+      <!-- Courses Section -->
+      <section id="courses">
+        <h2 style="text-align:center; margin-bottom:30px; font-size:28px;">Nuestros Cursos</h2>
+        <div class="course-cards">
+          <div class="course-card">
+            <img src="course1-thumb.png" alt="Miniatura de Competencias Pedagógicas Fundamentales">
+            <h3>Competencias Pedagógicas Fundamentales</h3>
+            <p>48 horas para desarrollar estrategias de manejo del aula, comunicación y atención personalizada.</p>
+            <a href="#" class="course-btn">Próximamente</a>
+          </div>
+          <div class="course-card">
+            <img src="course2-thumb.png" alt="Miniatura para Aula Invertida">
+            <h3>Aula Invertida: Diseño y Aplicación</h3>
+            <p>48 horas para transformar la enseñanza con estrategias innovadoras y recursos digitales.</p>
+            <a href="#" class="course-btn">Próximamente</a>
+          </div>
+          <div class="course-card">
+            <img src="course3-thumb.png" alt="Miniatura para Gamificación Educativa">
+            <h3>Gamificación Educativa Aplicada</h3>
+            <p>48 horas para integrar dinámicas basadas en juegos que aumenten el compromiso y el aprendizaje.</p>
+            <a href="#" class="course-btn">Próximamente</a>
+          </div>
+          <div class="course-card">
+            <img src="course4-thumb.png" alt="Miniatura para Aprendizaje Basado en Proyectos">
+            <h3>Aprendizaje Basado en Proyectos (ABP)</h3>
+            <p>48 horas para diseñar proyectos integrales que fomenten la colaboración y la creatividad.</p>
+            <a href="#" class="course-btn">Próximamente</a>
+          </div>
+          <div class="course-card">
+            <img src="course5-thumb.png" alt="Miniatura para Innovación y Herramientas Digitales">
+            <h3>Innovación y Herramientas Digitales en el Aula</h3>
+            <p>48 horas para integrar herramientas digitales y desarrollar estrategias de evaluación formativa.</p>
+            <a href="#" class="course-btn">Próximamente</a>
+          </div>
+          <div class="course-card">
+            <img src="course6-thumb.png" alt="Miniatura para Diseño Integrado de Metodologías Activas">
+            <h3>Diseño Integrado de Metodologías Activas</h3>
+            <p>48 horas para combinar diversas metodologías activas culminando en un proyecto final práctico.</p>
+            <a href="#" class="course-btn">Próximamente</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="global-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; 2025 Edvanta. Todos los derechos reservados.</p>
+      <nav class="footer-nav">
+        <a href="#" class="footer-link">Preguntas Frecuentes</a>
+        <a href="#" class="footer-link">Términos del Servicio</a>
+        <a href="#" class="footer-link">Política de Privacidad</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script defer>
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById("mobileMenu");
+      const hamburger = document.getElementById("hamburger");
+      mobileMenu.classList.toggle("open");
+      hamburger.classList.toggle("open");
+    }
+  </script>
+</body>
+</html>

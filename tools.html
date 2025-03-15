@@ -25,6 +25,7 @@
       padding-top: 70px;
       padding-bottom: 50px;
     }
+    /* Global Header */
     .global-header {
       background-color: var(--edvanta-blue);
       color: white;
@@ -40,6 +41,7 @@
       font-size: 24px;
       margin: 0;
     }
+    /* Global Navigation (Desktop) */
     .global-nav {
       display: flex;
       gap: 15px;
@@ -54,6 +56,7 @@
       color: var(--edvanta-yellow);
       text-shadow: 0 0 3px rgba(244,194,13,0.5);
     }
+    /* Hamburger Icon */
     .hamburger {
       display: none;
       width: 25px;
@@ -79,10 +82,11 @@
     .hamburger.open span:nth-child(3) {
       transform: rotate(-45deg) translate(5px, -5px);
     }
+    /* Mobile Menu Overlay */
     .mobile-menu-overlay {
       display: none;
       position: fixed;
-      top: 70px; left: 0; right: 0; bottom: 50px;
+      top: 0; left: 0; right: 0; bottom: 0;
       background-color: var(--edvanta-blue);
       z-index: 1000;
       padding: 20px;
@@ -96,16 +100,23 @@
       transform: translateY(0);
       opacity: 1;
     }
-    .mobile-menu-overlay h2 {
-      color: white;
-      margin-bottom: 20px;
-      font-size: 20px;
+    .mobile-menu-close {
+      text-align: right;
+      margin-bottom: 10px;
     }
+    .mobile-menu-close button {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
+    /* Mobile Navigation Links */
     .mobile-nav-link {
       display: block;
       color: white;
       text-decoration: none;
-      font-size: 16px;
+      font-size: 18px;
       padding: 15px 0;
       border-bottom: 1px solid rgba(255,255,255,0.2);
       transition: background 0.3s;
@@ -114,8 +125,14 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
+    /* Tools Section in Mobile Menu */
     .mobile-tools-section {
       margin-top: 15px;
+    }
+    .mobile-tools-section h2 {
+      color: white;
+      font-size: 20px;
+      margin-bottom: 10px;
     }
     .mobile-tools-link {
       display: block;
@@ -130,6 +147,7 @@
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
     }
+    /* Sidebar */
     .sidebar {
       width: 250px;
       background-color: var(--edvanta-blue);
@@ -139,7 +157,8 @@
       display: flex;
       flex-direction: column;
       position: fixed;
-      top: 70px; bottom: 50px;
+      top: 70px;
+      bottom: 50px;
       transition: all 0.3s ease;
     }
     .sidebar h2 {
@@ -165,6 +184,7 @@
       color: var(--text-color);
       font-weight: bold;
     }
+    /* Main Wrapper */
     .main-wrapper {
       display: flex;
       min-height: calc(100vh - 120px);
@@ -254,6 +274,7 @@
       max-height: 300px;
       overflow-y: auto;
     }
+    /* Global Footer */
     .global-footer {
       background-color: var(--bg-color);
       color: var(--text-color);
@@ -261,7 +282,9 @@
       text-align: center;
       border-top: 1px solid #ccc;
       position: fixed;
-      bottom: 0; left: 0; right: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
     }
     .footer-content {
       max-width: 1200px;
@@ -283,17 +306,18 @@
       color: var(--edvanta-blue);
     }
     @media (max-width: 768px) {
+      .global-nav {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+      /* Hide the sidebar on mobile, since we replicate Tools links in the mobile menu. */
       .sidebar {
         display: none;
       }
       .main-content {
         margin-left: 0;
-      }
-      .hamburger {
-        display: flex;
-      }
-      .global-nav {
-        display: none;
       }
     }
   </style>
@@ -307,6 +331,8 @@
       <a href="about.html" class="nav-link-global">About</a>
       <a href="contact.html" class="nav-link-global">Contact</a>
       <a href="help.html" class="nav-link-global">Help</a>
+      <a href="tools.html" class="nav-link-global">Tools</a>
+      <a href="learning-hub.html" class="nav-link-global">Learning Hub</a>
       <a href="tools-es.html" class="nav-link-global">ES</a>
     </nav>
     <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
@@ -315,16 +341,22 @@
       <span></span>
     </div>
   </header>
-
+  
   <!-- Mobile Menu Overlay -->
   <div class="mobile-menu-overlay" id="mobileMenu">
-    <h2>Navigation</h2>
+    <div class="mobile-menu-close">
+      <button onclick="toggleMobileMenu()">×</button>
+    </div>
+    <!-- Top-level links -->
     <a href="index.html" class="mobile-nav-link">Home</a>
     <a href="about.html" class="mobile-nav-link">About</a>
     <a href="contact.html" class="mobile-nav-link">Contact</a>
     <a href="help.html" class="mobile-nav-link">Help</a>
+    <a href="tools.html" class="mobile-nav-link">Tools</a>
+    <a href="learning-hub.html" class="mobile-nav-link">Learning Hub</a>
     <a href="tools-es.html" class="mobile-nav-link">ES</a>
     <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.2); margin:15px 0;">
+    <!-- Tools sub-links in mobile menu -->
     <div class="mobile-tools-section">
       <h2>Tools</h2>
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('tutorLink'); loadTool('tutor'); toggleMobileMenu();">💬 AI Tutor Chat</a>
@@ -334,8 +366,8 @@
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('imageLink'); loadTool('image'); toggleMobileMenu();">🖼️ Image Generator</a>
     </div>
   </div>
-
-  <!-- Sidebar -->
+  
+  <!-- Sidebar for Tools (hidden on mobile) -->
   <aside class="sidebar" role="navigation" aria-label="Tool Navigation">
     <h2>Edvanta Tools</h2>
     <a href="#" class="nav-link" id="tutorLink">💬 AI Tutor Chat</a>
@@ -344,17 +376,17 @@
     <a href="#" class="nav-link" id="materialsLink">📝 Teaching Materials Generator</a>
     <a href="#" class="nav-link" id="imageLink">🖼️ Image Generator</a>
   </aside>
-
-  <!-- Main Wrapper -->
+  
+  <!-- Main Tools Content -->
   <div class="main-wrapper">
     <main class="main-content" role="main">
       <h1 class="tool-header">Edvanta Tools</h1>
       <section class="tool-container">
-        <p>Select a tool from the sidebar.</p>
+        <p>Select a tool from the menu.</p>
       </section>
     </main>
   </div>
-
+  
   <!-- Global Footer -->
   <footer class="global-footer" role="contentinfo">
     <div class="footer-content">
@@ -366,31 +398,29 @@
       </nav>
     </div>
   </footer>
-
+  
   <script defer>
-    // Mark the active link in the sidebar
-    window.setActiveLink = function(activeId) {
-      const links = document.querySelectorAll('.sidebar .nav-link');
-      links.forEach(link => {
-        link.classList.toggle('active', link.id === activeId);
-      });
-    };
-
-    let storedToolOutputs = {};
-    let currentTool = null;
-
-    const mobileMenu = document.getElementById("mobileMenu");
-    const hamburger = document.getElementById("hamburger");
-
+    // Toggle the mobile menu
     function toggleMobileMenu() {
+      const mobileMenu = document.getElementById("mobileMenu");
+      const hamburger = document.getElementById("hamburger");
       mobileMenu.classList.toggle("open");
       hamburger.classList.toggle("open");
     }
-
-    // Updated Expand Content function that calls the backend endpoint
+    
+    // Enable expand button if content is available
+    function enableExpandButton(responseId, buttonId) {
+      const responseContent = document.getElementById(responseId).innerText;
+      const button = document.getElementById(buttonId);
+      if (responseContent && responseContent.trim() !== "") {
+        button.disabled = false;
+      }
+    }
+    
+    // Expand content function
     async function expandContent(responseId, toolName) {
-      const currentContent = document.getElementById(responseId).innerText;
       const responseBox = document.getElementById(responseId);
+      const currentContent = responseBox.innerText;
       responseBox.innerHTML = "🔄 Expanding content, please wait...";
       try {
         const response = await fetch("https://edu-ai-backend-production.up.railway.app/expand_content", {
@@ -408,190 +438,62 @@
         responseBox.innerHTML = `❌ Error: ${error.message}`;
       }
     }
-
-    // ========== Tools' fetch-based functions ==========
-
-    async function generateLessonPlan() {
-      const responseBox = document.getElementById("lessonPlanResponse");
-      responseBox.innerHTML = "🔄 Generating lesson plan...";
-      try {
-        const response = await fetch("https://edu-ai-backend-production.up.railway.app/lesson_plan", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            subject: document.getElementById("subject").value,
-            grade_level: document.getElementById("gradeLevel").value,
-            learning_goals: document.getElementById("learningGoals").value
-          })
-        });
-        const data = await response.json();
-        responseBox.innerHTML = data.lesson_plan || "❌ Error generating lesson plan.";
-        enableExpandButton("lessonPlanResponse", "lessonPlanExpand");
-      } catch (error) {
-        responseBox.innerHTML = `❌ Error: ${error.message}`;
-      }
-    }
-
-    async function generateQuiz() {
-      const responseBox = document.getElementById("quizResponse");
-      responseBox.innerHTML = "🔄 Generating quiz...";
-      try {
-        const response = await fetch("https://edu-ai-backend-production.up.railway.app/quiz_creator", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic: document.getElementById("quizTopic").value })
-        });
-        const data = await response.json();
-        responseBox.innerHTML = data.quiz || "❌ Error generating quiz.";
-      } catch (error) {
-        responseBox.innerHTML = `❌ Error: ${error.message}`;
-      }
-    }
-
-    async function generateMaterials() {
-      const responseBox = document.getElementById("materialsResponse");
-      responseBox.innerHTML = "🔄 Generating materials...";
-      try {
-        const response = await fetch("https://edu-ai-backend-production.up.railway.app/teaching_materials", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            topic: document.getElementById("materialTopic").value,
-            material_type: document.getElementById("materialType").value
-          })
-        });
-        const data = await response.json();
-        responseBox.innerHTML = data.teaching_materials || "❌ Error generating materials.";
-        enableExpandButton("materialsResponse", "materialsExpand");
-      } catch (error) {
-        responseBox.innerHTML = `❌ Error: ${error.message}`;
-      }
-    }
-
-    async function sendTutorRequest() {
-      const input = document.getElementById("tutorInput").value.trim();
-      const responseBox = document.getElementById("tutorResponse");
-      if (!input) {
-        responseBox.innerHTML = "❌ Please enter a question before asking the tutor.";
-        return;
-      }
-      responseBox.innerHTML = "🔄 Generating response...";
-      try {
-        const response = await fetch("https://edu-ai-backend-production.up.railway.app/tutor_assistant", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question: input })
-        });
-        const data = await response.json();
-        responseBox.innerHTML = data.response || "❌ Error generating response.";
-        enableExpandButton("tutorResponse", "tutorExpand");
-      } catch (error) {
-        responseBox.innerHTML = `❌ Error: ${error.message}`;
-      }
-    }
-
-    async function generateImage() {
-      const prompt = document.getElementById("imgPrompt").value.trim();
-      const responseBox = document.getElementById("imageResponse");
-      if (!prompt) {
-        responseBox.innerHTML = "<p style='color:red;'>Please enter a prompt.</p>";
-        return;
-      }
-      responseBox.innerHTML = "🔄 Generating image, please wait...";
-      try {
-        const response = await fetch("https://edu-ai-backend-production.up.railway.app/image_generator", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: prompt })
-        });
-        const data = await response.json();
-        if (data.image_url) {
-          responseBox.innerHTML = `<img src="${data.image_url}" alt="Generated Educational Image"><br><br><small>Image generated based on your prompt.</small>`;
-        } else {
-          responseBox.innerHTML = `<p style='color:red;'>Error: ${data.error}</p>`;
-        }
-      } catch (error) {
-        responseBox.innerHTML = `❌ Error: ${error.message}`;
-      }
-    }
-
-    function downloadImage(responseId) {
-      const responseContainer = document.getElementById(responseId);
-      const imgElem = responseContainer.querySelector("img");
-      if (imgElem && imgElem.src) {
-        const link = document.createElement("a");
-        link.href = imgElem.src;
-        link.download = "generated-image.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } else {
-        alert("No image available to download.");
-      }
-    }
-
-    function copyResponse(responseId) {
-      const textToCopy = document.getElementById(responseId).innerText;
-      navigator.clipboard.writeText(textToCopy)
-        .then(() => { alert("Response copied to clipboard!"); })
-        .catch(err => { console.error("Copy error:", err); });
-    }
-
-    function enableExpandButton(responseId, buttonId) {
-      const responseContent = document.getElementById(responseId).innerText;
-      const btn = document.getElementById(buttonId);
-      if (responseContent && responseContent.trim() !== "" && btn) {
-        btn.disabled = false;
-      }
-    }
-
-    // Set up event listeners once the page loads
+    
+    // Mark a sidebar link as active
+    window.setActiveLink = function(activeId) {
+      const links = document.querySelectorAll('.sidebar .nav-link');
+      links.forEach(link => {
+        link.classList.toggle('active', link.id === activeId);
+      });
+    };
+    
+    let storedToolOutputs = {};
+    let currentTool = null;
+    
+    // Attach event listeners for the sidebar tool links
     window.onload = function() {
+      // Desktop sidebar links
       document.getElementById("tutorLink").addEventListener("click", function(e) {
         e.preventDefault();
         setActiveLink("tutorLink");
-        loadTool('tutor');
+        loadTool("tutor");
       });
       document.getElementById("lessonPlanLink").addEventListener("click", function(e) {
         e.preventDefault();
         setActiveLink("lessonPlanLink");
-        loadTool('lesson_plan');
+        loadTool("lesson_plan");
       });
       document.getElementById("quizLink").addEventListener("click", function(e) {
         e.preventDefault();
         setActiveLink("quizLink");
-        loadTool('quiz');
+        loadTool("quiz");
       });
       document.getElementById("materialsLink").addEventListener("click", function(e) {
         e.preventDefault();
         setActiveLink("materialsLink");
-        loadTool('materials');
+        loadTool("materials");
       });
       document.getElementById("imageLink").addEventListener("click", function(e) {
         e.preventDefault();
         setActiveLink("imageLink");
-        loadTool('image');
+        loadTool("image");
       });
     };
-
-    // loadTool: Save current tool output and load the new tool
+    
     function loadTool(tool) {
       if (currentTool !== null && currentTool !== tool) {
         storedToolOutputs[currentTool] = document.querySelector('.tool-container').innerHTML;
       }
       currentTool = tool;
-
       const content = document.querySelector('.tool-container');
       const header = document.querySelector('.tool-header');
-
-      // If we already have stored content, restore it
+      // If we have stored content from a previous session, restore it
       if (storedToolOutputs.hasOwnProperty(tool) && storedToolOutputs[tool] !== "") {
         header.innerHTML = getHeaderForTool(tool);
         content.innerHTML = storedToolOutputs[tool];
         return;
       }
-
-      // Otherwise, define new content for the tool
+      // Otherwise, define new content
       if (tool === 'tutor') {
         header.innerHTML = "AI Tutor Chat";
         content.innerHTML = `
@@ -643,7 +545,7 @@
           <select class="input-box" id="materialType">
             <option value="study_guide">Study Guide</option>
             <option value="worksheet">Worksheet</option>
-            <option value="slides">PowerPoint Slides</option>
+            <option value="slides">Presentation Slides</option>
           </select>
           <button class="submit-btn" onclick="generateMaterials()">Generate Materials</button>
           <div class="response-container">
@@ -678,6 +580,115 @@
       if (tool === 'materials') return "Teaching Materials Generator";
       if (tool === 'image') return "Image Generator";
       return "Edvanta Tools";
+    }
+
+    // AI Tutor request
+    async function sendTutorRequest() {
+      let input = document.getElementById("tutorInput").value.trim();
+      let responseBox = document.getElementById("tutorResponse");
+      if (!input) {
+        responseBox.innerHTML = "❌ Please enter a question before asking the tutor.";
+        return;
+      }
+      responseBox.innerHTML = "🔄 Generating answer...";
+      try {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/tutor_assistant", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: input })
+        });
+        let data = await response.json();
+        responseBox.innerHTML = data.response || "❌ Error generating answer.";
+        enableExpandButton("tutorResponse", "tutorExpand");
+      } catch (error) {
+        responseBox.innerHTML = `❌ Error: ${error.message}`;
+      }
+    }
+
+    // Lesson Plan request
+    async function generateLessonPlan() {
+      let responseBox = document.getElementById("lessonPlanResponse");
+      responseBox.innerHTML = "🔄 Generating lesson plan...";
+      try {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/lesson_plan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            subject: document.getElementById("subject").value,
+            grade_level: document.getElementById("gradeLevel").value,
+            learning_goals: document.getElementById("learningGoals").value
+          })
+        });
+        let data = await response.json();
+        responseBox.innerHTML = data.lesson_plan || "❌ Error generating lesson plan.";
+        enableExpandButton("lessonPlanResponse", "lessonPlanExpand");
+      } catch (error) {
+        responseBox.innerHTML = `❌ Error: ${error.message}`;
+      }
+    }
+
+    // Quiz request
+    async function generateQuiz() {
+      let responseBox = document.getElementById("quizResponse");
+      responseBox.innerHTML = "🔄 Generating quiz...";
+      try {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/quiz_creator", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic: document.getElementById("quizTopic").value })
+        });
+        let data = await response.json();
+        responseBox.innerHTML = data.quiz || "❌ Error generating quiz.";
+      } catch (error) {
+        responseBox.innerHTML = `❌ Error: ${error.message}`;
+      }
+    }
+
+    // Teaching Materials request
+    async function generateMaterials() {
+      let responseBox = document.getElementById("materialsResponse");
+      responseBox.innerHTML = "🔄 Generating teaching materials...";
+      try {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/teaching_materials", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            topic: document.getElementById("materialTopic").value,
+            material_type: document.getElementById("materialType").value
+          })
+        });
+        let data = await response.json();
+        responseBox.innerHTML = data.teaching_materials || "❌ Error generating materials.";
+        enableExpandButton("materialsResponse", "materialsExpand");
+      } catch (error) {
+        responseBox.innerHTML = `❌ Error: ${error.message}`;
+      }
+    }
+
+    // Image Generation request
+    async function generateImage() {
+      let prompt = document.getElementById("imgPrompt").value.trim();
+      let responseBox = document.getElementById("imageResponse");
+      if (!prompt) {
+        responseBox.innerHTML = "<p style='color:red;'>Please enter a prompt.</p>";
+        return;
+      }
+      responseBox.innerHTML = "🔄 Generating image, please wait...";
+      try {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/image_generator", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: prompt })
+        });
+        let data = await response.json();
+        if (data.image_url) {
+          responseBox.innerHTML = `<img src="${data.image_url}" alt="Generated Educational Image"><br><br><small>Image generated based on your prompt.</small>`;
+        } else {
+          responseBox.innerHTML = `<p style='color:red;'>Error: ${data.error}</p>`;
+        }
+      } catch (error) {
+        responseBox.innerHTML = `<p style='color:red;'>Error: ${error.message}</p>`;
+      }
     }
   </script>
 </body>

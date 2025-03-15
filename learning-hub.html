@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Empower your teaching with Edvanta's professional development courses. Explore our Learning Hub and transform your classroom experience."/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Learning Hub - Edvanta</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <style>
+    :root {
+      --edvanta-blue: #1565C0;
+      --edvanta-yellow: #F4C20D;
+      --text-color: #212529;
+      --bg-color: #F8F9FA;
+      --pastel-blue: #E3F2FD;
+    }
+    /* Global Reset and Styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Lato', sans-serif;
+      color: var(--text-color);
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+      min-height: 100vh;
+      padding-top: 70px;
+      padding-bottom: 50px;
+    }
+    /* Global Header */
+    .global-header {
+      background-color: var(--edvanta-blue);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+    }
+    .global-header h1 { font-size: 24px; }
+    .global-nav {
+      display: flex;
+      gap: 15px;
+    }
+    .nav-link-global {
+      text-decoration: none;
+      color: white;
+      font-size: 16px;
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+    .nav-link-global:hover {
+      color: var(--edvanta-yellow);
+      text-shadow: 0 0 3px rgba(244,194,13,0.5);
+    }
+    .hamburger {
+      display: none;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      flex-direction: column;
+      justify-content: space-around;
+      z-index: 1100;
+    }
+    .hamburger span {
+      display: block;
+      height: 3px;
+      background: white;
+      border-radius: 3px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .hamburger.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+    /* Mobile Menu Overlay */
+    .mobile-menu-overlay {
+      display: none;
+      position: fixed;
+      top: 70px; left: 0; right: 0; bottom: 50px;
+      background-color: var(--edvanta-blue);
+      z-index: 1000;
+      padding: 20px;
+      overflow-y: auto;
+      transform: translateY(-20px);
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .mobile-menu-overlay.open {
+      display: block;
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .mobile-menu-overlay h2 {
+      color: white;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+    .mobile-nav-link {
+      display: block;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      transition: background 0.3s;
+    }
+    .mobile-nav-link:hover {
+      background-color: var(--edvanta-yellow);
+      color: var(--text-color);
+    }
+    /* Global Footer */
+    .global-footer {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 15px 20px;
+      text-align: center;
+      border-top: 1px solid #ccc;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+    }
+    .footer-content { max-width: 1200px; margin: 0 auto; }
+    .footer-nav {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    .footer-link {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+    .footer-link:hover { color: var(--edvanta-blue); }
+    @media (max-width: 768px) {
+      .global-nav { display: none; }
+      .hamburger { display: flex; }
+    }
+    /* Learning Hub Content */
+    main {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    .learning-hub-container {
+      background-color: var(--pastel-blue);
+      padding: 30px;
+      border-radius: 8px;
+    }
+    /* Hero Section with Background Image */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 40px;
+      background: url("hero-learning-hub.png") center/cover no-repeat;
+      border-radius: 8px;
+      margin-bottom: 40px;
+      color: #fff;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.4);
+      border-radius: 8px;
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    .hero h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 18px;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
+    .cta-btn {
+      display: inline-block;
+      padding: 12px 20px;
+      font-size: 16px;
+      color: var(--text-color);
+      background-color: var(--edvanta-yellow);
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+    .cta-btn:hover {
+      background-color: #d9a80c;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    /* Course Cards Grid */
+    .course-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .course-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      width: calc(33.33% - 20px);
+      min-width: 280px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+    .course-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    .course-card img {
+      width: 100%;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      object-fit: cover;
+      height: 160px;
+    }
+    .course-card h3 { font-size: 20px; margin-bottom: 10px; }
+    .course-card p { font-size: 16px; margin-bottom: 15px; line-height: 1.4; }
+    .course-card .course-btn {
+      padding: 10px 15px;
+      font-size: 16px;
+      background-color: var(--edvanta-yellow);
+      color: var(--text-color);
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s, box-shadow 0.3s;
+      align-self: flex-start;
+    }
+    .course-card .course-btn:hover {
+      background-color: #d9a80c;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    @media (max-width: 768px) {
+      .course-cards { flex-direction: column; align-items: center; }
+      .course-card { width: 100%; max-width: 400px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Global Header -->
+  <header class="global-header" role="banner">
+    <h1>Edvanta</h1>
+    <nav class="global-nav" role="navigation" aria-label="Main Navigation">
+      <a href="index.html" class="nav-link-global">Home</a>
+      <a href="about.html" class="nav-link-global">About</a>
+      <a href="contact.html" class="nav-link-global">Contact</a>
+      <a href="help.html" class="nav-link-global">Help</a>
+      <a href="tools.html" class="nav-link-global">Tools</a>
+      <a href="learning-hub.html" class="nav-link-global">Learning Hub</a>
+      <a href="learning-hub-es.html" class="nav-link-global">ES</a>
+    </nav>
+    <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobileMenu">
+    <h2>Navigation</h2>
+    <a href="index.html" class="mobile-nav-link">Home</a>
+    <a href="about.html" class="mobile-nav-link">About</a>
+    <a href="contact.html" class="mobile-nav-link">Contact</a>
+    <a href="help.html" class="mobile-nav-link">Help</a>
+    <a href="tools.html" class="mobile-nav-link">Tools</a>
+    <a href="learning-hub.html" class="mobile-nav-link">Learning Hub</a>
+    <a href="learning-hub-es.html" class="mobile-nav-link">ES</a>
+  </div>
+
+  <!-- Main Learning Hub Content -->
+  <main role="main">
+    <div class="learning-hub-container">
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-content">
+          <h2>Learning Hub: Empower Your Teaching</h2>
+          <p>
+            Explore our professional development courses designed to enhance your pedagogical skills and transform your classroom experience. Follow a clear learning pathway to innovation.
+          </p>
+          <a href="#courses" class="cta-btn">Explore Courses</a>
+        </div>
+      </section>
+      
+      <!-- Courses Section -->
+      <section id="courses">
+        <h2 style="text-align:center; margin-bottom:30px; font-size:28px;">Our Courses</h2>
+        <div class="course-cards">
+          <div class="course-card">
+            <img src="course1-thumb.png" alt="Thumbnail for Fundamental Pedagogical Competencies">
+            <h3>Fundamental Pedagogical Competencies</h3>
+            <p>48 hours to build effective classroom management, communication, and individualized attention strategies.</p>
+            <a href="#" class="course-btn">Coming Soon</a>
+          </div>
+          <div class="course-card">
+            <img src="course2-thumb.png" alt="Thumbnail for Flipped Classroom">
+            <h3>Flipped Classroom: Design & Application</h3>
+            <p>48 hours to transform teaching with innovative flipped classroom strategies and digital resources.</p>
+            <a href="#" class="course-btn">Coming Soon</a>
+          </div>
+          <div class="course-card">
+            <img src="course3-thumb.png" alt="Thumbnail for Applied Educational Gamification">
+            <h3>Applied Educational Gamification</h3>
+            <p>48 hours to integrate game-based dynamics that boost engagement and learning outcomes.</p>
+            <a href="#" class="course-btn">Coming Soon</a>
+          </div>
+          <div class="course-card">
+            <img src="course4-thumb.png" alt="Thumbnail for Project-Based Learning (PBL)">
+            <h3>Project-Based Learning (PBL)</h3>
+            <p>48 hours to design comprehensive projects that promote collaboration and creativity.</p>
+            <a href="#" class="course-btn">Coming Soon</a>
+          </div>
+          <div class="course-card">
+            <img src="course5-thumb.png" alt="Thumbnail for Innovation & Digital Tools">
+            <h3>Innovation & Digital Tools in the Classroom</h3>
+            <p>48 hours to integrate digital tools and develop effective formative assessment strategies.</p>
+            <a href="#" class="course-btn">Coming Soon</a>
+          </div>
+          <div class="course-card">
+            <img src="course6-thumb.png" alt="Thumbnail for Integrated Design of Active Methodologies">
+            <h3>Integrated Design of Active Methodologies</h3>
+            <p>48 hours to blend multiple active methodologies culminating in a practical final project.</p>
+            <a href="#" class="course-btn">Coming Soon</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="global-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; 2025 Edvanta. All Rights Reserved.</p>
+      <nav class="footer-nav">
+        <a href="#" class="footer-link">FAQ</a>
+        <a href="#" class="footer-link">Terms of Service</a>
+        <a href="#" class="footer-link">Privacy Policy</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script defer>
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById("mobileMenu");
+      const hamburger = document.getElementById("hamburger");
+      mobileMenu.classList.toggle("open");
+      hamburger.classList.toggle("open");
+    }
+  </script>
+</body>
+</html>
