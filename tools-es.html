@@ -13,7 +13,11 @@
       --text-color: #212529;
       --bg-color: #F8F9FA;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Lato', sans-serif;
       background-color: var(--bg-color);
@@ -32,8 +36,14 @@
       top: 0; left: 0; right: 0;
       z-index: 1000;
     }
-    .global-header h1 { font-size: 24px; }
-    .global-nav { display: flex; gap: 15px; }
+    .global-header h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+    .global-nav {
+      display: flex;
+      gap: 15px;
+    }
     .nav-link-global {
       text-decoration: none;
       color: white;
@@ -46,7 +56,8 @@
     }
     .hamburger {
       display: none;
-      width: 25px; height: 25px;
+      width: 25px;
+      height: 25px;
       cursor: pointer;
       flex-direction: column;
       justify-content: space-around;
@@ -59,9 +70,15 @@
       border-radius: 3px;
       transition: transform 0.3s ease, opacity 0.3s ease;
     }
-    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+    .hamburger.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
     .mobile-menu-overlay {
       display: none;
       position: fixed;
@@ -122,10 +139,14 @@
       display: flex;
       flex-direction: column;
       position: fixed;
-      top: 70px; bottom: 50px;
+      top: 70px;
+      bottom: 50px;
       transition: all 0.3s ease;
     }
-    .sidebar h2 { font-size: 20px; margin-bottom: 20px; }
+    .sidebar h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
     .nav-link {
       text-decoration: none;
       color: white;
@@ -136,18 +157,42 @@
       transition: background 0.3s;
       cursor: pointer;
     }
-    .nav-link:hover { background-color: var(--edvanta-yellow); color: var(--text-color); }
-    .nav-link.active { background-color: var(--edvanta-yellow); color: var(--text-color); font-weight: bold; }
-    .main-wrapper { display: flex; min-height: calc(100vh - 120px); }
-    .main-content { margin-left: 270px; padding: 40px; flex-grow: 1; }
-    .tool-header { font-size: 24px; margin-bottom: 20px; }
+    .nav-link:hover {
+      background-color: var(--edvanta-yellow);
+      color: var(--text-color);
+    }
+    .nav-link.active {
+      background-color: var(--edvanta-yellow);
+      color: var(--text-color);
+      font-weight: bold;
+    }
+    .main-wrapper {
+      display: flex;
+      min-height: calc(100vh - 120px);
+    }
+    .main-content {
+      margin-left: 270px;
+      padding: 40px;
+      flex-grow: 1;
+    }
+    .tool-header {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
     .tool-container {
       background: white;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    .input-box { width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px; }
+    .input-box {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
     .submit-btn {
       background-color: var(--edvanta-yellow);
       color: var(--text-color);
@@ -158,7 +203,10 @@
       cursor: pointer;
       transition: background 0.3s, box-shadow 0.3s;
     }
-    .submit-btn:hover { background-color: #d9a80c; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+    .submit-btn:hover {
+      background-color: #d9a80c;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
     .response-container {
       margin-top: 20px;
       border: 1px solid #ddd;
@@ -173,7 +221,9 @@
       justify-content: flex-end;
       align-items: center;
     }
-    .copy-btn, .expand-btn, .download-btn {
+    .copy-btn,
+    .expand-btn,
+    .download-btn {
       background-color: var(--edvanta-yellow);
       border: none;
       color: var(--text-color);
@@ -184,8 +234,18 @@
       margin-left: 5px;
       transition: background 0.3s, box-shadow 0.3s;
     }
-    .copy-btn:hover, .expand-btn:hover, .download-btn:hover { background-color: #d9a80c; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-    .expand-btn:disabled { background-color: #ccc; color: #888; cursor: not-allowed; box-shadow: none; }
+    .copy-btn:hover,
+    .expand-btn:hover,
+    .download-btn:hover {
+      background-color: #d9a80c;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .expand-btn:disabled {
+      background-color: #ccc;
+      color: #888;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
     .response-content {
       padding: 20px;
       background: #f9f9f9;
@@ -204,7 +264,10 @@
       position: fixed;
       bottom: 0; left: 0; right: 0;
     }
-    .footer-content { max-width: 1200px; margin: 0 auto; }
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
     .footer-nav {
       margin-top: 10px;
       display: flex;
@@ -217,12 +280,22 @@
       font-size: 14px;
       transition: color 0.3s;
     }
-    .footer-link:hover { color: var(--edvanta-blue); }
+    .footer-link:hover {
+      color: var(--edvanta-blue);
+    }
     @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .main-content { margin-left: 0; }
-      .hamburger { display: flex; }
-      .global-nav { display: none; }
+      .sidebar {
+        display: none;
+      }
+      .main-content {
+        margin-left: 0;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .global-nav {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -243,7 +316,7 @@
       <span></span>
     </div>
   </header>
-  
+
   <!-- Menú Móvil -->
   <div class="mobile-menu-overlay" id="mobileMenu">
     <h2>Navegación</h2>
@@ -252,7 +325,7 @@
     <a href="contact-es.html" class="mobile-nav-link">Contacto</a>
     <a href="help-es.html" class="mobile-nav-link">Ayuda</a>
     <a href="tools.html" class="mobile-nav-link">EN</a>
-    <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.2); margin:15px 0;">
+    <hr style="border: none; border-top:1px solid rgba(255,255,255,0.2); margin:15px 0;">
     <div class="mobile-tools-section">
       <h2>Herramientas</h2>
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('tutorLink'); loadTool('tutor'); toggleMobileMenu();">💬 Chat Tutor IA</a>
@@ -262,7 +335,7 @@
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('imageLink'); loadTool('image'); toggleMobileMenu();">🖼️ Generador de Imágenes</a>
     </div>
   </div>
-  
+
   <!-- Barra Lateral -->
   <aside class="sidebar" role="navigation" aria-label="Navegación de Herramientas">
     <h2>Herramientas Edvanta</h2>
@@ -272,7 +345,7 @@
     <a href="#" class="nav-link" id="materialsLink">📝 Generador de Materiales Didácticos</a>
     <a href="#" class="nav-link" id="imageLink">🖼️ Generador de Imágenes</a>
   </aside>
-  
+
   <!-- Contenedor Principal -->
   <div class="main-wrapper">
     <main class="main-content" role="main">
@@ -282,8 +355,8 @@
       </section>
     </main>
   </div>
-  
-  <!-- Pie de Página -->
+
+  <!-- Pie de Página Global -->
   <footer class="global-footer" role="contentinfo">
     <div class="footer-content">
       <p>&copy; 2025 Edvanta. Todos los derechos reservados.</p>
@@ -294,42 +367,143 @@
       </nav>
     </div>
   </footer>
-  
-  <script>
+
+  <script defer>
     window.setActiveLink = function(activeId) {
       const links = document.querySelectorAll('.sidebar .nav-link');
       links.forEach(link => {
         link.classList.toggle('active', link.id === activeId);
       });
     };
-    
+
     let storedToolOutputs = {};
     let currentTool = null;
+
     const mobileMenu = document.getElementById("mobileMenu");
     const hamburger = document.getElementById("hamburger");
-    
+
     function toggleMobileMenu() {
       mobileMenu.classList.toggle("open");
       hamburger.classList.toggle("open");
     }
-    
+
+    // Función Expandir Contenido actualizada
     async function expandContent(responseId, toolName) {
+      const currentContent = document.getElementById(responseId).innerText;
       const responseBox = document.getElementById(responseId);
-      const currentText = responseBox.innerText;
-      if (!currentText || currentText.trim() === "") {
-        alert("No hay contenido para expandir.");
-        return;
-      }
       responseBox.innerHTML = "🔄 Expandiendo contenido, por favor espera...";
       try {
-        const res = await fetch("https://edu-ai-backend-production.up.railway.app/expand_content", {
+        const response = await fetch("https://edu-ai-backend-production.up.railway.app/expand_content", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ content: currentText, tool: toolName })
+          body: JSON.stringify({ content: currentContent, tool: toolName })
         });
-        const data = await res.json();
+        const data = await response.json();
         if (data.expanded_content) {
           responseBox.innerHTML = data.expanded_content;
+        } else {
+          responseBox.innerHTML = "❌ Error al expandir el contenido.";
+        }
+      } catch (error) {
+        responseBox.innerHTML = `❌ Error: ${error.message}`;
+      }
+    }
+
+    function enableExpandButton(responseId, buttonId) {
+      const responseContent = document.getElementById(responseId).innerText;
+      const btn = document.getElementById(buttonId);
+      if (responseContent && responseContent.trim() !== "" && btn) {
+        btn.disabled = false;
+      }
+    }
+
+    /* Funciones fetch para cada herramienta */
+
+    async function generateLessonPlan() {
+      let responseBox = document.getElementById("lessonPlanResponse");
+      responseBox.innerHTML = "🔄 Generando plan de clase...";
+      let response = await fetch("https://edu-ai-backend-production.up.railway.app/lesson_plan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subject: document.getElementById("subject").value,
+          grade_level: document.getElementById("gradeLevel").value,
+          learning_goals: document.getElementById("learningGoals").value
+        })
+      });
+      let data = await response.json();
+      responseBox.innerHTML = data.lesson_plan || "❌ Error al generar el plan de clase.";
+      enableExpandButton("lessonPlanResponse", "lessonPlanExpand");
+    }
+
+    async function generateQuiz() {
+      let responseBox = document.getElementById("quizResponse");
+      responseBox.innerHTML = "🔄 Generando quiz...";
+      let response = await fetch("https://edu-ai-backend-production.up.railway.app/quiz_creator", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic: document.getElementById("quizTopic").value })
+      });
+      let data = await response.json();
+      responseBox.innerHTML = data.quiz || "❌ Error al generar el quiz.";
+    }
+
+    async function generateMaterials() {
+      let responseBox = document.getElementById("materialsResponse");
+      responseBox.innerHTML = "🔄 Generando materiales...";
+      let response = await fetch("https://edu-ai-backend-production.up.railway.app/teaching_materials", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          topic: document.getElementById("materialTopic").value,
+          material_type: document.getElementById("materialType").value
+        })
+      });
+      let data = await response.json();
+      responseBox.innerHTML = data.teaching_materials || "❌ Error al generar los materiales.";
+      enableExpandButton("materialsResponse", "materialsExpand");
+    }
+
+    async function sendTutorRequest() {
+      let input = document.getElementById("tutorInput").value.trim();
+      let responseBox = document.getElementById("tutorResponse");
+      if (!input) {
+        responseBox.innerHTML = "❌ Por favor, ingresa una pregunta antes de consultar al tutor.";
+        return;
+      }
+      responseBox.innerHTML = "🔄 Generando respuesta...";
+      try {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/tutor_assistant", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: input })
+        });
+        let data = await response.json();
+        responseBox.innerHTML = data.response || "❌ Error al generar la respuesta.";
+        enableExpandButton("tutorResponse", "tutorExpand");
+      } catch (error) {
+        console.error("Error del tutor:", error);
+        responseBox.innerHTML = `❌ Error: ${error.message}`;
+      }
+    }
+
+    async function generateImage() {
+      const prompt = document.getElementById("imgPrompt").value.trim();
+      const responseBox = document.getElementById("imageResponse");
+      if (!prompt) {
+        responseBox.innerHTML = "<p style='color:red;'>Por favor, ingresa un enunciado.</p>";
+        return;
+      }
+      responseBox.innerHTML = "🔄 Generando imagen, por favor espera...";
+      try {
+        const response = await fetch("https://edu-ai-backend-production.up.railway.app/image_generator", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: prompt })
+        });
+        const data = await response.json();
+        if (data.image_url) {
+          responseBox.innerHTML = `<img src="${data.image_url}" alt="Imagen Educativa Generada"><br><br><small>Imagen generada según tu enunciado.</small>`;
         } else {
           responseBox.innerHTML = `<p style='color:red;'>Error: ${data.error}</p>`;
         }
@@ -337,7 +511,57 @@
         responseBox.innerHTML = `<p style='color:red;'>Error: ${error.message}</p>`;
       }
     }
-    
+
+    function downloadImage(responseId) {
+      const responseContainer = document.getElementById(responseId);
+      const imgElem = responseContainer.querySelector("img");
+      if (imgElem && imgElem.src) {
+        const link = document.createElement("a");
+        link.href = imgElem.src;
+        link.download = "imagen-generada.png";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        alert("No hay imagen para descargar.");
+      }
+    }
+
+    function copyResponse(responseId) {
+      const textToCopy = document.getElementById(responseId).innerText;
+      navigator.clipboard.writeText(textToCopy)
+        .then(() => { alert("¡Respuesta copiada al portapapeles!"); })
+        .catch(err => { console.error("Error al copiar:", err); });
+    }
+
+    window.onload = function() {
+      document.getElementById("tutorLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("tutorLink");
+        loadTool('tutor');
+      });
+      document.getElementById("lessonPlanLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("lessonPlanLink");
+        loadTool('lesson_plan');
+      });
+      document.getElementById("quizLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("quizLink");
+        loadTool('quiz');
+      });
+      document.getElementById("materialsLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("materialsLink");
+        loadTool('materials');
+      });
+      document.getElementById("imageLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        setActiveLink("imageLink");
+        loadTool('image');
+      });
+    };
+
     function loadTool(tool) {
       if (currentTool !== null && currentTool !== tool) {
         storedToolOutputs[currentTool] = document.querySelector('.tool-container').innerHTML;
@@ -396,7 +620,7 @@
       } else if (tool === 'materials') {
         header.innerHTML = "Generador de Materiales Didácticos";
         content.innerHTML = `
-          <p><strong>Cómo usar:</strong> Crea materiales didácticos de calidad rápidamente. Selecciona el tipo de material, ingresa un tema y haz clic en "Generar materiales".</p>
+          <p><strong>Cómo usar:</strong> Crea materiales didácticos de calidad rápidamente. Selecciona el tipo de material, ingresa un tema, y haz clic en "Generar materiales".</p>
           <input type="text" class="input-box" id="materialTopic" placeholder="Ingresa el tema">
           <select class="input-box" id="materialType">
             <option value="study_guide">Guía de estudio</option>
@@ -428,7 +652,7 @@
         `;
       }
     }
-    
+
     function getHeaderForTool(tool) {
       if (tool === 'tutor') return "Chat Tutor IA";
       if (tool === 'lesson_plan') return "Generador de Planes de Clase";
@@ -437,168 +661,6 @@
       if (tool === 'image') return "Generador de Imágenes";
       return "Herramientas Edvanta";
     }
-    
-    function enableExpandButton(responseId, buttonId) {
-      const responseContent = document.getElementById(responseId).innerText;
-      const btn = document.getElementById(buttonId);
-      if (responseContent && responseContent.trim() !== "" && btn) {
-        btn.disabled = false;
-      }
-    }
-    
-    async function generateLessonPlan() {
-      const responseBox = document.getElementById("lessonPlanResponse");
-      responseBox.innerHTML = "🔄 Generando plan de clase...";
-      try {
-        const response = await fetch("https://edu-ai-backend-production.up.railway.app/lesson_plan", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            subject: document.getElementById("subject").value,
-            grade_level: document.getElementById("gradeLevel").value,
-            learning_goals: document.getElementById("learningGoals").value
-          })
-        });
-        const data = await response.json();
-        responseBox.innerHTML = data.lesson_plan || "❌ Error al generar el plan de clase.";
-        enableExpandButton("lessonPlanResponse", "lessonPlanExpand");
-      } catch (error) {
-        responseBox.innerHTML = `❌ Error: ${error.message}`;
-      }
-    }
-    
-    async function generateQuiz() {
-      const responseBox = document.getElementById("quizResponse");
-      responseBox.innerHTML = "🔄 Generando quiz...";
-      try {
-        const response = await fetch("https://edu-ai-backend-production.up.railway.app/quiz_creator", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic: document.getElementById("quizTopic").value })
-        });
-        const data = await response.json();
-        responseBox.innerHTML = data.quiz || "❌ Error al generar el quiz.";
-      } catch (error) {
-        responseBox.innerHTML = `❌ Error: ${error.message}`;
-      }
-    }
-    
-    async function generateMaterials() {
-      const responseBox = document.getElementById("materialsResponse");
-      responseBox.innerHTML = "🔄 Generando materiales...";
-      try {
-        const response = await fetch("https://edu-ai-backend-production.up.railway.app/teaching_materials", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            topic: document.getElementById("materialTopic").value,
-            material_type: document.getElementById("materialType").value
-          })
-        });
-        const data = await response.json();
-        responseBox.innerHTML = data.teaching_materials || "❌ Error al generar los materiales.";
-        enableExpandButton("materialsResponse", "materialsExpand");
-      } catch (error) {
-        responseBox.innerHTML = `❌ Error: ${error.message}`;
-      }
-    }
-    
-    async function sendTutorRequest() {
-      const input = document.getElementById("tutorInput").value.trim();
-      const responseBox = document.getElementById("tutorResponse");
-      if (!input) {
-        responseBox.innerHTML = "❌ Por favor, ingresa una pregunta antes de consultar al tutor.";
-        return;
-      }
-      responseBox.innerHTML = "🔄 Generando respuesta...";
-      try {
-        const response = await fetch("https://edu-ai-backend-production.up.railway.app/tutor_assistant", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question: input })
-        });
-        const data = await response.json();
-        responseBox.innerHTML = data.response || "❌ Error al generar la respuesta.";
-        enableExpandButton("tutorResponse", "tutorExpand");
-      } catch (error) {
-        responseBox.innerHTML = `❌ Error: ${error.message}`;
-      }
-    }
-    
-    async function generateImage() {
-      const prompt = document.getElementById("imgPrompt").value.trim();
-      const responseBox = document.getElementById("imageResponse");
-      if (!prompt) {
-        responseBox.innerHTML = "<p style='color:red;'>Por favor, ingresa un enunciado.</p>";
-        return;
-      }
-      responseBox.innerHTML = "🔄 Generando imagen, por favor espera...";
-      try {
-        const response = await fetch("https://edu-ai-backend-production.up.railway.app/image_generator", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: prompt })
-        });
-        const data = await response.json();
-        if (data.image_url) {
-          responseBox.innerHTML = `<img src="${data.image_url}" alt="Imagen Educativa Generada"><br><br><small>Imagen generada según tu enunciado.</small>`;
-        } else {
-          responseBox.innerHTML = `<p style='color:red;'>Error: ${data.error}</p>`;
-        }
-      } catch (error) {
-        responseBox.innerHTML = `<p style='color:red;'>Error: ${error.message}</p>`;
-      }
-    }
-    
-    function downloadImage(responseId) {
-      const responseContainer = document.getElementById(responseId);
-      const imgElem = responseContainer.querySelector("img");
-      if (imgElem && imgElem.src) {
-        const link = document.createElement("a");
-        link.href = imgElem.src;
-        link.download = "imagen-generada.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } else {
-        alert("No hay imagen para descargar.");
-      }
-    }
-    
-    function copyResponse(responseId) {
-      const textToCopy = document.getElementById(responseId).innerText;
-      navigator.clipboard.writeText(textToCopy)
-        .then(() => { alert("¡Respuesta copiada al portapapeles!"); })
-        .catch(err => { console.error("Error al copiar:", err); });
-    }
-    
-    window.onload = function() {
-      document.getElementById("tutorLink").addEventListener("click", function(e) {
-        e.preventDefault();
-        setActiveLink("tutorLink");
-        loadTool('tutor');
-      });
-      document.getElementById("lessonPlanLink").addEventListener("click", function(e) {
-        e.preventDefault();
-        setActiveLink("lessonPlanLink");
-        loadTool('lesson_plan');
-      });
-      document.getElementById("quizLink").addEventListener("click", function(e) {
-        e.preventDefault();
-        setActiveLink("quizLink");
-        loadTool('quiz');
-      });
-      document.getElementById("materialsLink").addEventListener("click", function(e) {
-        e.preventDefault();
-        setActiveLink("materialsLink");
-        loadTool('materials');
-      });
-      document.getElementById("imageLink").addEventListener("click", function(e) {
-        e.preventDefault();
-        setActiveLink("imageLink");
-        loadTool('image');
-      });
-    };
   </script>
 </body>
 </html>
