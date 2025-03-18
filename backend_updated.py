@@ -1,11 +1,17 @@
 import os
 import re
 import json
+import logging
 import openai
+import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 from youtube_transcript_api import YouTubeTranscriptApi
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Load environment variables
 load_dotenv()
@@ -21,7 +27,6 @@ openai.api_key = OPENAI_API_KEY
 # -----------------------------
 # Existing Endpoints
 # -----------------------------
-
 @app.route('/tutor_assistant', methods=['POST'])
 def tutor_assistant():
     try:
@@ -47,6 +52,7 @@ Provide a well-structured response with actionable advice.
         ai_response = response["choices"][0]["message"]["content"]
         return jsonify({"response": ai_response})
     except Exception as e:
+        logger.error(f"Tutor Assistant error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/lesson_plan', methods=['POST'])
@@ -83,6 +89,7 @@ Generate a detailed lesson plan with:
         ai_response = response["choices"][0]["message"]["content"]
         return jsonify({"lesson_plan": ai_response})
     except Exception as e:
+        logger.error(f"Lesson Plan error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/quiz_creator', methods=['POST'])
@@ -98,7 +105,10 @@ def quiz_creator():
 You are an expert quiz creator for educational purposes.
 Topic: {topic}
 Question Type: {question_type}
-Generate a structured quiz with at least 5 questions. If multiple-choice, include four options per question and mark the correct answer.
+Generate a structured quiz with at least 5 questions. For each question, include:
+- "question": The question text,
+- "options": An array of 4 options,
+- "correct_answer": The correct option.
 """
         response = openai.ChatCompletion.create(
             model="gpt-4",
@@ -112,6 +122,7 @@ Generate a structured quiz with at least 5 questions. If multiple-choice, includ
         ai_response = response["choices"][0]["message"]["content"]
         return jsonify({"quiz": ai_response})
     except Exception as e:
+        logger.error(f"Quiz Creator error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/teaching_materials', methods=['POST'])
@@ -142,6 +153,7 @@ For PowerPoint slides, outline key slides. For worksheets, provide structured qu
         ai_response = response["choices"][0]["message"]["content"]
         return jsonify({"teaching_materials": ai_response})
     except Exception as e:
+        logger.error(f"Teaching Materials error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/image_generator', methods=['POST'])
@@ -160,6 +172,7 @@ def image_generator():
         image_url = response["data"][0]["url"]
         return jsonify({"image_url": image_url})
     except Exception as e:
+        logger.error(f"Image Generator error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/expand_content', methods=['POST'])
@@ -189,10 +202,11 @@ Tool: {tool}
         expanded_content = response["choices"][0]["message"]["content"]
         return jsonify({"expanded_content": expanded_content})
     except Exception as e:
+        logger.error(f"Expand Content error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 # -----------------------------
-# New: TeachTube AI Endpoint with Enhanced Prompt
+# New: TeachTube AI Endpoint with Enhanced Prompt, Logging, and yt-dlp Fallback
 # -----------------------------
 @app.route('/teachtube_ai', methods=['POST'])
 def teachtube_ai():
@@ -202,64 +216,105 @@ def teachtube_ai():
         if not youtube_url:
             return jsonify({"error": "Please provide a YouTube URL."}), 400
 
-        # Extract the video ID using regex with error checking
+        # Extract video ID
         video_id_pattern = r"(?:v=|\/)([0-9A-Za-z_-]{11})(?:[&?].*)?"
         match = re.search(video_id_pattern, youtube_url)
         if match:
             video_id = match.group(1)
+            logger.info(f"Extracted video ID: {video_id}")
         else:
+            logger.error("Failed to extract video ID.")
             return jsonify({"error": "Invalid YouTube URL or unable to extract video ID."}), 400
 
-        # Retrieve transcript explicitly requesting English language with enhanced fallback
+        # Attempt transcript retrieval using youtube_transcript_api
+        transcript_list = None
         try:
             transcript_list = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
-        except Exception as e:
+            logger.info("Successfully retrieved transcript with get_transcript.")
+        except Exception as primary_error:
+            logger.warning(f"Primary transcript retrieval failed: {primary_error}")
             try:
                 transcript_obj = YouTubeTranscriptApi.list_transcripts(video_id)
-                # First try to fetch the manually provided transcript
                 try:
                     transcript_list = transcript_obj.find_transcript(['en']).fetch()
-                except Exception as manual_e:
-                    # Fallback to auto-generated transcripts using common English variants
+                    logger.info("Successfully retrieved manual transcript for 'en'.")
+                except Exception as manual_error:
+                    logger.warning(f"Manual transcript retrieval failed: {manual_error}. Trying auto-generated transcripts.")
                     transcript_list = transcript_obj.find_generated_transcript(['en', 'en-US', 'en-GB']).fetch()
-            except Exception as inner_e:
-                return jsonify({"error": f"Could not retrieve transcript: {str(inner_e)}"}), 400
+                    logger.info("Successfully retrieved auto-generated transcript.")
+            except Exception as fallback_error:
+                logger.error(f"Fallback with youtube_transcript_api failed: {fallback_error}")
 
-        transcript_text = " ".join([t["text"] for t in transcript_list])
-        
-        # Improved prompt to force all sections with minimum requirements
+        # If transcript_list is empty, try yt-dlp fallback
+        transcript_text = ""
+        if transcript_list:
+            transcript_text = " ".join([t["text"] for t in transcript_list])
+            logger.info(f"Transcript text length from API: {len(transcript_text)} characters")
+        else:
+            logger.info("Attempting yt-dlp fallback for transcript retrieval.")
+            try:
+                import yt_dlp
+                ydl_opts = {
+                    'skip_download': True,
+                    'writesubtitles': True,
+                    'writeautomaticsub': True,
+                    'subtitlesformat': 'vtt',
+                    'subtitleslangs': ['en']
+                }
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    info = ydl.extract_info(youtube_url, download=False)
+                if 'automatic_captions' in info and 'en' in info['automatic_captions']:
+                    vtt_url = info['automatic_captions']['en'][0]['url']
+                    r = requests.get(vtt_url)
+                    if r.status_code == 200:
+                        vtt_text = r.text
+                        lines = vtt_text.splitlines()
+                        transcript_lines = []
+                        for line in lines:
+                            if not line.strip() or line.startswith("WEBVTT") or "-->" in line:
+                                continue
+                            transcript_lines.append(line.strip())
+                        transcript_text = " ".join(transcript_lines)
+                        logger.info(f"Transcript text length from yt-dlp: {len(transcript_text)} characters")
+                    else:
+                        raise Exception("Failed to download VTT file with status " + str(r.status_code))
+                else:
+                    raise Exception("No automatic captions available in yt-dlp info.")
+            except Exception as yt_error:
+                logger.error(f"yt-dlp fallback failed: {yt_error}")
+                return jsonify({"error": f"Could not retrieve transcript: {yt_error}"}), 400
+
+        # Enhanced prompt with strict instructions to produce all sections in one pass
         prompt = f"""
-You are an expert educational content generator. Using the transcript provided below from the YouTube video {youtube_url}, generate comprehensive teaching materials. You must always produce the following sections in valid JSON format, even if the transcript does not have enough details—if necessary, create plausible, inferred content.
+You are an expert educational content generator. Based on the transcript provided from the YouTube video {youtube_url}, generate comprehensive teaching materials. You must produce all of the following sections in valid JSON format, and you must include every section even if the transcript lacks some details. If necessary, invent plausible content to satisfy the requirements. Do not omit any section.
 
-1. "study_guide": {{
-      "summary": A concise summary of the video content,
-      "discussion_questions": An array of 3 to 5 discussion questions,
-      "vocabulary": An array of key vocabulary terms.
-   }},
-2. "lesson_plan": {{
-      "objectives": An array of at least 3 objectives,
-      "introduction": A brief introduction,
-      "activities": An array of at least 3 activities,
-      "assessments": An array of assessment methods (e.g., quiz, presentation),
-      "conclusion": A brief conclusion.
-   }},
-3. "quiz": An array of at least 5 quiz questions. For each question, include:
-      - "question": The question text,
-      - "options": An array of 4 options,
-      - "correct_answer": The correct option.
+Required JSON keys:
+1. "study_guide": An object with:
+    - "summary": A concise summary of the video.
+    - "discussion_questions": An array of 3 to 5 discussion questions.
+    - "vocabulary": An array of key vocabulary terms.
+2. "lesson_plan": An object with:
+    - "objectives": An array of at least 3 objectives.
+    - "introduction": A brief introduction.
+    - "activities": An array of at least 3 activities.
+    - "assessments": An array of assessment methods.
+    - "conclusion": A brief conclusion.
+3. "quiz": An array of at least 5 quiz questions. Each question must include:
+    - "question": The question text.
+    - "options": An array of 4 options.
+    - "correct_answer": The correct option.
 4. "worksheet": An array of at least 3 open-ended or fill-in-the-blank exercises.
-5. "ppt_outline": {{
-      "slide_titles": An array of at least 3 slide titles,
-      "bullet_points": An array where each element is an array of bullet points corresponding to each slide.
-   }}
+5. "ppt_outline": An object with:
+    - "slide_titles": An array of at least 3 slide titles.
+    - "bullet_points": An array where each element is an array of bullet points for the corresponding slide.
 
 Transcript:
 ---
 {transcript_text}
 ---
-Output strictly in valid JSON.
+Output strictly in valid JSON with exactly these keys: study_guide, lesson_plan, quiz, worksheet, ppt_outline.
 """
-
+        logger.info("Sending prompt to OpenAI.")
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
@@ -270,15 +325,18 @@ Output strictly in valid JSON.
             max_tokens=2000
         )
         ai_output = response["choices"][0]["message"]["content"]
-        
-        # Attempt to parse the AI output as JSON
+        logger.info("Received response from OpenAI.")
+
         try:
             output_json = json.loads(ai_output)
+            logger.info("Successfully parsed OpenAI response as JSON.")
         except Exception as parse_error:
+            logger.error(f"JSON parsing error: {parse_error}")
             output_json = {"raw_output": ai_output, "error": f"JSON parsing error: {str(parse_error)}"}
         
         return jsonify(output_json)
     except Exception as e:
+        logger.error(f"TeachTube AI endpoint error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
