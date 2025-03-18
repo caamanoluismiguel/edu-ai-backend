@@ -187,7 +187,7 @@ Tool: {tool}
         return jsonify({"error": str(e)}), 500
 
 # -----------------------------
-# New: TeachTube AI Endpoint with Fallback
+# New: TeachTube AI Endpoint with Enhanced Fallback
 # -----------------------------
 @app.route('/teachtube_ai', methods=['POST'])
 def teachtube_ai():
@@ -205,13 +205,18 @@ def teachtube_ai():
         else:
             return jsonify({"error": "Invalid YouTube URL or unable to extract video ID."}), 400
         
-        # Retrieve transcript explicitly requesting English language with fallback
+        # Retrieve transcript explicitly requesting English language with enhanced fallback
         try:
             transcript_list = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
         except Exception as e:
             try:
                 transcript_obj = YouTubeTranscriptApi.list_transcripts(video_id)
-                transcript_list = transcript_obj.find_generated_transcript(['en']).fetch()
+                # First try to fetch the manually provided transcript
+                try:
+                    transcript_list = transcript_obj.find_transcript(['en']).fetch()
+                except Exception as manual_e:
+                    # Fallback to auto-generated transcripts using common English variants
+                    transcript_list = transcript_obj.find_generated_transcript(['en', 'en-US', 'en-GB']).fetch()
             except Exception as inner_e:
                 return jsonify({"error": f"Could not retrieve transcript: {str(inner_e)}"}), 400
         
