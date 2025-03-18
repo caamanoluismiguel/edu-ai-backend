@@ -1,7 +1,7 @@
 import os
 import openai
 import yt_dlp
-from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound, CouldNotRetrieveTranscript
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -36,13 +36,29 @@ def get_video_id(youtube_url):
     return None
 
 def fetch_transcript(video_id):
-    """Fetches transcript for a given YouTube video ID using youtube_transcript_api."""
+    """
+    Fetches transcript for a given YouTube video ID using YouTubeTranscriptApi.
+    Attempts to fetch an English transcript. If a manually provided transcript is not available,
+    it falls back to the auto-generated one.
+    """
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id)
-        transcript_text = " ".join([entry["text"] for entry in transcript])
+        # Get list of available transcripts
+        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+        try:
+            # Try to fetch a manually created transcript in English
+            transcript = transcript_list.find_transcript(['en'])
+        except NoTranscriptFound:
+            # Fall back to auto-generated transcript in English
+            transcript = transcript_list.find_generated_transcript(['en'])
+        # Fetch the transcript and join the text
+        transcript_data = transcript.fetch()
+        transcript_text = " ".join([entry["text"] for entry in transcript_data])
         return transcript_text
+    except (TranscriptsDisabled, NoTranscriptFound, CouldNotRetrieveTranscript) as e:
+        print("Transcript error:", str(e))
+        return None
     except Exception as e:
-        print("Error fetching transcript:", str(e))
+        print("Unexpected error fetching transcript:", str(e))
         return None
 
 @app.route('/teachtube', methods=['POST'])
@@ -50,7 +66,7 @@ def teachtube():
     """
     TeachTube AI endpoint:
     1. Extracts the video ID from the provided YouTube URL.
-    2. Fetches the transcript using youtube_transcript_api.
+    2. Fetches the transcript using the improved transcript fetching method.
     3. Sends a detailed prompt to OpenAI GPT-4 for generating:
        - Study Guide
        - Lesson Plan
@@ -105,7 +121,7 @@ Please produce the following sections **in detail**, each separated by the delim
 [---SPLIT---]
 
 4. Worksheet
-   - Provide at least 3 written exercises or tasks 
+   - Provide at least 5 written exercises or tasks 
    - Make them interactive or reflective
 
 [---SPLIT---]
