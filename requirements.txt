@@ -5,6 +5,4 @@ gunicorn==20.1.0
 flask-cors==3.0.10
 Werkzeug==2.0.3
 Flask-Caching==1.10.1
-youtube-transcript-api
-yt-dlp
-requests==2.28.2
+youtube-transcript-api==0.4.3
