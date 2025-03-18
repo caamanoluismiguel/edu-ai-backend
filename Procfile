@@ -1,1 +1,1 @@
-web: gunicorn backend_updated:app
+web: gunicorn --timeout 300 backend_updated:app
