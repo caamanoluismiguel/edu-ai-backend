@@ -107,82 +107,35 @@ Generate a structured quiz with at least 5 questions. If multiple-choice, includ
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Teaching Materials Generator API
-@app.route('/teaching_materials', methods=['POST'])
-def teaching_materials():
+# NEW: TeachTube AI API
+@app.route('/teachtube', methods=['POST'])
+def teachtube():
     try:
         data = request.get_json()
-        topic = data.get("topic", "")
-        material_type = data.get("material_type", "study_guide")
-        if not topic:
-            return jsonify({"error": "Please provide a topic."}), 400
+        youtube_url = data.get("youtube_url", "")
+        if not youtube_url:
+            return jsonify({"error": "Please provide a YouTube URL."}), 400
 
         prompt = f"""
-You are an expert in creating educational materials for teachers.
-Topic: {topic}
-Material Type: {material_type}
-Generate detailed and structured content based on the selected material type.
-For PowerPoint slides, outline key slides. For worksheets, provide structured questions.
+You are an AI that extracts educational insights from YouTube videos.
+Given the video URL: {youtube_url}, generate the following teaching materials:
+1. **Study Guide** (summary, key vocabulary, discussion questions)
+2. **Lesson Plan** (objectives, introduction, activities, assessment, conclusion)
+3. **Quiz** (5+ multiple-choice questions)
+4. **Worksheet** (3+ exercises)
+5. **PowerPoint Outline** (3+ slides with bullet points)
+Ensure the content is structured, clear, and aligned with learning objectives.
 """
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
-                {"role": "system", "content": "You are an AI-based teaching material generator."},
+                {"role": "system", "content": "You are an AI that generates educational content from YouTube videos."},
                 {"role": "user", "content": prompt}
             ],
             temperature=0.7
         )
         ai_response = response["choices"][0]["message"]["content"]
-        return jsonify({"teaching_materials": ai_response})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-# NEW: Image Generator API
-@app.route('/image_generator', methods=['POST'])
-def image_generator():
-    try:
-        data = request.get_json()
-        prompt = data.get("prompt", "")
-        if not prompt:
-            return jsonify({"error": "Please provide an image prompt."}), 400
-
-        response = openai.Image.create(
-            prompt=prompt,
-            n=1,
-            size="1024x1024"
-        )
-        image_url = response["data"][0]["url"]
-        return jsonify({"image_url": image_url})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-# NEW: Expand Content API
-@app.route('/expand_content', methods=['POST'])
-def expand_content():
-    try:
-        data = request.get_json()
-        current_content = data.get("content", "")
-        tool = data.get("tool", "")
-        if not current_content:
-            return jsonify({"error": "No content provided for expansion."}), 400
-
-        # Create a prompt to expand the given content
-        prompt = f"""
-You are an expert in educational content enhancement.
-Expand and elaborate on the following content to provide additional detail and insights. Ensure the response is well-structured and actionable.
-Content: {current_content}
-Tool: {tool}
-"""
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[
-                {"role": "system", "content": "You are an expert content expander."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.7
-        )
-        expanded_content = response["choices"][0]["message"]["content"]
-        return jsonify({"expanded_content": expanded_content})
+        return jsonify({"teachtube_output": ai_response})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
