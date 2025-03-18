@@ -1,239 +1,190 @@
 import os
-import subprocess
 import openai
-import logging
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 
-# youtube_transcript_api
-from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound
-
+# Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
-logging.basicConfig(level=logging.INFO)
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
     raise ValueError("Missing OpenAI API Key. Ensure it's set in Railway's environment variables.")
 openai.api_key = OPENAI_API_KEY
 
-#############################################
-# HELPER FUNCTIONS FOR TEACHTUBE AI
-#############################################
-
-def extract_video_id(youtube_url: str) -> str:
-    """
-    Naive approach to parse out the video ID.
-    Works for https://www.youtube.com/watch?v=XXXX and https://youtu.be/XXXX
-    """
-    if "youtube.com/watch?v=" in youtube_url:
-        return youtube_url.split("v=")[1].split("&")[0]
-    elif "youtu.be/" in youtube_url:
-        return youtube_url.split("youtu.be/")[1]
-    return ""
-
-def get_transcript_primary(video_id: str) -> str or None:
-    """
-    Attempt to retrieve an English transcript via youtube_transcript_api.
-    Tries multiple language codes (en, en-US, en-GB) and auto-generated tracks.
-    Returns transcript as a single string or None if not found.
-    """
-    try:
-        logging.info(f"Trying primary transcript with youtube_transcript_api for video_id={video_id}")
-        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
-
-        # Try a set of English variants
-        possible_lang_codes = ["en", "en-US", "en-GB", "en-AU"]
-
-        for transcript in transcript_list:
-            lang = transcript.language_code
-            logging.info(f"Found transcript track: {lang}, generated={transcript.is_generated}")
-            # If it's one of our English variants or an auto-generated track in English
-            if lang in possible_lang_codes or transcript.is_generated:
-                # Attempt to fetch
-                fetched = transcript.fetch()
-                combined_text = " ".join([x["text"] for x in fetched])
-                if combined_text.strip():
-                    return combined_text
-    except (TranscriptsDisabled, NoTranscriptFound) as e:
-        logging.warning(f"Primary transcript retrieval failed: {e}")
-    except Exception as e:
-        logging.warning(f"Primary transcript unexpected error: {e}")
-    return None
-
-def get_transcript_fallback(youtube_url: str) -> str or None:
-    """
-    Fallback using yt-dlp: attempt to download English auto-sub as a .vtt file, parse to text.
-    """
-    try:
-        logging.info(f"Trying fallback transcript with yt-dlp for url={youtube_url}")
-
-        temp_filename = "temp_subs"
-        # Use wildcards for sub-langs in case it's en, en-US, en-GB, etc.
-        command = [
-            "yt-dlp",
-            "--write-auto-sub",
-            "--sub-langs", "en.*",  # Instead of just en
-            "--skip-download",
-            "--output", temp_filename,
-            youtube_url
-        ]
-        subprocess.run(command, check=True)
-
-        # Since we used "en.*", the actual file might be temp_subs.en.vtt or temp_subs.enUS.vtt, etc.
-        import glob
-        vtt_files = glob.glob("temp_subs*.vtt")
-
-        if not vtt_files:
-            logging.info("No .vtt file found from fallback method.")
-            return None
-
-        # We'll assume the first matching VTT
-        vtt_file = vtt_files[0]
-        logging.info(f"Found VTT file: {vtt_file}")
-
-        with open(vtt_file, "r", encoding="utf-8") as f:
-            lines = f.readlines()
-
-        # Minimal VTT parsing
-        transcript_text = []
-        for line in lines:
-            line = line.strip()
-            # Skip metadata/time lines
-            if "-->" in line or not line:
-                continue
-            transcript_text.append(line)
-
-        # Cleanup the file(s)
-        for vf in vtt_files:
-            try:
-                os.remove(vf)
-            except:
-                pass
-
-        combined_text = " ".join(transcript_text)
-        return combined_text if combined_text.strip() else None
-    except Exception as e:
-        logging.warning(f"Fallback transcript retrieval failed: {e}")
-    return None
-
-
-#############################################
-# TEACHTUBE AI ENDPOINT
-#############################################
-
-@app.route('/teachtube_ai', methods=['POST'])
-def teachtube_ai():
-    """
-    Accepts JSON: { "youtube_url": "..." }
-    Returns a JSON with keys: study_guide, lesson_plan, quiz, worksheet, ppt_outline
-    or an error message if transcripts are unavailable.
-    """
+# AI Tutor Assistant API
+@app.route('/tutor_assistant', methods=['POST'])
+def tutor_assistant():
     try:
         data = request.get_json()
-        youtube_url = data.get("youtube_url", "").strip()
-        if not youtube_url:
-            return jsonify({"error": "Missing 'youtube_url' parameter."}), 400
+        question = data.get("question", "")
+        if not question:
+            return jsonify({"error": "Please provide a question for the AI Tutor."}), 400
 
-        video_id = extract_video_id(youtube_url)
-        if not video_id:
-            return jsonify({"error": "Invalid or unrecognized YouTube URL."}), 400
-
-        # 1) Primary attempt
-        transcript = get_transcript_primary(video_id)
-        if not transcript:
-            # 2) Fallback attempt
-            transcript = get_transcript_fallback(youtube_url)
-
-        if not transcript:
-            # Either the video truly has no English subtitles, or it's region-locked, etc.
-            logging.error("No transcript found via primary or fallback methods.")
-            return jsonify({"error": "No transcript found via primary or fallback methods."}), 404
-
-        # 3) Prompt forcing GPT to return all sections in JSON
         prompt = f"""
-You are a teaching assistant AI. You have a transcript of a YouTube video:
-
-\"\"\"{transcript}\"\"\"
-
-Generate the following sections in a single JSON response with these keys:
-1) study_guide
-2) lesson_plan
-3) quiz
-4) worksheet
-5) ppt_outline
-
-Each key must be present. Below is the desired JSON structure (example). Always fill all sections:
-
-{{
-  "study_guide": {{
-    "summary": "...",
-    "discussion_questions": ["..."],
-    "vocabulary": ["..."]
-  }},
-  "lesson_plan": {{
-    "objectives": ["..."],
-    "introduction": "...",
-    "activities": ["..."],
-    "assessment": "...",
-    "conclusion": "..."
-  }},
-  "quiz": [
-    {{
-      "question": "...",
-      "choices": ["A) ...", "B) ...", "C) ...", "D) ..."],
-      "correct_answer": "B"
-    }},
-    ...
-  ],
-  "worksheet": [...],
-  "ppt_outline": [
-    {{
-      "slide_title": "...",
-      "bullet_points": ["...", "..."]
-    }}
-  ]
-}}
-
-Remember:
-- study_guide: summary, discussion questions, vocabulary
-- lesson_plan: objectives, introduction, activities, assessment, conclusion
-- quiz: at least 5 questions, 4 choices each, with correct_answer
-- worksheet: at least 3 exercises
-- ppt_outline: at least 3 slides with bullet points
-
-Return valid JSON ONLY, without extra commentary.
+You are an experienced education coach helping teachers improve their lessons and strategies.
+Teacher's Question: "{question}"
+Provide a well-structured response with actionable advice.
 """
-
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
-                {"role": "system", "content": "You are a helpful teaching assistant AI."},
+                {"role": "system", "content": "You are a helpful education expert AI."},
                 {"role": "user", "content": prompt}
             ],
             temperature=0.7
         )
-        gpt_output = response["choices"][0]["message"]["content"].strip()
-
-        import json
-        try:
-            final_json = json.loads(gpt_output)
-            return jsonify(final_json)
-        except json.JSONDecodeError:
-            logging.error("Failed to parse GPT output as JSON.")
-            return jsonify({"error": "GPT output was not valid JSON.", "raw_output": gpt_output}), 500
-
+        ai_response = response["choices"][0]["message"]["content"]
+        return jsonify({"response": ai_response})
     except Exception as e:
-        logging.error(f"TeachTube AI error: {e}")
         return jsonify({"error": str(e)}), 500
 
+# Lesson Plan Generator API
+@app.route('/lesson_plan', methods=['POST'])
+def lesson_plan():
+    try:
+        data = request.get_json()
+        subject = data.get("subject", "")
+        grade_level = data.get("grade_level", "")
+        learning_goals = data.get("learning_goals", "")
+        if not subject or not grade_level or not learning_goals:
+            return jsonify({"error": "Please provide subject, grade level, and learning goals."}), 400
 
-#############################################
-# If you have other endpoints, keep them
-#############################################
+        prompt = f"""
+You are an expert educator creating structured lesson plans for teachers.
+Subject: {subject}
+Grade Level: {grade_level}
+Learning Goals: {learning_goals}
+Generate a detailed lesson plan with:
+- Lesson Objectives
+- Introduction
+- Activities
+- Assessment Methods
+- Conclusion
+"""
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a lesson plan generator AI."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7
+        )
+        ai_response = response["choices"][0]["message"]["content"]
+        return jsonify({"lesson_plan": ai_response})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Quiz Creator API
+@app.route('/quiz_creator', methods=['POST'])
+def quiz_creator():
+    try:
+        data = request.get_json()
+        topic = data.get("topic", "")
+        question_type = data.get("question_type", "multiple-choice")
+        if not topic:
+            return jsonify({"error": "Please provide a quiz topic."}), 400
+
+        prompt = f"""
+You are an expert quiz creator for educational purposes.
+Topic: {topic}
+Question Type: {question_type}
+Generate a structured quiz with at least 5 questions. If multiple-choice, include four options per question and mark the correct answer.
+"""
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are an AI-based quiz generator."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7
+        )
+        ai_response = response["choices"][0]["message"]["content"]
+        return jsonify({"quiz": ai_response})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Teaching Materials Generator API
+@app.route('/teaching_materials', methods=['POST'])
+def teaching_materials():
+    try:
+        data = request.get_json()
+        topic = data.get("topic", "")
+        material_type = data.get("material_type", "study_guide")
+        if not topic:
+            return jsonify({"error": "Please provide a topic."}), 400
+
+        prompt = f"""
+You are an expert in creating educational materials for teachers.
+Topic: {topic}
+Material Type: {material_type}
+Generate detailed and structured content based on the selected material type.
+For PowerPoint slides, outline key slides. For worksheets, provide structured questions.
+"""
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are an AI-based teaching material generator."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7
+        )
+        ai_response = response["choices"][0]["message"]["content"]
+        return jsonify({"teaching_materials": ai_response})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# NEW: Image Generator API
+@app.route('/image_generator', methods=['POST'])
+def image_generator():
+    try:
+        data = request.get_json()
+        prompt = data.get("prompt", "")
+        if not prompt:
+            return jsonify({"error": "Please provide an image prompt."}), 400
+
+        response = openai.Image.create(
+            prompt=prompt,
+            n=1,
+            size="1024x1024"
+        )
+        image_url = response["data"][0]["url"]
+        return jsonify({"image_url": image_url})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# NEW: Expand Content API
+@app.route('/expand_content', methods=['POST'])
+def expand_content():
+    try:
+        data = request.get_json()
+        current_content = data.get("content", "")
+        tool = data.get("tool", "")
+        if not current_content:
+            return jsonify({"error": "No content provided for expansion."}), 400
+
+        # Create a prompt to expand the given content
+        prompt = f"""
+You are an expert in educational content enhancement.
+Expand and elaborate on the following content to provide additional detail and insights. Ensure the response is well-structured and actionable.
+Content: {current_content}
+Tool: {tool}
+"""
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are an expert content expander."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7
+        )
+        expanded_content = response["choices"][0]["message"]["content"]
+        return jsonify({"expanded_content": expanded_content})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
