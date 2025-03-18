@@ -21,7 +21,6 @@ openai.api_key = OPENAI_API_KEY
 # -----------------------------
 # Existing Endpoints
 # -----------------------------
-
 @app.route('/tutor_assistant', methods=['POST'])
 def tutor_assistant():
     try:
@@ -41,7 +40,8 @@ Provide a well-structured response with actionable advice.
                 {"role": "system", "content": "You are a helpful education expert AI."},
                 {"role": "user", "content": prompt}
             ],
-            temperature=0.7
+            temperature=0.7,
+            max_tokens=1500
         )
         ai_response = response["choices"][0]["message"]["content"]
         return jsonify({"response": ai_response})
@@ -76,7 +76,8 @@ Generate a detailed lesson plan with:
                 {"role": "system", "content": "You are a lesson plan generator AI."},
                 {"role": "user", "content": prompt}
             ],
-            temperature=0.7
+            temperature=0.7,
+            max_tokens=1500
         )
         ai_response = response["choices"][0]["message"]["content"]
         return jsonify({"lesson_plan": ai_response})
@@ -96,7 +97,10 @@ def quiz_creator():
 You are an expert quiz creator for educational purposes.
 Topic: {topic}
 Question Type: {question_type}
-Generate a structured quiz with at least 5 questions. If multiple-choice, include four options per question and mark the correct answer.
+Generate a structured quiz with at least 5 questions. For each question, include:
+- "question": The question text,
+- "options": An array of 4 options,
+- "correct_answer": The correct option.
 """
         response = openai.ChatCompletion.create(
             model="gpt-4",
@@ -104,7 +108,8 @@ Generate a structured quiz with at least 5 questions. If multiple-choice, includ
                 {"role": "system", "content": "You are an AI-based quiz generator."},
                 {"role": "user", "content": prompt}
             ],
-            temperature=0.7
+            temperature=0.7,
+            max_tokens=1500
         )
         ai_response = response["choices"][0]["message"]["content"]
         return jsonify({"quiz": ai_response})
@@ -133,7 +138,8 @@ For PowerPoint slides, outline key slides. For worksheets, provide structured qu
                 {"role": "system", "content": "You are an AI-based teaching material generator."},
                 {"role": "user", "content": prompt}
             ],
-            temperature=0.7
+            temperature=0.7,
+            max_tokens=1500
         )
         ai_response = response["choices"][0]["message"]["content"]
         return jsonify({"teaching_materials": ai_response})
@@ -179,7 +185,8 @@ Tool: {tool}
                 {"role": "system", "content": "You are an expert content expander."},
                 {"role": "user", "content": prompt}
             ],
-            temperature=0.7
+            temperature=0.7,
+            max_tokens=1500
         )
         expanded_content = response["choices"][0]["message"]["content"]
         return jsonify({"expanded_content": expanded_content})
@@ -187,7 +194,7 @@ Tool: {tool}
         return jsonify({"error": str(e)}), 500
 
 # -----------------------------
-# New: TeachTube AI Endpoint with Enhanced Fallback
+# New: TeachTube AI Endpoint with Enhanced Prompt (Single Pass)
 # -----------------------------
 @app.route('/teachtube_ai', methods=['POST'])
 def teachtube_ai():
@@ -196,7 +203,7 @@ def teachtube_ai():
         youtube_url = data.get("youtube_url", "")
         if not youtube_url:
             return jsonify({"error": "Please provide a YouTube URL."}), 400
-        
+
         # Extract the video ID using regex with error checking
         video_id_pattern = r"(?:v=|\/)([0-9A-Za-z_-]{11})(?:[&?].*)?"
         match = re.search(video_id_pattern, youtube_url)
@@ -204,39 +211,53 @@ def teachtube_ai():
             video_id = match.group(1)
         else:
             return jsonify({"error": "Invalid YouTube URL or unable to extract video ID."}), 400
-        
+
         # Retrieve transcript explicitly requesting English language with enhanced fallback
         try:
             transcript_list = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
         except Exception as e:
             try:
                 transcript_obj = YouTubeTranscriptApi.list_transcripts(video_id)
-                # First try to fetch the manually provided transcript
                 try:
                     transcript_list = transcript_obj.find_transcript(['en']).fetch()
                 except Exception as manual_e:
-                    # Fallback to auto-generated transcripts using common English variants
                     transcript_list = transcript_obj.find_generated_transcript(['en', 'en-US', 'en-GB']).fetch()
             except Exception as inner_e:
                 return jsonify({"error": f"Could not retrieve transcript: {str(inner_e)}"}), 400
-        
+
         transcript_text = " ".join([t["text"] for t in transcript_list])
         
-        # Construct the prompt for generating teaching materials in JSON format
+        # Enhanced prompt with strict instructions to produce all sections in one pass
         prompt = f"""
-You are an expert educational content generator. Generate comprehensive teaching materials from the provided YouTube transcript.
-Transcript (from {youtube_url}):
+You are an expert educational content generator. Based on the transcript provided from the YouTube video {youtube_url}, generate comprehensive teaching materials. You must produce all of the following sections in valid JSON format, and you must include every section even if the transcript lacks some details. If necessary, invent plausible content to satisfy the requirements. Do not omit any section.
+
+Required JSON keys:
+1. "study_guide": An object with:
+    - "summary": A concise summary of the video.
+    - "discussion_questions": An array of 3 to 5 discussion questions.
+    - "vocabulary": An array of key vocabulary terms.
+2. "lesson_plan": An object with:
+    - "objectives": An array of at least 3 objectives.
+    - "introduction": A brief introduction.
+    - "activities": An array of at least 3 activities.
+    - "assessments": An array of assessment methods (e.g., quiz, presentation).
+    - "conclusion": A brief conclusion.
+3. "quiz": An array of at least 5 quiz questions. Each question must include:
+    - "question": The question text.
+    - "options": An array of 4 options.
+    - "correct_answer": The correct option.
+4. "worksheet": An array of at least 3 open-ended or fill-in-the-blank exercises.
+5. "ppt_outline": An object with:
+    - "slide_titles": An array of at least 3 slide titles.
+    - "bullet_points": An array where each element is an array of bullet points for the corresponding slide.
+
+Transcript:
 ---
 {transcript_text}
 ---
-Generate the following keys in valid JSON format:
-- "study_guide": A concise summary, discussion questions, and vocabulary.
-- "lesson_plan": Detailed lesson plan including objectives, introduction, activities, assessments, and conclusion.
-- "quiz": A quiz with at least 5 questions. For multiple-choice questions, include 4 options and mark the correct answer.
-- "worksheet": A set of exercises or worksheet questions.
-- "ppt_outline": An outline for a PowerPoint presentation with slide titles and bullet points.
-Output strictly in valid JSON.
+Output strictly in valid JSON with exactly these keys: study_guide, lesson_plan, quiz, worksheet, ppt_outline.
 """
+
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
@@ -244,7 +265,7 @@ Output strictly in valid JSON.
                 {"role": "user", "content": prompt}
             ],
             temperature=0.7,
-            max_tokens=1500
+            max_tokens=2000
         )
         ai_output = response["choices"][0]["message"]["content"]
         
