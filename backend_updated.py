@@ -1,8 +1,11 @@
 import os
+import re
+import json
 import openai
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
+from youtube_transcript_api import YouTubeTranscriptApi
 
 # Load environment variables
 load_dotenv()
@@ -15,7 +18,10 @@ if not OPENAI_API_KEY:
     raise ValueError("Missing OpenAI API Key. Ensure it's set in Railway's environment variables.")
 openai.api_key = OPENAI_API_KEY
 
-# AI Tutor Assistant API
+# -----------------------------
+# Existing Endpoints
+# -----------------------------
+
 @app.route('/tutor_assistant', methods=['POST'])
 def tutor_assistant():
     try:
@@ -42,7 +48,6 @@ Provide a well-structured response with actionable advice.
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Lesson Plan Generator API
 @app.route('/lesson_plan', methods=['POST'])
 def lesson_plan():
     try:
@@ -78,7 +83,6 @@ Generate a detailed lesson plan with:
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Quiz Creator API
 @app.route('/quiz_creator', methods=['POST'])
 def quiz_creator():
     try:
@@ -107,7 +111,6 @@ Generate a structured quiz with at least 5 questions. If multiple-choice, includ
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Teaching Materials Generator API
 @app.route('/teaching_materials', methods=['POST'])
 def teaching_materials():
     try:
@@ -137,7 +140,6 @@ For PowerPoint slides, outline key slides. For worksheets, provide structured qu
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# NEW: Image Generator API
 @app.route('/image_generator', methods=['POST'])
 def image_generator():
     try:
@@ -156,7 +158,6 @@ def image_generator():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# NEW: Expand Content API
 @app.route('/expand_content', methods=['POST'])
 def expand_content():
     try:
@@ -166,7 +167,6 @@ def expand_content():
         if not current_content:
             return jsonify({"error": "No content provided for expansion."}), 400
 
-        # Create a prompt to expand the given content
         prompt = f"""
 You are an expert in educational content enhancement.
 Expand and elaborate on the following content to provide additional detail and insights. Ensure the response is well-structured and actionable.
@@ -183,6 +183,70 @@ Tool: {tool}
         )
         expanded_content = response["choices"][0]["message"]["content"]
         return jsonify({"expanded_content": expanded_content})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# -----------------------------
+# New: TeachTube AI Endpoint
+# -----------------------------
+@app.route('/teachtube_ai', methods=['POST'])
+def teachtube_ai():
+    try:
+        data = request.get_json()
+        youtube_url = data.get("youtube_url", "")
+        if not youtube_url:
+            return jsonify({"error": "Please provide a YouTube URL."}), 400
+        
+        # Extract the video ID using regex with error checking
+        video_id_pattern = r"(?:v=|\/)([0-9A-Za-z_-]{11})(?:[&?].*)?"
+        match = re.search(video_id_pattern, youtube_url)
+        if match:
+            video_id = match.group(1)
+        else:
+            return jsonify({"error": "Invalid YouTube URL or unable to extract video ID."}), 400
+        
+        # Retrieve transcript using youtube_transcript_api
+        try:
+            transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
+        except Exception as e:
+            return jsonify({"error": f"Could not retrieve transcript: {str(e)}"}), 400
+        
+        transcript_text = " ".join([t["text"] for t in transcript_list])
+        
+        # Construct the prompt for generating teaching materials in JSON format
+        prompt = f"""
+You are an expert educational content generator. Generate comprehensive teaching materials from the provided YouTube transcript.
+Transcript (from {youtube_url}):
+---
+{transcript_text}
+---
+Generate the following keys in valid JSON format:
+- "study_guide": A concise summary, discussion questions, and vocabulary.
+- "lesson_plan": Detailed lesson plan including objectives, introduction, activities, assessments, and conclusion.
+- "quiz": A quiz with at least 5 questions. For multiple-choice questions, include 4 options and mark the correct answer.
+- "worksheet": A set of exercises or worksheet questions.
+- "ppt_outline": An outline for a PowerPoint presentation with slide titles and bullet points.
+Output strictly in valid JSON.
+"""
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are an expert educational content generator."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7,
+            max_tokens=1500
+        )
+        ai_output = response["choices"][0]["message"]["content"]
+        
+        # Attempt to parse the AI output as JSON
+        try:
+            output_json = json.loads(ai_output)
+        except Exception as parse_error:
+            # If parsing fails, return the raw output for troubleshooting
+            output_json = {"raw_output": ai_output, "error": f"JSON parsing error: {str(parse_error)}"}
+        
+        return jsonify(output_json)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
