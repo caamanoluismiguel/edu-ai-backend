@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TeachTube AI – Edvanta</title>
+  <!-- Modern Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styles */
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: #f4f7fa;
+      color: #333;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      padding: 15px 40px;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: #0073e6;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+    .nav-links li a {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #555;
+      transition: color 0.3s;
+    }
+    .nav-links li a:hover { color: #0073e6; }
+    
+    /* Hero / Intro Section */
+    .hero {
+      text-align: center;
+      padding: 60px 20px 30px;
+      background: linear-gradient(135deg, #e0f7fa 0%, #ffffff 100%);
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+      color: #222;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: #666;
+      margin-bottom: 30px;
+    }
+    
+    /* Input Section */
+    .input-section {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 40px;
+      padding: 0 20px;
+    }
+    .input-section input {
+      width: 60%;
+      padding: 14px;
+      font-size: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      transition: border-color 0.3s;
+    }
+    .input-section input:focus { border-color: #0073e6; outline: none; }
+    .input-section button {
+      padding: 14px 30px;
+      background: #0073e6;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .input-section button:hover { background: #005bb5; transform: translateY(-2px); }
+    
+    /* Loading Indicator */
+    #loading {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 20px;
+    }
+    .hidden { display: none; }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 20px;
+    }
+    .tab-link {
+      background: transparent;
+      border: none;
+      padding: 12px 20px;
+      font-size: 1rem;
+      color: #666;
+      cursor: pointer;
+      transition: color 0.3s, border-bottom 0.3s;
+    }
+    .tab-link.active, .tab-link:hover {
+      color: #0073e6;
+      border-bottom: 3px solid #0073e6;
+    }
+    
+    /* Tab Content */
+    .tab-content {
+      display: none;
+      background: #fff;
+      padding: 20px;
+      margin: 0 20px 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .tab-content.active { display: block; }
+    
+    /* Tab Header */
+    .tab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .tab-header h2 {
+      font-size: 1.3rem;
+      color: #333;
+    }
+    .copy-button {
+      padding: 8px 16px;
+      background: #0073e6;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .copy-button:hover { background: #005bb5; }
+    
+    pre {
+      text-align: left;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    
+    /* Footer */
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header / Navigation -->
+  <header>
+    <div class="nav-container">
+      <div class="logo">Edvanta</div>
+      <ul class="nav-links">
+        <li><a href="https://edvanta.co/">Home</a></li>
+        <li><a href="https://edvanta.co/tools">Tools</a></li>
+        <li><a href="https://edvanta.co/teachtube">TeachTube AI</a></li>
+        <li><a href="https://edvanta.co/about">About</a></li>
+        <li><a href="https://edvanta.co/contact">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>TeachTube AI</h1>
+    <p>Transform any YouTube video into comprehensive, detailed teaching materials using real transcripts.</p>
+  </section>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Input Section -->
+    <div class="input-section">
+      <input type="text" id="youtube-url" placeholder="Paste YouTube Video URL here" />
+      <button id="generate">Generate</button>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loading" class="hidden">Processing... Please wait.</div>
+
+    <!-- Output Section with Tabs -->
+    <div id="output-container" class="hidden">
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-link active" data-tab="study-guide">Study Guide</button>
+        <button class="tab-link" data-tab="lesson-plan">Lesson Plan</button>
+        <button class="tab-link" data-tab="quiz">Quiz</button>
+        <button class="tab-link" data-tab="worksheet">Worksheet</button>
+        <button class="tab-link" data-tab="ppt">PowerPoint</button>
+      </div>
+      
+      <!-- Tab Contents -->
+      <div id="study-guide" class="tab-content active">
+        <div class="tab-header">
+          <h2>Study Guide</h2>
+          <button class="copy-button" data-target="study-guide">Copy</button>
+        </div>
+        <pre id="study-guide-content"></pre>
+      </div>
+      <div id="lesson-plan" class="tab-content">
+        <div class="tab-header">
+          <h2>Lesson Plan</h2>
+          <button class="copy-button" data-target="lesson-plan">Copy</button>
+        </div>
+        <pre id="lesson-plan-content"></pre>
+      </div>
+      <div id="quiz" class="tab-content">
+        <div class="tab-header">
+          <h2>Quiz</h2>
+          <button class="copy-button" data-target="quiz">Copy</button>
+        </div>
+        <pre id="quiz-content"></pre>
+      </div>
+      <div id="worksheet" class="tab-content">
+        <div class="tab-header">
+          <h2>Worksheet</h2>
+          <button class="copy-button" data-target="worksheet">Copy</button>
+        </div>
+        <pre id="worksheet-content"></pre>
+      </div>
+      <div id="ppt" class="tab-content">
+        <div class="tab-header">
+          <h2>PowerPoint</h2>
+          <button class="copy-button" data-target="ppt">Copy</button>
+        </div>
+        <pre id="ppt-content"></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Edvanta. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Generate Button Logic
+    document.getElementById("generate").addEventListener("click", function() {
+      const youtubeURL = document.getElementById("youtube-url").value.trim();
+      const loadingIndicator = document.getElementById("loading");
+      const outputContainer = document.getElementById("output-container");
+
+      if (!youtubeURL) {
+        alert("Please enter a valid YouTube URL.");
+        return;
+      }
+
+      // Show loading, hide output
+      loadingIndicator.classList.remove("hidden");
+      outputContainer.classList.add("hidden");
+
+      fetch("https://edu-ai-backend-production.up.railway.app/teachtube", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ youtube_url: youtubeURL })
+      })
+      .then(response => response.json())
+      .then(data => {
+        loadingIndicator.classList.add("hidden");
+
+        if (data.error) {
+          alert(data.error);
+          return;
+        }
+
+        // Split response using custom delimiter [---SPLIT---]
+        const rawOutput = data.teachtube_output || "";
+        let sections = rawOutput.split("\n[---SPLIT---]\n");
+        if (sections.length < 5) {
+          sections = rawOutput.split("\n\n\n");
+        }
+        
+        // Populate tabs with content
+        document.getElementById("study-guide-content").textContent  = sections[0] || "No study guide available.";
+        document.getElementById("lesson-plan-content").textContent  = sections[1] || "No lesson plan available.";
+        document.getElementById("quiz-content").textContent         = sections[2] || "No quiz available.";
+        document.getElementById("worksheet-content").textContent    = sections[3] || "No worksheet available.";
+        document.getElementById("ppt-content").textContent          = sections[4] || "No PowerPoint outline available.";
+        
+        outputContainer.classList.remove("hidden");
+      })
+      .catch(error => {
+        loadingIndicator.classList.add("hidden");
+        alert("Error fetching teaching materials. Please try again.");
+        console.error("Error:", error);
+      });
+    });
+
+    // Tab Switching
+    document.querySelectorAll(".tab-link").forEach(button => {
+      button.addEventListener("click", function() {
+        document.querySelectorAll(".tab-link").forEach(btn => btn.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
+        this.classList.add("active");
+        document.getElementById(this.dataset.tab).classList.add("active");
+      });
+    });
+
+    // Copy Button Functionality
+    document.querySelectorAll(".copy-button").forEach(btn => {
+      btn.addEventListener("click", function() {
+        const targetId = this.dataset.target + "-content";
+        const content = document.getElementById(targetId).innerText;
+        navigator.clipboard.writeText(content).then(() => {
+          alert("Content copied to clipboard!");
+        });
+      });
+    });
+  </script>
+</body>
+</html>
