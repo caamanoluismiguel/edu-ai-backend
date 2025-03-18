@@ -187,7 +187,7 @@ Tool: {tool}
         return jsonify({"error": str(e)}), 500
 
 # -----------------------------
-# New: TeachTube AI Endpoint
+# New: TeachTube AI Endpoint with Fallback
 # -----------------------------
 @app.route('/teachtube_ai', methods=['POST'])
 def teachtube_ai():
@@ -205,11 +205,15 @@ def teachtube_ai():
         else:
             return jsonify({"error": "Invalid YouTube URL or unable to extract video ID."}), 400
         
-        # Retrieve transcript using youtube_transcript_api
+        # Retrieve transcript explicitly requesting English language with fallback
         try:
-            transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
+            transcript_list = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
         except Exception as e:
-            return jsonify({"error": f"Could not retrieve transcript: {str(e)}"}), 400
+            try:
+                transcript_obj = YouTubeTranscriptApi.list_transcripts(video_id)
+                transcript_list = transcript_obj.find_generated_transcript(['en']).fetch()
+            except Exception as inner_e:
+                return jsonify({"error": f"Could not retrieve transcript: {str(inner_e)}"}), 400
         
         transcript_text = " ".join([t["text"] for t in transcript_list])
         
@@ -243,7 +247,6 @@ Output strictly in valid JSON.
         try:
             output_json = json.loads(ai_output)
         except Exception as parse_error:
-            # If parsing fails, return the raw output for troubleshooting
             output_json = {"raw_output": ai_output, "error": f"JSON parsing error: {str(parse_error)}"}
         
         return jsonify(output_json)
