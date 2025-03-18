@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Edvanta Tools offers innovative AI-powered solutions for educators. Use our AI Tutor Chat, Lesson Plan Generator, Quiz Creator, Teaching Materials Generator, Image Generator, and TeachTube AI to enhance your teaching experience."/>
+  <meta name="description" content="Edvanta Tools offers innovative AI-powered solutions for educators. Use our AI Tutor Chat, Lesson Plan Generator, Quiz Creator, Teaching Materials Generator, and Image Generator to enhance your teaching experience."/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edvanta Tools - Advancing Education with AI</title>
-  <!-- Ensure favicon-32x32.png is in your root directory, or remove this line if not needed -->
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
   <style>
     :root {
@@ -313,54 +312,13 @@
       .hamburger {
         display: flex;
       }
+      /* Hide the sidebar on mobile, since we replicate Tools links in the mobile menu. */
       .sidebar {
         display: none;
       }
       .main-content {
         margin-left: 0;
       }
-    }
-    /* TeachTube Tab Styles */
-    .tab-buttons {
-      display: flex;
-      border-bottom: 1px solid #ccc;
-      margin-bottom: 10px;
-    }
-    .tab-button {
-      padding: 10px 15px;
-      border: 1px solid #ccc;
-      border-bottom: none;
-      border-radius: 5px 5px 0 0;
-      background-color: #e9e9e9;
-      cursor: pointer;
-      margin-right: 5px;
-      font-weight: 600;
-      transition: background-color 0.3s;
-    }
-    .tab-button:hover {
-      background-color: #ddd;
-    }
-    .tab-button.active {
-      background-color: var(--edvanta-yellow);
-      color: var(--text-color);
-      border-bottom: 1px solid white;
-    }
-    .tab-content {
-      border: 1px solid #ccc;
-      border-radius: 0 5px 5px 5px;
-      background: white;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-    .tt-section-title {
-      font-size: 1.1rem;
-      font-weight: bold;
-      margin-top: 1em;
-    }
-    .tab-content ul,
-    .tab-content ol {
-      margin-left: 1.5em;
-      margin-bottom: 1em;
     }
   </style>
 </head>
@@ -373,7 +331,7 @@
       <a href="about.html" class="nav-link-global">About</a>
       <a href="contact.html" class="nav-link-global">Contact</a>
       <a href="help.html" class="nav-link-global">Help</a>
-      <a href="tools_updated.html" class="nav-link-global">Tools</a>
+      <a href="tools.html" class="nav-link-global">Tools</a>
       <a href="learning-hub.html" class="nav-link-global">Learning Hub</a>
       <a href="tools-es.html" class="nav-link-global">ES</a>
     </nav>
@@ -389,14 +347,16 @@
     <div class="mobile-menu-close">
       <button onclick="toggleMobileMenu()">×</button>
     </div>
+    <!-- Top-level links -->
     <a href="index.html" class="mobile-nav-link">Home</a>
     <a href="about.html" class="mobile-nav-link">About</a>
     <a href="contact.html" class="mobile-nav-link">Contact</a>
     <a href="help.html" class="mobile-nav-link">Help</a>
-    <a href="tools_updated.html" class="mobile-nav-link">Tools</a>
+    <a href="tools.html" class="mobile-nav-link">Tools</a>
     <a href="learning-hub.html" class="mobile-nav-link">Learning Hub</a>
     <a href="tools-es.html" class="mobile-nav-link">ES</a>
     <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.2); margin:15px 0;">
+    <!-- Tools sub-links in mobile menu -->
     <div class="mobile-tools-section">
       <h2>Tools</h2>
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('tutorLink'); loadTool('tutor'); toggleMobileMenu();">💬 AI Tutor Chat</a>
@@ -404,8 +364,6 @@
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('quizLink'); loadTool('quiz'); toggleMobileMenu();">❓ Quiz Creator</a>
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('materialsLink'); loadTool('materials'); toggleMobileMenu();">📝 Teaching Materials Generator</a>
       <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('imageLink'); loadTool('image'); toggleMobileMenu();">🖼️ Image Generator</a>
-      <!-- TeachTube AI link in mobile menu -->
-      <a href="#" class="mobile-tools-link" onclick="event.preventDefault(); setActiveLink('teachTubeLink'); loadTool('teachtube'); toggleMobileMenu();">▶️ TeachTube AI</a>
     </div>
   </div>
   
@@ -417,7 +375,6 @@
     <a href="#" class="nav-link" id="quizLink">❓ Quiz Creator</a>
     <a href="#" class="nav-link" id="materialsLink">📝 Teaching Materials Generator</a>
     <a href="#" class="nav-link" id="imageLink">🖼️ Image Generator</a>
-    <a href="#" class="nav-link" id="teachTubeLink">▶️ TeachTube AI</a>
   </aside>
   
   <!-- Main Tools Content -->
@@ -482,7 +439,7 @@
       }
     }
     
-    // Mark sidebar link as active
+    // Mark a sidebar link as active
     window.setActiveLink = function(activeId) {
       const links = document.querySelectorAll('.sidebar .nav-link');
       links.forEach(link => {
@@ -493,8 +450,9 @@
     let storedToolOutputs = {};
     let currentTool = null;
     
-    // Attach event listeners for sidebar links
+    // Attach event listeners for the sidebar tool links
     window.onload = function() {
+      // Desktop sidebar links
       document.getElementById("tutorLink").addEventListener("click", function(e) {
         e.preventDefault();
         setActiveLink("tutorLink");
@@ -520,11 +478,6 @@
         setActiveLink("imageLink");
         loadTool("image");
       });
-      document.getElementById("teachTubeLink").addEventListener("click", function(e) {
-        e.preventDefault();
-        setActiveLink("teachTubeLink");
-        loadTool("teachtube");
-      });
     };
     
     function loadTool(tool) {
@@ -534,11 +487,13 @@
       currentTool = tool;
       const content = document.querySelector('.tool-container');
       const header = document.querySelector('.tool-header');
+      // If we have stored content from a previous session, restore it
       if (storedToolOutputs.hasOwnProperty(tool) && storedToolOutputs[tool] !== "") {
         header.innerHTML = getHeaderForTool(tool);
         content.innerHTML = storedToolOutputs[tool];
         return;
       }
+      // Otherwise, define new content
       if (tool === 'tutor') {
         header.innerHTML = "AI Tutor Chat";
         content.innerHTML = `
@@ -615,86 +570,47 @@
             <div class="response-content" id="imageResponse" aria-live="polite">The generated image will appear here...</div>
           </div>
         `;
-      } else if (tool === 'teachtube') {
-        header.innerHTML = "TeachTube AI";
-        content.innerHTML = `
-          <p><strong>How to Use:</strong> Paste a YouTube URL that has English captions (manual or auto-generated) and click "Generate Teaching Materials". TeachTube AI will produce:</p>
-          <ul style="margin-left:1.5em;">
-            <li>Study Guide (summary, discussion questions, vocabulary)</li>
-            <li>Lesson Plan (objectives, introduction, activities, assessment, conclusion)</li>
-            <li>Quiz (5+ questions, 4 options, correct answer indicated)</li>
-            <li>Worksheet (3+ exercises)</li>
-            <li>PowerPoint Outline (3+ slides with bullet points)</li>
-          </ul>
-          <input type="text" class="input-box" id="teachTubeUrl" placeholder="Enter YouTube URL" style="width:100%;">
-          <button class="submit-btn" onclick="generateTeachTube()">Generate Teaching Materials</button>
-          <div class="response-container" style="margin-top:20px;">
-            <div class="response-header">
-              <button class="copy-btn" onclick="copyResponse('teachTubeResponse')">Copy</button>
-              <button class="expand-btn" id="teachTubeExpand" onclick="expandContent('teachTubeResponse','teachtube')" disabled>Expand Content</button>
-            </div>
-            <div class="response-content" id="teachTubeResponse" aria-live="polite">
-              <!-- The TeachTube tab layout will be inserted here -->
-            </div>
-          </div>
-        `;
       }
     }
-    
+
     function getHeaderForTool(tool) {
       if (tool === 'tutor') return "AI Tutor Chat";
       if (tool === 'lesson_plan') return "Lesson Plan Generator";
       if (tool === 'quiz') return "Quiz Creator";
       if (tool === 'materials') return "Teaching Materials Generator";
       if (tool === 'image') return "Image Generator";
-      if (tool === 'teachtube') return "TeachTube AI";
       return "Edvanta Tools";
     }
-    
-    function copyResponse(responseId) {
-      const text = document.getElementById(responseId).innerText;
-      navigator.clipboard.writeText(text);
-    }
-    
-    function downloadImage(responseId) {
-      const responseContent = document.getElementById(responseId).querySelector("img");
-      if (responseContent && responseContent.src) {
-        const link = document.createElement('a');
-        link.href = responseContent.src;
-        link.download = "generated_image.png";
-        link.click();
-      }
-    }
-    
+
     // AI Tutor request
     async function sendTutorRequest() {
-      const input = document.getElementById("tutorInput").value.trim();
-      const responseBox = document.getElementById("tutorResponse");
+      let input = document.getElementById("tutorInput").value.trim();
+      let responseBox = document.getElementById("tutorResponse");
       if (!input) {
         responseBox.innerHTML = "❌ Please enter a question before asking the tutor.";
         return;
       }
       responseBox.innerHTML = "🔄 Generating answer...";
       try {
-        const resp = await fetch("https://edu-ai-backend-production.up.railway.app/tutor_assistant", {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/tutor_assistant", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ question: input })
         });
-        const data = await resp.json();
+        let data = await response.json();
         responseBox.innerHTML = data.response || "❌ Error generating answer.";
         enableExpandButton("tutorResponse", "tutorExpand");
       } catch (error) {
         responseBox.innerHTML = `❌ Error: ${error.message}`;
       }
     }
-    
+
     // Lesson Plan request
     async function generateLessonPlan() {
-      const responseBox = document.getElementById("lessonPlanResponse");
+      let responseBox = document.getElementById("lessonPlanResponse");
       responseBox.innerHTML = "🔄 Generating lesson plan...";
       try {
-        const resp = await fetch("https://edu-ai-backend-production.up.railway.app/lesson_plan", {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/lesson_plan", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -703,37 +619,37 @@
             learning_goals: document.getElementById("learningGoals").value
           })
         });
-        const data = await resp.json();
+        let data = await response.json();
         responseBox.innerHTML = data.lesson_plan || "❌ Error generating lesson plan.";
         enableExpandButton("lessonPlanResponse", "lessonPlanExpand");
       } catch (error) {
         responseBox.innerHTML = `❌ Error: ${error.message}`;
       }
     }
-    
+
     // Quiz request
     async function generateQuiz() {
-      const responseBox = document.getElementById("quizResponse");
+      let responseBox = document.getElementById("quizResponse");
       responseBox.innerHTML = "🔄 Generating quiz...";
       try {
-        const resp = await fetch("https://edu-ai-backend-production.up.railway.app/quiz_creator", {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/quiz_creator", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ topic: document.getElementById("quizTopic").value })
         });
-        const data = await resp.json();
+        let data = await response.json();
         responseBox.innerHTML = data.quiz || "❌ Error generating quiz.";
       } catch (error) {
         responseBox.innerHTML = `❌ Error: ${error.message}`;
       }
     }
-    
+
     // Teaching Materials request
     async function generateMaterials() {
-      const responseBox = document.getElementById("materialsResponse");
+      let responseBox = document.getElementById("materialsResponse");
       responseBox.innerHTML = "🔄 Generating teaching materials...";
       try {
-        const resp = await fetch("https://edu-ai-backend-production.up.railway.app/teaching_materials", {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/teaching_materials", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -741,30 +657,30 @@
             material_type: document.getElementById("materialType").value
           })
         });
-        const data = await resp.json();
+        let data = await response.json();
         responseBox.innerHTML = data.teaching_materials || "❌ Error generating materials.";
         enableExpandButton("materialsResponse", "materialsExpand");
       } catch (error) {
         responseBox.innerHTML = `❌ Error: ${error.message}`;
       }
     }
-    
+
     // Image Generation request
     async function generateImage() {
-      const prompt = document.getElementById("imgPrompt").value.trim();
-      const responseBox = document.getElementById("imageResponse");
+      let prompt = document.getElementById("imgPrompt").value.trim();
+      let responseBox = document.getElementById("imageResponse");
       if (!prompt) {
         responseBox.innerHTML = "<p style='color:red;'>Please enter a prompt.</p>";
         return;
       }
       responseBox.innerHTML = "🔄 Generating image, please wait...";
       try {
-        const resp = await fetch("https://edu-ai-backend-production.up.railway.app/image_generator", {
+        let response = await fetch("https://edu-ai-backend-production.up.railway.app/image_generator", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ prompt: prompt })
         });
-        const data = await resp.json();
+        let data = await response.json();
         if (data.image_url) {
           responseBox.innerHTML = `<img src="${data.image_url}" alt="Generated Educational Image"><br><br><small>Image generated based on your prompt.</small>`;
         } else {
@@ -773,101 +689,6 @@
       } catch (error) {
         responseBox.innerHTML = `<p style='color:red;'>Error: ${error.message}</p>`;
       }
-    }
-    
-    // TeachTube AI request
-    async function generateTeachTube() {
-      const urlInput = document.getElementById('teachTubeUrl').value.trim();
-      const responseBox = document.getElementById('teachTubeResponse');
-      if (!urlInput) {
-        responseBox.innerHTML = "<p style='color:red;'>Please enter a YouTube URL.</p>";
-        return;
-      }
-      responseBox.innerHTML = "<p>🔄 Retrieving transcript & generating materials, please wait...</p>";
-      try {
-        const resp = await fetch("https://edu-ai-backend-production.up.railway.app/teachtube_ai", {
-          method: "POST",
-          headers: {"Content-Type":"application/json"},
-          body: JSON.stringify({ youtube_url: urlInput })
-        });
-        const data = await resp.json();
-        if (data.error) {
-          responseBox.innerHTML = `<p style='color:red;'>Error: ${data.error}</p>`;
-          return;
-        }
-        responseBox.innerHTML = "";
-        renderTeachTubeTabs(data, responseBox);
-        enableExpandButton("teachTubeResponse", "teachTubeExpand");
-      } catch (error) {
-        responseBox.innerHTML = `<p style="color:red;">❌ Request failed: ${error.message}</p>`;
-      }
-    }
-    
-    // Build the TeachTube tab interface within the response content
-    function renderTeachTubeTabs(teachTubeData, container) {
-      const sections = [
-        { key: "study_guide", label: "Study Guide" },
-        { key: "lesson_plan", label: "Lesson Plan" },
-        { key: "quiz", label: "Quiz" },
-        { key: "worksheet", label: "Worksheet" },
-        { key: "ppt_outline", label: "PPT Outline" }
-      ];
-      
-      const tabButtonsWrapper = document.createElement("div");
-      tabButtonsWrapper.className = "tab-buttons";
-      
-      const tabContentsWrapper = document.createElement("div");
-      const tabDivs = [];
-      
-      sections.forEach((section, idx) => {
-        const tabBtn = document.createElement("button");
-        tabBtn.className = "tab-button" + (idx === 0 ? " active" : "");
-        tabBtn.textContent = section.label;
-        tabBtn.addEventListener("click", () => {
-          tabDivs.forEach(div => div.style.display = "none");
-          [...tabButtonsWrapper.children].forEach(b => b.classList.remove("active"));
-          tabBtn.classList.add("active");
-          tabDivs[idx].style.display = "block";
-        });
-        tabButtonsWrapper.appendChild(tabBtn);
-        
-        const contentDiv = document.createElement("div");
-        contentDiv.className = "tab-content";
-        contentDiv.style.display = (idx === 0) ? "block" : "none";
-        contentDiv.appendChild(buildTeachTubeSection(section.key, teachTubeData[section.key]));
-        tabContentsWrapper.appendChild(contentDiv);
-        tabDivs.push(contentDiv);
-      });
-      
-      container.appendChild(tabButtonsWrapper);
-      container.appendChild(tabContentsWrapper);
-    }
-    
-    // Build each TeachTube section content from JSON
-    function buildTeachTubeSection(sectionKey, data) {
-      const wrapper = document.createElement("div");
-      switch (sectionKey) {
-        case "study_guide":
-          wrapper.appendChild(renderStudyGuide(data));
-          break;
-        case "lesson_plan":
-          wrapper.appendChild(renderLessonPlan(data));
-          break;
-        case "quiz":
-          wrapper.appendChild(renderQuiz(data));
-          break;
-        case "worksheet":
-          wrapper.appendChild(renderWorksheet(data));
-          break;
-        case "ppt_outline":
-          wrapper.appendChild(renderPPTOutline(data));
-          break;
-        default:
-          const pre = document.createElement("pre");
-          pre.textContent = JSON.stringify(data, null, 2);
-          wrapper.appendChild(pre);
-      }
-      return wrapper;
     }
   </script>
 </body>
