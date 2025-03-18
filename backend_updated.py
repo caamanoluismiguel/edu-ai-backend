@@ -1,11 +1,16 @@
 import os
 import re
 import json
+import logging
 import openai
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 from youtube_transcript_api import YouTubeTranscriptApi
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Load environment variables
 load_dotenv()
@@ -46,6 +51,7 @@ Provide a well-structured response with actionable advice.
         ai_response = response["choices"][0]["message"]["content"]
         return jsonify({"response": ai_response})
     except Exception as e:
+        logger.error(f"Tutor Assistant error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/lesson_plan', methods=['POST'])
@@ -82,6 +88,7 @@ Generate a detailed lesson plan with:
         ai_response = response["choices"][0]["message"]["content"]
         return jsonify({"lesson_plan": ai_response})
     except Exception as e:
+        logger.error(f"Lesson Plan error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/quiz_creator', methods=['POST'])
@@ -114,6 +121,7 @@ Generate a structured quiz with at least 5 questions. For each question, include
         ai_response = response["choices"][0]["message"]["content"]
         return jsonify({"quiz": ai_response})
     except Exception as e:
+        logger.error(f"Quiz Creator error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/teaching_materials', methods=['POST'])
@@ -144,6 +152,7 @@ For PowerPoint slides, outline key slides. For worksheets, provide structured qu
         ai_response = response["choices"][0]["message"]["content"]
         return jsonify({"teaching_materials": ai_response})
     except Exception as e:
+        logger.error(f"Teaching Materials error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/image_generator', methods=['POST'])
@@ -162,6 +171,7 @@ def image_generator():
         image_url = response["data"][0]["url"]
         return jsonify({"image_url": image_url})
     except Exception as e:
+        logger.error(f"Image Generator error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/expand_content', methods=['POST'])
@@ -191,10 +201,11 @@ Tool: {tool}
         expanded_content = response["choices"][0]["message"]["content"]
         return jsonify({"expanded_content": expanded_content})
     except Exception as e:
+        logger.error(f"Expand Content error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 # -----------------------------
-# New: TeachTube AI Endpoint with Enhanced Prompt (Single Pass)
+# New: TeachTube AI Endpoint with Enhanced Prompt and Logging
 # -----------------------------
 @app.route('/teachtube_ai', methods=['POST'])
 def teachtube_ai():
@@ -204,30 +215,45 @@ def teachtube_ai():
         if not youtube_url:
             return jsonify({"error": "Please provide a YouTube URL."}), 400
 
-        # Extract the video ID using regex with error checking
+        # Extract video ID
         video_id_pattern = r"(?:v=|\/)([0-9A-Za-z_-]{11})(?:[&?].*)?"
         match = re.search(video_id_pattern, youtube_url)
         if match:
             video_id = match.group(1)
+            logger.info(f"Extracted video ID: {video_id}")
         else:
+            logger.error("Failed to extract video ID.")
             return jsonify({"error": "Invalid YouTube URL or unable to extract video ID."}), 400
 
-        # Retrieve transcript explicitly requesting English language with enhanced fallback
+        # Retrieve transcript with logging
+        transcript_list = None
         try:
             transcript_list = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
-        except Exception as e:
+            logger.info("Successfully retrieved transcript using get_transcript with languages=['en'].")
+        except Exception as primary_error:
+            logger.warning(f"Primary transcript retrieval failed: {primary_error}")
             try:
                 transcript_obj = YouTubeTranscriptApi.list_transcripts(video_id)
+                logger.info("Transcript list retrieved. Attempting to get manual transcript for 'en'.")
                 try:
                     transcript_list = transcript_obj.find_transcript(['en']).fetch()
-                except Exception as manual_e:
+                    logger.info("Successfully retrieved manual transcript for 'en'.")
+                except Exception as manual_error:
+                    logger.warning(f"Manual transcript retrieval failed: {manual_error}. Trying auto-generated transcripts.")
                     transcript_list = transcript_obj.find_generated_transcript(['en', 'en-US', 'en-GB']).fetch()
-            except Exception as inner_e:
-                return jsonify({"error": f"Could not retrieve transcript: {str(inner_e)}"}), 400
+                    logger.info("Successfully retrieved auto-generated transcript.")
+            except Exception as fallback_error:
+                logger.error(f"Fallback transcript retrieval failed: {fallback_error}")
+                return jsonify({"error": f"Could not retrieve transcript: {fallback_error}"}), 400
+
+        if not transcript_list:
+            logger.error("Transcript list is empty after fallback attempts.")
+            return jsonify({"error": "Transcript could not be retrieved."}), 400
 
         transcript_text = " ".join([t["text"] for t in transcript_list])
-        
-        # Enhanced prompt with strict instructions to produce all sections in one pass
+        logger.info(f"Transcript text length: {len(transcript_text)} characters")
+
+        # Enhanced prompt with strict instructions
         prompt = f"""
 You are an expert educational content generator. Based on the transcript provided from the YouTube video {youtube_url}, generate comprehensive teaching materials. You must produce all of the following sections in valid JSON format, and you must include every section even if the transcript lacks some details. If necessary, invent plausible content to satisfy the requirements. Do not omit any section.
 
@@ -240,7 +266,7 @@ Required JSON keys:
     - "objectives": An array of at least 3 objectives.
     - "introduction": A brief introduction.
     - "activities": An array of at least 3 activities.
-    - "assessments": An array of assessment methods (e.g., quiz, presentation).
+    - "assessments": An array of assessment methods.
     - "conclusion": A brief conclusion.
 3. "quiz": An array of at least 5 quiz questions. Each question must include:
     - "question": The question text.
@@ -257,7 +283,7 @@ Transcript:
 ---
 Output strictly in valid JSON with exactly these keys: study_guide, lesson_plan, quiz, worksheet, ppt_outline.
 """
-
+        logger.info("Sending prompt to OpenAI.")
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
@@ -268,15 +294,19 @@ Output strictly in valid JSON with exactly these keys: study_guide, lesson_plan,
             max_tokens=2000
         )
         ai_output = response["choices"][0]["message"]["content"]
-        
+        logger.info("Received response from OpenAI.")
+
         # Attempt to parse the AI output as JSON
         try:
             output_json = json.loads(ai_output)
+            logger.info("Successfully parsed OpenAI response as JSON.")
         except Exception as parse_error:
+            logger.error(f"JSON parsing error: {parse_error}")
             output_json = {"raw_output": ai_output, "error": f"JSON parsing error: {str(parse_error)}"}
         
         return jsonify(output_json)
     except Exception as e:
+        logger.error(f"TeachTube AI endpoint error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
